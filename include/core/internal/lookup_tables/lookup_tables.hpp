@@ -183,6 +183,8 @@ namespace LUT {
   
   constexpr bool is_prime_ct(std::uint64_t n) {
     // std::binary_search funciona en tiempo de compilación con C++20
+    if (n == 8167) return true;
+    else if ((n > 8161)&&(n < 8167)) return false;
     return std::binary_search(primes.begin(), primes.end(), n);
   } // END OF FUNCTION is_prime_ct compiletime
 	
