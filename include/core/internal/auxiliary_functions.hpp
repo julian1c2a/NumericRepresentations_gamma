@@ -1,3 +1,6 @@
+#ifndef NUMREPR_CORE_INTERNAL_AUXILIARY_FUNCTIONS_HPP_INCLUDED
+#define NUMREPR_CORE_INTERNAL_AUXILIARY_FUNCTIONS_HPP_INCLUDED
+
 #include <limits>
 #include <cstddef>
 #include <cstdint>
@@ -6,7 +9,7 @@
 
 // --- Declaración adelantada de int_log2_ct y bit_width_ct ---
 namespace NumRepr {
-namespace auxiliary_functions {
+namespace AuxFunc {
   enum class math_error_ec : std::uint8_t {ok, notsupported, baddomain, overflow, underflow, unknown};
   
   template <std::uint64_t n>
@@ -53,7 +56,6 @@ namespace auxiliary_functions {
 
   constexpr std::uint64_t int_log2(std::uint64_t n) noexcept {
     if (n < 2u) {
-      // ¡ADVERTENCIA! int_log2_ct<0>() retorna 0 por compatibilidad, pero matemáticamente está indefinido.
       return 0;
     }
     std::uint64_t res = 0;
@@ -96,19 +98,6 @@ namespace auxiliary_functions {
     return num > 0 && (num & (num - 1)) == 0; 
   } // END FUNCTION is_power_of_2 runtime
 
-} // CLOSE NAMESPACE auxiliary_functions
-} // CLOSE NAMESPACE NumRepr
-
-#ifndef NUMREPR_CORE_INTERNAL_AUXILIARY_FUNCTIONS_HPP_INCLUDED
-#define NUMREPR_CORE_INTERNAL_AUXILIARY_FUNCTIONS_HPP_INCLUDED
-
-#include <limits>
-#include <cstddef>
-#include <cstdint>
-#include <type_traits>
-
-namespace NumRepr {
-  namespace auxiliary_functions {
   
   /**
    * @brief Método genérico de Newton-Raphson en tiempo de compilación.
@@ -1262,7 +1251,7 @@ namespace NumRepr {
     namespace special {
         // ...existing code...
       } // CLOSE NAMESPACE special
-  } // CLOSE NAMESPACE auxiliary_functions
+  } // CLOSE NAMESPACE AuxFunc
 } // CLOSE NAMESPACE NumRepr
 
 #endif // AUXILIARY_FUNCTIONS_HPP_INCLUDED

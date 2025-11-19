@@ -16,6 +16,7 @@
 #else
 #  include <variant>
 #  include <utility>
+
 namespace std {
   template <typename E>
   struct unexpected {
@@ -713,14 +714,14 @@ namespace NumRepr {
      *          pequeño que puede representar el custom type sin pérdida.
      * 
      * @note USAGE: INTERNAL IMPLEMENTATION DETAIL - No usar directamente
-     * @note Acceso público via: sig_UInt_for_UInt_t<UInt_t>
+     * @note Acceso público via: nextsz_UInt_for_UInt_t<UInt_t>
      * 
      * @warning Nombre "ugly" indica que es implementación interna, no API pública
      */
     namespace ugly_details_UInt_for_UInt {
 
       template <unsigned_integral_c UInt_t>
-      struct __sig_UInt_for_UInt_t { 
+      struct __nextsz_UInt_for_UInt_t { 
         // Mapeo genérico multiplataforma: unsigned → SIGUIENTE unsigned estándar (mayor capacidad)
         using type = std::conditional_t<
             sizeof(UInt_t) < 2, std::uint16_t,   // 1 byte  → uint16_t (siguiente)
@@ -738,7 +739,7 @@ namespace NumRepr {
       
       // Especialización para uint64_t: usa el mismo tipo (no hay mayor)
       template <>
-      struct __sig_UInt_for_UInt_t<std::uint64_t> {
+      struct __nextsz_UInt_for_UInt_t<std::uint64_t> {
         using type = std::uint64_t;  // Mismo tipo, no hay siguiente
       };
 
@@ -764,15 +765,15 @@ namespace NumRepr {
      * @note Portabilidad: Basado en sizeof, funciona en todas las plataformas
      * 
      * @code
-     * using T1 = sig_UInt_for_UInt_t<uint8_t>;   // std::uint16_t (siguiente)
-     * using T2 = sig_UInt_for_UInt_t<uint16_t>;  // std::uint32_t (siguiente)
-     * using T3 = sig_UInt_for_UInt_t<uint32_t>;  // std::uint64_t (siguiente)
-     * // sig_UInt_for_UInt_t<uint64_t> → error (no hay siguiente)
+     * using T1 = nextsz_UInt_for_UInt_t<uint8_t>;   // std::uint16_t (siguiente)
+     * using T2 = nextsz_UInt_for_UInt_t<uint16_t>;  // std::uint32_t (siguiente)
+     * using T3 = nextsz_UInt_for_UInt_t<uint32_t>;  // std::uint64_t (siguiente)
+     * // nextsz_UInt_for_UInt_t<uint64_t> → error (no hay siguiente)
      * @endcode
      */
     template <typename UInt_t>
-    using sig_UInt_for_UInt_t =
-        typename ugly_details_UInt_for_UInt::__sig_UInt_for_UInt_t<UInt_t>::type;
+    using nextsz_UInt_for_UInt_t =
+        typename ugly_details_UInt_for_UInt::__nextsz_UInt_for_UInt_t<UInt_t>::type;
 
     //================================================
     // TYPE DEDUCTION: UInt → SInt Conversion
@@ -785,11 +786,11 @@ namespace NumRepr {
      *          Ejemplo: ullint_t → sint64_t, uint_t → sint_t
      * 
      * @note USAGE: INTERNAL IMPLEMENTATION DETAIL
-     * @note Acceso público via: sig_SInt_for_UInt_t<UInt>
+     * @note Acceso público via: nextsz_SInt_for_UInt_t<UInt>
      */
-    namespace ugly_details_sig_SInt_for_UInt {
+    namespace ugly_details_nextsz_SInt_for_UInt {
       template <typename UInt>
-      struct __sig_SInt_for_UInt_t { 
+      struct __nextsz_SInt_for_UInt_t { 
         // Mapeo genérico multiplataforma: unsigned → signed del siguiente tamaño
         // Necesario porque signed del mismo tamaño no puede contener todos los valores unsigned
         using type = std::conditional_t<
@@ -808,7 +809,7 @@ namespace NumRepr {
                       "Only 8, 16, 32, and 64-bit unsigned types are supported.");
       };
 
-    } // namespace ugly_details_sig_SInt_for_UInt
+    } // namespace ugly_details_nextsz_SInt_for_UInt
 
     /**
      * @brief Deduce el tipo signed con capacidad suficiente para un tipo unsigned.
@@ -834,14 +835,14 @@ namespace NumRepr {
      *          de entrada para garantizar capacidad completa
      * 
      * @code
-     * using S1 = sig_SInt_for_UInt_t<uint8_t>;   // std::int16_t (16 bits)
-     * using S2 = sig_SInt_for_UInt_t<uint16_t>;  // std::int32_t (32 bits)
-     * using S3 = sig_SInt_for_UInt_t<uint32_t>;  // std::int64_t (64 bits)
+     * using S1 = nextsz_SInt_for_UInt_t<uint8_t>;   // std::int16_t (16 bits)
+     * using S2 = nextsz_SInt_for_UInt_t<uint16_t>;  // std::int32_t (32 bits)
+     * using S3 = nextsz_SInt_for_UInt_t<uint32_t>;  // std::int64_t (64 bits)
      * @endcode
      */
     template <typename UInt_t>
-    using sig_SInt_for_UInt_t =
-        typename ugly_details_sig_SInt_for_UInt::__sig_SInt_for_UInt_t<UInt_t>::type;
+    using nextsz_SInt_for_UInt_t =
+        typename ugly_details_nextsz_SInt_for_UInt::__nextsz_SInt_for_UInt_t<UInt_t>::type;
 
     //================================================
     // TYPE DEDUCTION: SInt → UInt Conversion
@@ -854,11 +855,11 @@ namespace NumRepr {
      *          Mapeo directo: sint64_t → uint64_t, schint_t → uchint_t, etc.
      * 
      * @note USAGE: INTERNAL IMPLEMENTATION DETAIL
-     * @note Acceso público via: sig_UInt_for_SInt_t<SInt>
+     * @note Acceso público via: nextsz_UInt_for_SInt_t<SInt>
      */
     namespace ugly_details_UInt_for_SInt {
       template <typename SInt>
-      struct __sig_UInt_for_SInt_t { 
+      struct __nextsz_UInt_for_SInt_t { 
         // Mapeo genérico multiplataforma: signed → unsigned del mismo tamaño
         using type = std::conditional_t<
             sizeof(SInt) == 1, std::uint8_t,
@@ -899,14 +900,14 @@ namespace NumRepr {
      * @note El tipo resultante tiene sizeof(unsigned) == sizeof(signed)
      * 
      * @code
-     * using U1 = sig_UInt_for_SInt_t<int8_t>;   // std::uint8_t (mismo tamaño)
-     * using U2 = sig_UInt_for_SInt_t<int32_t>;  // std::uint32_t (mismo tamaño)
-     * using U3 = sig_UInt_for_SInt_t<int64_t>;  // std::uint64_t (mismo tamaño)
+     * using U1 = nextsz_UInt_for_SInt_t<int8_t>;   // std::uint8_t (mismo tamaño)
+     * using U2 = nextsz_UInt_for_SInt_t<int32_t>;  // std::uint32_t (mismo tamaño)
+     * using U3 = nextsz_UInt_for_SInt_t<int64_t>;  // std::uint64_t (mismo tamaño)
      * @endcode
      */
     template <typename Int_t>
-    using sig_UInt_for_SInt_t =
-        typename ugly_details_UInt_for_SInt::__sig_UInt_for_SInt_t<Int_t>::type;
+    using nextsz_UInt_for_SInt_t =
+        typename ugly_details_UInt_for_SInt::__nextsz_UInt_for_SInt_t<Int_t>::type;
 
     //================================================
     // TYPE DEDUCTION: SInt → SInt Conversion
@@ -919,12 +920,12 @@ namespace NumRepr {
      *          Similar a UInt_for_UInt pero para tipos con signo.
      * 
      * @note USAGE: INTERNAL IMPLEMENTATION DETAIL
-     * @note Acceso público via: sig_SInt_for_SInt_t<SInt>
+     * @note Acceso público via: nextsz_SInt_for_SInt_t<SInt>
      */
     namespace ugly_details_SInt_for_SInt {
 
       template <typename SInt>
-      struct __sig_SInt_for_SInt_t {
+      struct __nextsz_SInt_for_SInt_t {
         // Mapeo genérico multiplataforma: signed → SIGUIENTE signed estándar (mayor capacidad)
         using type = std::conditional_t<
             sizeof(SInt) < 2, std::int16_t,   // 1 byte  → int16_t (siguiente)
@@ -942,7 +943,7 @@ namespace NumRepr {
       
       // Especialización para int64_t: usa el mismo tipo (no hay mayor)
       template <>
-      struct __sig_SInt_for_SInt_t<std::int64_t> {
+      struct __nextsz_SInt_for_SInt_t<std::int64_t> {
         using type = std::int64_t;  // Mismo tipo, no hay siguiente
       };
 
@@ -968,15 +969,15 @@ namespace NumRepr {
      * @note Portabilidad: Basado en sizeof, funciona en todas las plataformas
      * 
      * @code
-     * using S1 = sig_SInt_for_SInt_t<int8_t>;    // std::int16_t (siguiente)
-     * using S2 = sig_SInt_for_SInt_t<int16_t>;   // std::int32_t (siguiente)
-     * using S3 = sig_SInt_for_SInt_t<int32_t>;   // std::int64_t (siguiente)
-     * // sig_SInt_for_SInt_t<int64_t> → error (no hay siguiente)
+     * using S1 = nextsz_SInt_for_SInt_t<int8_t>;    // std::int16_t (siguiente)
+     * using S2 = nextsz_SInt_for_SInt_t<int16_t>;   // std::int32_t (siguiente)
+     * using S3 = nextsz_SInt_for_SInt_t<int32_t>;   // std::int64_t (siguiente)
+     * // nextsz_SInt_for_SInt_t<int64_t> → error (no hay siguiente)
      * @endcode
      */
     template <typename SInt_t>
-    using sig_SInt_for_SInt_t =
-        typename ugly_details_SInt_for_SInt::__sig_SInt_for_SInt_t<SInt_t>::type;
+    using nextsz_SInt_for_SInt_t =
+        typename ugly_details_SInt_for_SInt::__nextsz_SInt_for_SInt_t<SInt_t>::type;
 
     //================================================
     // BASE AND DIGIT UTILITIES
@@ -1103,14 +1104,14 @@ namespace NumRepr {
      * 
      * @note USAGE: INTERNALLY USED - Para algoritmos de optimización
      * 
-     * @note Usa sig_UInt_for_UInt_t para evitar overflow en (max + 1)
+     * @note Usa nextsz_UInt_for_UInt_t para evitar overflow en (max + 1)
      */
     template <typename UINT_T>
     consteval UINT_T middle_max() {
-      using SIG_UINT_T = sig_UInt_for_UInt_t<UINT_T>;
-      constexpr SIG_UINT_T maximo = maxbase<UINT_T>();
-      constexpr SIG_UINT_T uno{1};
-      constexpr SIG_UINT_T dos{2};
+      using NEXTSZ_UINT_T = nextsz_UInt_for_UInt_t<UINT_T>;
+      constexpr NEXTSZ_UINT_T maximo = maxbase<UINT_T>();
+      constexpr NEXTSZ_UINT_T uno{1};
+      constexpr NEXTSZ_UINT_T dos{2};
       return static_cast<UINT_T>((maximo + uno) / dos);
     }
 
@@ -1136,20 +1137,20 @@ namespace NumRepr {
      */
     template <typename UINT_T>
     consteval UINT_T sqrt_max() {
-      using SIG_UINT_T = sig_UInt_for_UInt_t<UINT_T>;
-      constexpr SIG_UINT_T n = static_cast<SIG_UINT_T>(maxbase<UINT_T>()) + SIG_UINT_T{1};
+      using NEXTSZ_UINT_T = nextsz_UInt_for_UInt_t<UINT_T>;
+      constexpr NEXTSZ_UINT_T n = static_cast<NEXTSZ_UINT_T>(maxbase<UINT_T>()) + NEXTSZ_UINT_T{1};
       
       if constexpr (n == 0) return static_cast<UINT_T>(0);
       if constexpr (n == 1) return static_cast<UINT_T>(1);
       
       // Newton-Raphson con aritmética entera: x_{k+1} = (x_k + n/x_k) / 2
       // Estimación inicial: x0 = n / 2
-      SIG_UINT_T x = n / 2;
+      NEXTSZ_UINT_T x = n / 2;
       if (x == 0) x = 1;
       
       // Iterar hasta convergencia
       for (int i = 0; i < 50; ++i) {
-        SIG_UINT_T x_new = (x + n / x) / 2;
+        NEXTSZ_UINT_T x_new = (x + n / x) / 2;
         if (x_new >= x) break;  // Convergencia alcanzada
         x = x_new;
       }

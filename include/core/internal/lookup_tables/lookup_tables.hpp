@@ -8,7 +8,7 @@
 
 namespace NumRepr {
 
-namespace auxiliary_functions {
+namespace AuxFunc {
 	
 namespace LUT {
 
@@ -175,13 +175,29 @@ namespace LUT {
   }; // END OF CONSTEXPR ARRAY primes
   
   // Esta función espera un número entre el 1 y el 1024
-  consteval std::uint64_t get_nth_prime(std::size_t pos) noexcept {
-	  if ((pos > 0)&&(pos <= 1024)) return primes[pos-1];
-	  else                          return 0ull;
+  constexpr std::int64_t get_nth_prime(std::size_t pos) noexcept {
+	  if (pos <= 0) 							return -1ll;// SEÑAL DE ÍNDICE NO EXISTENTE POR ABAJO
+	  else if ((pos > 0)&&(pos <= 1024)) 	return static_cast<std::int64_t>(primes[pos-1]);
+	  else                          		return std::numeric_limits<std::int64_t>::min();// SEÑAL DE ÍNDICE NO EXISTENTE POR ARRIBA
+  } // END OF FUNCTION get_nth_prime compiletime/runtime
+  
+  // Esta función espera un número entre el 1 y el 1024
+  template<std::size_t pos>
+  consteval std::int64_t get_nth_prime_ct() noexcept {
+	  if constexpr (pos <= 0u)							return -1ll;// SEÑAL DE ÍNDICE NO EXISTENTE POR ABAJO
+	  else if constexpr ((pos > 0u)&&(pos <= 1024u)) 	return static_cast<std::int64_t>(primes[pos-1]);
+	  else                          					return std::numeric_limits<std::int64_t>::min();// SEÑAL DE ÍNDICE NO EXISTENTE POR ARRIBA
   } // END OF FUNCTION get_nth_prime compiletime
   
+  // ESTA FUNCIÓN IS_PRIME_CT SOLO FUNCIONAN SI N<=8161
+  template<std::uint64_t n>
+  consteval bool is_prime_ct() {
+    // std::binary_search funciona en tiempo de compilación con C++20
+    return std::binary_search(primes.begin(), primes.end(), n);
+  } // END OF FUNCTION is_prime_ct compiletime
   
-  constexpr bool is_prime_ct(std::uint64_t n) {
+  // ESTA FUNCIÓN IS_PRIME_RT SOLO FUNCIONAN SI N<=8161
+  constexpr bool is_prime_rt(std::uint64_t n) {
     // std::binary_search funciona en tiempo de compilación con C++20
     return std::binary_search(primes.begin(), primes.end(), n);
   } // END OF FUNCTION is_prime_ct compiletime

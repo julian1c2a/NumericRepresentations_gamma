@@ -11,7 +11,7 @@
 #include <string>
 
 #include "internal/basic_types.hpp"
-#include "internal/auxiliary_functions.hpp"
+#include "internal/AuxFunc.hpp"
 
 namespace NumRepr {
 
@@ -60,7 +60,7 @@ namespace NumRepr {
      * @note RESTRICCIÓN: La base B debe ser <= UINT32_MAX (4294967296)
      * @note Esta restricción existe porque las multiplicaciones de dígitos
      *       (B-1) × (B-1) deben caber en el tipo superior sin overflow.
-     *       Con B <= UINT32_MAX, el producto cabe en uint64_t (sig_uint_t).
+     *       Con B <= UINT32_MAX, el producto cabe en uint64_t (nextsz_uint_t).
      * 
      * @warning Bases mayores a UINT32_MAX causarán error de compilación con
      *          mensaje claro gracias al static_assert anterior.
@@ -85,9 +85,9 @@ namespace NumRepr {
      *          - uint16_t → uint32_t  
      *          - uint32_t → uint64_t
      * @note Usado en operaciones aritméticas donde (B-1)×(B-1) debe caber
-     * @example typename dig_t<255>::sig_uint_t es uint16_t
+     * @example typename dig_t<255>::nextsz_uint_t es uint16_t
      */
-    using sig_uint_t = typename type_traits::sig_UInt_for_UInt_t<uint_t>;
+    using nextsz_uint_t = typename type_traits::sig_UInt_for_UInt_t<uint_t>;
     
     /**
      * @brief Tipo entero con signo superior - para aritmética con signo
@@ -96,9 +96,9 @@ namespace NumRepr {
      *          - uint16_t → int32_t
      *          - uint32_t → int64_t
      * @note Usado en normaliza() para manejar valores negativos correctamente
-     * @example typename dig_t<10>::sig_sint_t es int16_t
+     * @example typename dig_t<10>::nextsz_int_t es int16_t
      */
-    using sig_sint_t = typename type_traits::sig_SInt_for_UInt_t<uint_t>;
+    using nextsz_int_t = typename type_traits::sig_SInt_for_UInt_t<uint_t>;
     
     /**
      * @brief Par de valores uint_t - actualmente usado en multiplicaciones
@@ -143,7 +143,7 @@ namespace NumRepr {
      *          - ret[1] = dígito = (n×m) % B
      * 
      * @note ESTRATEGIA ANTI-OVERFLOW:
-     *       - Si B > √(MAX_uint_t): promociona a sig_uint_t antes de multiplicar
+     *       - Si B > √(MAX_uint_t): promociona a nextsz_uint_t antes de multiplicar
      *       - Si B ≤ √(MAX_uint_t): multiplica directamente en uint_t
      * 
      * @note Evaluada completamente en tiempo de compilación (consteval)
@@ -154,9 +154,9 @@ namespace NumRepr {
       requires((n < B) && (m < B))
     static consteval uintspair mult() noexcept {
       if constexpr (B > type_traits::sqrt_max<uint_t>()) {
-        constexpr sig_uint_t sup_n{n};
-        constexpr sig_uint_t sup_m{m};
-        constexpr sig_uint_t result{sup_n * sup_m};
+        constexpr nextsz_uint_t sup_n{n};
+        constexpr nextsz_uint_t sup_m{m};
+        constexpr nextsz_uint_t result{sup_n * sup_m};
         constexpr uint_t ret_1{result / B};
         constexpr uint_t ret_0{result % B};
         constexpr uintspair ret{ret_1, ret_0};
@@ -191,21 +191,21 @@ namespace NumRepr {
     constexpr uint_t get() const noexcept { return m_d; }
     
     /**
-     * @brief Conversión explícita a sig_uint_t (tipo superior sin signo)
+     * @brief Conversión explícita a nextsz_uint_t (tipo superior sin signo)
      * @return Valor del dígito convertido a tipo superior
      * @note Útil para operaciones que requieren más bits (evitar overflow)
      */
-    constexpr explicit operator sig_uint_t() const noexcept { 
-        return static_cast<sig_uint_t>(m_d); 
+    constexpr explicit operator nextsz_uint_t() const noexcept { 
+        return static_cast<nextsz_uint_t>(m_d); 
     }
     
     /**
-     * @brief Conversión explícita a sig_sint_t (tipo superior con signo)
+     * @brief Conversión explícita a nextsz_int_t (tipo superior con signo)
      * @return Valor del dígito convertido a tipo con signo superior
      * @note Útil para operaciones aritméticas que requieren signo
      */
-    constexpr explicit operator sig_sint_t() const noexcept { 
-        return static_cast<sig_sint_t>(m_d); 
+    constexpr explicit operator nextsz_int_t() const noexcept { 
+        return static_cast<nextsz_int_t>(m_d); 
     }
     
     /**
@@ -261,7 +261,7 @@ namespace NumRepr {
      * @see mult_inv() - calcula el inverso multiplicativo
      */
     consteval static bool is_prime() noexcept {
-      return auxiliary_functions::is_prime(static_cast<std::size_t>(B));
+      return AuxFunc::is_prime(static_cast<std::size_t>(B));
     }
 
     // =========================================================================
@@ -282,27 +282,27 @@ namespace NumRepr {
     consteval static uint_t ui_0() noexcept { return uint_t(0u); }
     consteval static uint_t ui_1() noexcept { return uint_t(1u); }
 
-    consteval static sig_uint_t sui_B() noexcept { 
-        return static_cast<sig_uint_t>(B); }
-    consteval static sig_uint_t sui_max() noexcept { 
-        return static_cast<sig_uint_t>(B - 1u); }
-    consteval static sig_uint_t sui_submax() noexcept { 
-        return static_cast<sig_uint_t>(B - 2u); }
-    consteval static sig_uint_t sui_0() noexcept { 
-        return static_cast<sig_uint_t>(0u); }
-    consteval static sig_uint_t sui_1() noexcept { 
-        return static_cast<sig_uint_t>(1u); }
+    consteval static nextsz_uint_t sui_B() noexcept { 
+        return static_cast<nextsz_uint_t>(B); }
+    consteval static nextsz_uint_t sui_max() noexcept { 
+        return static_cast<nextsz_uint_t>(B - 1u); }
+    consteval static nextsz_uint_t sui_submax() noexcept { 
+        return static_cast<nextsz_uint_t>(B - 2u); }
+    consteval static nextsz_uint_t sui_0() noexcept { 
+        return static_cast<nextsz_uint_t>(0u); }
+    consteval static nextsz_uint_t sui_1() noexcept { 
+        return static_cast<nextsz_uint_t>(1u); }
 
-    consteval static sig_sint_t ssi_B() noexcept { 
-        return static_cast<sig_sint_t>(B); }
-    consteval static sig_sint_t ssi_max() noexcept { 
-        return static_cast<sig_sint_t>(B - 1u); }
-    consteval static sig_sint_t ssi_submax() noexcept { 
-        return static_cast<sig_sint_t>(B - 2u); }
-    consteval static sig_sint_t ssi_0() noexcept { 
-        return static_cast<sig_sint_t>(0u); }
-    consteval static sig_sint_t ssi_1() noexcept { 
-        return static_cast<sig_sint_t>(1u); }
+    consteval static nextsz_int_t ssi_B() noexcept { 
+        return static_cast<nextsz_int_t>(B); }
+    consteval static nextsz_int_t ssi_max() noexcept { 
+        return static_cast<nextsz_int_t>(B - 1u); }
+    consteval static nextsz_int_t ssi_submax() noexcept { 
+        return static_cast<nextsz_int_t>(B - 2u); }
+    consteval static nextsz_int_t ssi_0() noexcept { 
+        return static_cast<nextsz_int_t>(0u); }
+    consteval static nextsz_int_t ssi_1() noexcept { 
+        return static_cast<nextsz_int_t>(1u); }
 
   public:
     // =========================================================================
@@ -331,7 +331,7 @@ namespace NumRepr {
      * @details ESTRATEGIA DE NORMALIZACIÓN:
      *          1. Si arg ya es uint_t: simple módulo
      *          2. Si arg es con signo: maneja negativos correctamente
-     *             - Usa tipo superior (sig_sint_t) si necesario
+     *             - Usa tipo superior (nextsz_int_t) si necesario
      *             - Suma múltiplos de B hasta hacer positivo
      *             - Finalmente aplica módulo
      *          3. Si arg es sin signo más grande: módulo en tipo superior
@@ -347,7 +347,7 @@ namespace NumRepr {
       if constexpr (std::is_same_v<Int_t, uint_t>) { return (arg % B); }
       else if constexpr (std::is_signed_v<Int_t>) {
         if constexpr (
-            type_traits::maxbase<Int_t>() >= type_traits::maxbase<sig_sint_t>()
+            type_traits::maxbase<Int_t>() >= type_traits::maxbase<nextsz_int_t>()
         ) {
           constexpr Int_t sint_0{0};
           constexpr Int_t sint_B{B};
@@ -362,13 +362,13 @@ namespace NumRepr {
               cparg -= sint_B;
           }
           else { cparg %= sint_B; }
-          return static_cast<uint_t>(cparg);
+			return static_cast<uint_t>(cparg);
         } else {
-          constexpr sig_sint_t sint_0{0};
-          constexpr sig_sint_t sint_B{B};
-          sig_sint_t cparg{arg};
+          constexpr nextsz_int_t sint_0{0};
+          constexpr nextsz_int_t sint_B{B};
+          nextsz_int_t cparg{arg};
           if (arg < sint_0) {
-            sig_sint_t coc{(-arg) / sint_B};
+            nextsz_int_t coc{(-arg) / sint_B};
             coc *= sint_B;
             cparg += coc;
             if (cparg < 0)
@@ -381,15 +381,15 @@ namespace NumRepr {
         }
       } else {
         if constexpr (maxbase<Int_t>() < maxbase<uint_t>()) {
-          constexpr sig_uint_t uint_B{B};
-          sig_uint_t cparg{arg};
+          constexpr nextsz_uint_t uint_B{B};
+          nextsz_uint_t cparg{arg};
           if (arg >= uint_B) { cparg %= uint_B; }
-          return static_cast<uint_t>(cparg);
+			return static_cast<uint_t>(cparg);
         } else {
           constexpr Int_t uint_B{B};
           Int_t cparg{arg};
           if (arg >= uint_B) { cparg %= uint_B; }
-          return static_cast<uint_t>(cparg);
+			return static_cast<uint_t>(cparg);
         }
       }
     }
@@ -701,7 +701,7 @@ namespace NumRepr {
      *             - Optimización por paridad de B (par/impar)
      *          
      *          2. Si B > middle_max<uint_t>():
-     *             - Usa tipo superior (sig_uint_t) para cálculos
+     *             - Usa tipo superior (nextsz_uint_t) para cálculos
      *             - Optimización por paridad de B (par/impar)
      * 
      *          CASOS SEGÚN PARIDAD DE B:
@@ -756,7 +756,7 @@ namespace NumRepr {
         }
       } else { // B > MID
         if constexpr ((B % 2) == 0) { // B PAR
-          constexpr sig_uint_t Bdiv2{B / 2};
+          constexpr nextsz_uint_t Bdiv2{B / 2};
           /// NOS ASEGURAMOS QUE ENTRE LOS DOS ARGUMENTOS 
           /// NO SUPERAMOS EL MÁXIMO DEL TIPO UINT_T
           if ((arg_1() < Bdiv2) && (arg_2() < Bdiv2)) { return dig_0(); } /// NO HAY ACARREO
@@ -765,8 +765,8 @@ namespace NumRepr {
           else { return dig_0(); } /// NO HAY ACARREO (CONDICIÓN LÍMITE)
         }
         else { // B IMPAR
-          constexpr sig_uint_t Bdiv2_1{B / 2};
-          constexpr sig_uint_t Bdiv2_2{(B / 2) + 1};
+          constexpr nextsz_uint_t Bdiv2_1{B / 2};
+          constexpr nextsz_uint_t Bdiv2_2{(B / 2) + 1};
             /// NOS ASEGURAMOS QUE ENTRE LOS DOS ARGUMENTOS
             /// NO SUPERAMOS EL MÁXIMO DEL TIPO UINT_T
             /// SON DOS CONDICIONES SIMÉTRICAS
@@ -1256,7 +1256,7 @@ namespace NumRepr {
      * 
      * **ALGORITMO:**
      * - Si B < middle_max: suma directa con chequeo de overflow
-     * - Si B ≥ middle_max: usa tipo mayor (sig_uint_t) para evitar overflow
+     * - Si B ≥ middle_max: usa tipo mayor (nextsz_uint_t) para evitar overflow
      * 
      * **OPTIMIZACIÓN:**
      * - Evita operación módulo (%) costosa
@@ -1281,7 +1281,7 @@ namespace NumRepr {
         if (m_d >= B) m_d -= B;
         return (cthis);
       } else {
-        sig_uint_t tmp{m_d};
+        nextsz_uint_t tmp{m_d};
         tmp += (arg.m_d);
         if (tmp >= B) tmp -= B;
         m_d = static_cast<uint_t>(tmp);
@@ -1308,8 +1308,8 @@ namespace NumRepr {
     template <type_traits::integral_c Int_t> constexpr 
     const dig_t &operator+=(Int_t arg) noexcept {
       if constexpr (B >= type_traits::middle_max<uint_t>()) {
-        const sig_uint_t arg1{normaliza<Int_t>(arg)};
-        sig_uint_t arg2{m_d};
+        const nextsz_uint_t arg1{normaliza<Int_t>(arg)};
+        nextsz_uint_t arg2{m_d};
         arg2 += arg1;
         if (arg2 >= static_cast<Int_t>(B)) arg2 -= static_cast<Int_t>(B);
         m_d = static_cast<uint_t>(arg2);
@@ -1332,7 +1332,7 @@ namespace NumRepr {
      * @details Realiza la resta modular: (*this - arg) mod B
      * 
      * **ALGORITMO:**
-     * - Usa tipo con signo (sig_sint_t) para manejar diferencias negativas
+     * - Usa tipo con signo (nextsz_int_t) para manejar diferencias negativas
      * - Si resultado < 0: suma B para obtener el representante positivo
      * - Complejidad: O(1)
      * 
@@ -1355,7 +1355,7 @@ namespace NumRepr {
      */
     constexpr 
     const dig_t &operator-=(dig_t arg) noexcept {
-      sig_sint_t cp_dm{m_d};
+      nextsz_int_t cp_dm{m_d};
       cp_dm -= arg.m_d;
       if (cp_dm < 0) cp_dm += ssi_B();
       m_d = cp_dm;
@@ -1380,10 +1380,10 @@ namespace NumRepr {
      */
     template <type_traits::integral_c Int_t> constexpr
     const dig_t &operator-=(Int_t arg) noexcept {
-      sig_sint_t tmp{normaliza<Int_t>(arg)};
-      sig_sint_t este{m_d};
+      nextsz_int_t tmp{normaliza<Int_t>(arg)};
+      nextsz_int_t este{m_d};
       este -= tmp;
-      if (este < static_cast<sig_sint_t>(0)) este += ssi_B();
+      if (este < static_cast<nextsz_int_t>(0)) este += ssi_B();
       m_d = este;
       return (*this);
     }
@@ -1397,7 +1397,7 @@ namespace NumRepr {
      * 
      * **ALGORITMO CON PREVENCIÓN DE OVERFLOW:**
      * - Si B < √(MAX_UINT_T): multiplicación directa sin riesgo de overflow
-     * - Si B ≥ √(MAX_UINT_T): usa tipo mayor (sig_uint_t) para evitar overflow
+     * - Si B ≥ √(MAX_UINT_T): usa tipo mayor (nextsz_uint_t) para evitar overflow
      * 
      * **OPTIMIZACIÓN:**
      * - Determina en compile-time si B es "pequeña" para evitar cálculos costosos
@@ -1424,9 +1424,9 @@ namespace NumRepr {
         m_d %= B;
         return (*this);
       } else {  /// WOULD BE OVERFLOW (B BIGGER THAN SQRT(MAX_UINT_T))
-        sig_uint_t tmp{m_d};
+        nextsz_uint_t tmp{m_d};
         tmp *= arg.m_d;
-        tmp %= static_cast<sig_uint_t>(B);
+        tmp %= static_cast<nextsz_uint_t>(B);
         m_d = static_cast<uint_t>(tmp);
         return (*this);
       }
@@ -1443,9 +1443,9 @@ namespace NumRepr {
      * 
      * **CASOS MANEJADOS:**
      * - Int_t signed y sizeof(Int_t) > sizeof(uint_t): usa sig_SInt_for_SInt_t
-     * - Int_t signed y sizeof(Int_t) ≤ sizeof(uint_t): usa sig_sint_t
+     * - Int_t signed y sizeof(Int_t) ≤ sizeof(uint_t): usa nextsz_int_t
      * - Int_t unsigned y sizeof(Int_t) > sizeof(uint_t): usa sig_UInt_for_UInt_t
-     * - Int_t unsigned y sizeof(Int_t) ≤ sizeof(uint_t): usa sig_uint_t
+     * - Int_t unsigned y sizeof(Int_t) ≤ sizeof(uint_t): usa nextsz_uint_t
      * 
      * @note Prevención de overflow según tamaño de tipos
      * @note Maneja correctamente enteros negativos
@@ -1467,10 +1467,10 @@ namespace NumRepr {
           m_d = static_cast<uint_t>(este);
           return (*this);
         } else { /// TIPO ENTERO MENOR O IGUAL QUE UINT_T
-          const sig_sint_t norm_arg{tmp};
-          sig_sint_t este{m_d};
+          const nextsz_int_t norm_arg{tmp};
+          nextsz_int_t este{m_d};
           este *= norm_arg;
-          este %= static_cast<sig_sint_t>(B);
+          este %= static_cast<nextsz_int_t>(B);
           m_d = static_cast<uint_t>(este);
           return (*this);
         }
@@ -1484,10 +1484,10 @@ namespace NumRepr {
           m_d = static_cast<uint_t>(este);
           return (*this);
         } else { /// TIPO ENTERO MENOR O IGUAL QUE UINT_T
-          const sig_uint_t norm_arg{tmp};
-          sig_uint_t este{m_d};
+          const nextsz_uint_t norm_arg{tmp};
+          nextsz_uint_t este{m_d};
           este *= norm_arg;
-          este %= static_cast<sig_uint_t>(B);
+          este %= static_cast<nextsz_uint_t>(B);
           m_d = static_cast<uint_t>(este);
           return (*this);
         }
@@ -2653,7 +2653,7 @@ namespace NumRepr {
      * @brief Resultado del parsing de número (FSM 2)
      */
     struct NumberResult {
-      sig_uint_t value;      ///< Valor parseado (sin normalizar)
+      nextsz_uint_t value;      ///< Valor parseado (sin normalizar)
       std::size_t next_pos;  ///< Posición después del delimitador de cierre
     };
     
@@ -2681,7 +2681,7 @@ namespace NumRepr {
         }
       };
       
-      sig_uint_t numero = 0;
+      nextsz_uint_t numero = 0;
       std::size_t digit_count = 0;
       
       // Parsear dígitos hasta encontrar delimitador de cierre
@@ -2712,7 +2712,7 @@ namespace NumRepr {
      * @brief Resultado del parsing de base (FSM 3)
      */
     struct BaseResult {
-      sig_uint_t base_value;  ///< Base leída
+      nextsz_uint_t base_value;  ///< Base leída
       std::size_t next_pos;   ///< Posición final
     };
     
@@ -2747,7 +2747,7 @@ namespace NumRepr {
       pos++;
       
       // Parsear dígitos de la base
-      sig_uint_t base_leida = 0;
+      nextsz_uint_t base_leida = 0;
       std::size_t base_digits = 0;
       
       while (pos < size && char_at(pos) >= '0' && char_at(pos) <= '9') {
@@ -2837,7 +2837,7 @@ namespace NumRepr {
     static consteval std::expected<NumberResult, parse_error_t>
     parse_number_fsm_ct_impl(const Container& container, std::size_t size,
                              std::size_t pos, char delim_close,
-                             sig_uint_t accumulator, std::size_t digit_count) noexcept {
+                             nextsz_uint_t accumulator, std::size_t digit_count) noexcept {
       // Caso base: llegamos al delimitador de cierre
       if (pos >= size) {
         return std::unexpected(parse_error_t::missing_delimiter);
@@ -2856,7 +2856,7 @@ namespace NumRepr {
       }
       
       // Caso recursivo: procesar dígito y continuar
-      sig_uint_t new_acc = accumulator * 10 + (container[pos] - '0');
+      nextsz_uint_t new_acc = accumulator * 10 + (container[pos] - '0');
       return parse_number_fsm_ct_impl(container, size, pos + 1, delim_close,
                                       new_acc, digit_count + 1);
     }
@@ -2885,12 +2885,12 @@ namespace NumRepr {
      * @param pos Posición actual
      * @param accumulator Acumulador de la base
      * @param digit_count Contador de dígitos
-     * @return std::expected con sig_uint_t o parse_error_t
+     * @return std::expected con nextsz_uint_t o parse_error_t
      */
     template<typename Container>
-    static consteval std::expected<sig_uint_t, parse_error_t>
+    static consteval std::expected<nextsz_uint_t, parse_error_t>
     parse_base_fsm_ct_impl(const Container& container, std::size_t size,
-                           std::size_t pos, sig_uint_t accumulator,
+                           std::size_t pos, nextsz_uint_t accumulator,
                            std::size_t digit_count) noexcept {
       // Caso base: no hay más caracteres o no es dígito
       if (pos >= size || container[pos] < '0' || container[pos] > '9') {
@@ -2901,7 +2901,7 @@ namespace NumRepr {
       }
       
       // Caso recursivo: procesar dígito y continuar
-      sig_uint_t new_acc = accumulator * 10 + (container[pos] - '0');
+      nextsz_uint_t new_acc = accumulator * 10 + (container[pos] - '0');
       return parse_base_fsm_ct_impl(container, size, pos + 1, new_acc, digit_count + 1);
     }
     
@@ -2929,7 +2929,7 @@ namespace NumRepr {
         return std::unexpected(base_result.error());
       }
       
-      sig_uint_t base_leida = *base_result;
+      nextsz_uint_t base_leida = *base_result;
       
       if (base_leida != expected_base) {
         return std::unexpected(parse_error_t::base_mismatch);
@@ -2981,7 +2981,7 @@ namespace NumRepr {
       }
       
       // Normalizar el valor
-      sig_uint_t numero_final = number->value % base_template;
+      nextsz_uint_t numero_final = number->value % base_template;
       
       return static_cast<uint_t>(numero_final);
     }
@@ -3098,7 +3098,7 @@ namespace NumRepr {
       if (!base) return std::unexpected(base.error());
 
       // Normalización final (el constructor NO normaliza desde parse_impl_ct)
-      uint_t numero_final = static_cast<uint_t>(number->value % static_cast<sig_uint_t>(B));
+      uint_t numero_final = static_cast<uint_t>(number->value % static_cast<nextsz_uint_t>(B));
 
       return numero_final;
     }
