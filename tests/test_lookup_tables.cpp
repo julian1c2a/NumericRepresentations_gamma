@@ -2,6 +2,41 @@
 #include <catch2/benchmark/catch_benchmark_all.hpp>
 #include <catch2/generators/catch_generators_range.hpp>
 #include "core/internal/lookup_tables/lookup_tables.hpp"
+#include "../include/core/internal/lookup_tables/LUT_of_primes.hpp"
+TEST_CASE("LUT_of_primes: is_prime_leq_65537", "[LUT_of_primes]") {
+    using NumRepr::AuxFunc::LUT::is_prime_leq_65537;
+    using NumRepr::AuxFunc::LUT::is_prime_leq_65537_ct;
+
+    SECTION("Primos conocidos") {
+        REQUIRE(is_prime_leq_65537(2));
+        REQUIRE(is_prime_leq_65537(3));
+        REQUIRE(is_prime_leq_65537(65521)); // mayor primo uint16_t
+        REQUIRE(is_prime_leq_65537(65537)); // el siguiente primo
+    }
+
+    SECTION("No primos conocidos") {
+        REQUIRE_FALSE(is_prime_leq_65537(0));
+        REQUIRE_FALSE(is_prime_leq_65537(1));
+        REQUIRE_FALSE(is_prime_leq_65537(4));
+        REQUIRE_FALSE(is_prime_leq_65537(65535));
+        REQUIRE_FALSE(is_prime_leq_65537(65536));
+        REQUIRE_FALSE(is_prime_leq_65537(70000));
+    }
+
+    // Los static_assert deben ir fuera de funciones en C++
+}
+
+
+
+// --- Verificaciones en tiempo de compilación ---
+#include "../include/core/internal/lookup_tables/LUT_of_primes.hpp"
+namespace NumRepr { namespace AuxFunc { namespace LUT {
+static_assert(is_prime_leq_65537_ct<2>(), "2 debe ser primo");
+static_assert(is_prime_leq_65537_ct<65521>(), "65521 debe ser primo");
+static_assert(!is_prime_leq_65537_ct<4>(), "4 no debe ser primo");
+static_assert(!is_prime_leq_65537_ct<65535>(), "65535 no debe ser primo");
+}}}
+}
 
 TEST_CASE("Lookup Tables", "[lookup_tables]") {
 
