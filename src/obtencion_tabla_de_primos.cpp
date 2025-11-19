@@ -1,6 +1,7 @@
 #include <iostream>
 #include <array>
 #include <fstream>
+#include <iomanip>
 #include <string>
 
 // Define el límite superior del rango
@@ -41,8 +42,6 @@ void generar_y_guardar_primos() {
     int linea = 0;
     for (int p = 2; p <= LIMITE_SUPERIOR; p++) {
         if (es_primo[p]) {
-            #include <fstream>
-            #include <iomanip>
             archivo_csv << std::setw(6) 
                         << std::right 
                         << p
