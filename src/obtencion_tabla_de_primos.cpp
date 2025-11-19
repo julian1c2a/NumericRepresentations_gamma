@@ -4,13 +4,13 @@
 #include <string>
 
 // Define el límite superior del rango
-const int LIMITE_SUPERIOR = 65537;
+const int LIMITE_SUPERIOR = 131073;
 const std::string NOMBRE_ARCHIVO = "primos.csv";
 
 void generar_y_guardar_primos() {
     // 1. Implementación de la Criba de Eratóstenes
     // Se crea un vector booleano "es_primo[0..LIMITE_SUPERIOR]" y se inicializan todas las entradas como verdadero.
-    std::array<bool,65540> es_primo{};
+    std::array<bool,131077> es_primo{};
     for(bool & ind: es_primo)
         ind = true;
     es_primo[0] = es_primo[1] = false; // 0 y 1 no son números primos.
@@ -41,10 +41,15 @@ void generar_y_guardar_primos() {
     int linea = 0;
     for (int p = 2; p <= LIMITE_SUPERIOR; p++) {
         if (es_primo[p]) {
-            archivo_csv << p << " , "; // Escribe el primo seguido de un salto de línea
+            #include <fstream>
+            #include <iomanip>
+            archivo_csv << std::setw(6) 
+                        << std::right 
+                        << p
+                        << " , "; // Escribe el primo seguido de un salto de línea
             ++linea;
         }
-        if (linea == 31) {
+        if (linea == 16) {
             archivo_csv << "\n";
             linea = 0;
         }
