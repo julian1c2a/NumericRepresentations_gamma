@@ -13,14 +13,16 @@ namespace AuxFunc {
 	
 namespace LUT {
 
-// --- Miller-Rabin determinista constexpr para n < 2^32 ---
-// Testigos fijos recomendados para n < 2^32: {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}
+using std::uint64_t;
+using std::size_t;
+using std::uint32_t;
+using std::uint16_t;
+using std::array;
+using std::unsigned_integral;
+using std::binary_search;
 
-using int128_t  = __int128;
-using uint128_t = unsigned __int128;
-
-static constexpr std::uint32_t next_prime{65537};
-static constexpr std::array<std::uint16_t,16*409> array_of_primes_lt_65537{
+static constexpr uint32_t next_prime{65537};
+static constexpr array<uint16_t,16*409> array_of_primes_lt_65537{
      2 ,      3 ,      5 ,      7 ,     11 ,     13 ,     17 ,     19 ,     23 ,     29 ,     31 ,     37 ,     41 ,     43 ,     47 ,     53 , 
     59 ,     61 ,     67 ,     71 ,     73 ,     79 ,     83 ,     89 ,     97 ,    101 ,    103 ,    107 ,    109 ,    113 ,    127 ,    131 , 
    137 ,    139 ,    149 ,    151 ,    157 ,    163 ,    167 ,    173 ,    179 ,    181 ,    191 ,    193 ,    197 ,    199 ,    211 ,    223 , 
@@ -431,25 +433,25 @@ static constexpr std::array<std::uint16_t,16*409> array_of_primes_lt_65537{
  65173 ,  65179 ,  65183 ,  65203 ,  65213 ,  65239 ,  65257 ,  65267 ,  65269 ,  65287 ,  65293 ,  65309 ,  65323 ,  65327 ,  65353 ,  65357 , 
  65371 ,  65381 ,  65393 ,  65407 ,  65413 ,  65419 ,  65423 ,  65437 ,  65447 ,  65449 ,  65479 ,  65497 ,  65519 ,  65521 };
 
-  template<std::unsigned_integral T> constexpr inline 
+  template<unsigned_integral T> constexpr inline 
   bool is_prime_leq_65537(T n) noexcept {
     if ( (n < 2) || (n > 65537) ) { return false; }
     const auto* begin = std::begin(array_of_primes_lt_65537);
     const auto* end = std::end(array_of_primes_lt_65537);
-    return std::binary_search(begin, end, n);
+    return binary_search(begin, end, n);
   }
 
   template<
         typename T, 
-        std::size_t N, 
+        size_t N, 
         const T (&arr)[N], 
         T value, 
-        std::size_t left = 0, 
-        std::size_t right = N
+        size_t left = 0, 
+        size_t right = N
     > consteval 
     bool binary_search_constexpr() {
     if constexpr (left >= right) return false;
-    constexpr std::size_t mid = left + (right - left) / 2;
+    constexpr size_t mid = left + (right - left) / 2;
     if constexpr (arr[mid] == value) return true;
     if constexpr (arr[mid] < value)
         return binary_search_constexpr<T, N, arr, value, mid + 1, right>();
@@ -457,10 +459,10 @@ static constexpr std::array<std::uint16_t,16*409> array_of_primes_lt_65537{
         return binary_search_constexpr<T, N, arr, value, left, mid>();
   }
 
-  template<std::uint16_t value> consteval
+  template<uint16_t value> consteval
   bool is_prime_leq_65537_ct() {
     return binary_search_constexpr<
-      std::uint16_t,
+      uint16_t,
       array_of_primes_lt_65537.size(),
       array_of_primes_lt_65537,
       value
@@ -471,52 +473,93 @@ static constexpr std::array<std::uint16_t,16*409> array_of_primes_lt_65537{
   // TEST DE MILLER-RABIN
   // -------------------------------------------------------------------------
 
+  // --- Miller-Rabin determinista constexpr para n < 2^64 ---
+  // Testigos fijos recomendados para n < 2^64: 
+  // {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53}
+
+
+  // MulMod posiblemente evaluado en tiempo de compilación sin hacer uso de tipos de 128 bits
+  inline constexpr
+  uint64_t mulmod(uint64_t a, uint64_t b, uint64_t m) {
+    uint64_t res = 0;
+    a %= m;
+    
+    while (b > 0) {
+        // Si el bit actual de b es 1, sumamos a al resultado
+        if (b & 1) {
+            // Cuidado con la suma: (res + a) podría desbordar
+            // Lógica: si (m - res > a) entonces cabe, si no, hay que restar m
+            if (m - res > a) {
+                res += a;
+            } else {
+                res -= (m - a); // Equivalente a: res = (res + a) - m
+            }
+        }
+        
+        // Doblamos 'a' para la siguiente iteración: (a * 2) % m
+        if (m - a > a) {
+            a += a;
+        } else {
+            a -= (m - a); // Equivalente a: a = (a + a) - m
+        }
+        
+        b >>= 1;
+    }
+    return res;
+  }
+
+  // MulMod necesariamente evaluado en tiempo de compilación sin hacer uso de tipos de 128 bits
+  // Completamente templatizado y consteval
+  template<uint64_t a, uint64_t b, uint64_t m, uint64_t res> consteval
+  uint64_t mulmod_ct(){
+    if constexpr (b > 0) {
+        return mulmod_ct<((m-a > a)?(a+a):a-(m-a)),(b >> 1),m,(((m-res)>a)?(res+a):(res-(m-a)))>();
+    } else {
+        return res;
+    }
+  }
+
   // Exponenciación Modular: (base^exp) % mod
   // Utiliza u128 para evitar overflow en la multiplicación intermedia.
-  std::uint64_t binpower(std::uint64_t base, std::uint64_t exp, std::uint64_t mod) {
-    std::uint64_t res = 1;
+  uint64_t binpower(uint64_t base, uint64_t exp, uint64_t mod) {
+    uint64_t res = 1;
     base %= mod;
     while (exp > 0) {
-        if (exp & 1) res = static_cast<std::uint64_t>((static_cast<uint128_t>(res) * static_cast<uint128_t>(base)) % static_cast<uint128_t>(mod));
-        base = static_cast<std::uint64_t>((static_cast<uint128_t>(base) * static_cast<uint128_t>(base)) % static_cast<uint128_t>(mod));
+        if (exp & 1) res = mulmod(res, base, mod);
+        base = mulmod(base, base, mod);
         exp >>= 1;
     }
     return res;
   }
-  
-  template<
-    std::uint64_t res, 
-    std::uint64_t base, 
-    std::uint64_t exp, 
-    std::uint64_t mod
-  > consteval
-  std::uint64_t binpower_ct_impl() {
+
+  template<uint64_t res, uint64_t base, uint64_t exp, uint64_t mod> consteval
+  uint64_t binpower_ct_impl() {
     return ( 
         (exp == 0)
             ? res
             : binpower_ct_impl<
-                (exp & 1) ? (res * base) % mod : res,
-                (base * base) % mod,
+                (exp & 1) ? mulmod_ct<res,base,mod,res> : res,
+                mulmod_ct<base, base, mod, 0>,
                 exp >> 1,
                 mod
             >()
     );
   }
 
-  template<std::uint64_t base, std::uint64_t exp, std::uint64_t mod> consteval
-  std::uint64_t binpower_ct() {
+  template<uint64_t base, uint64_t exp, uint64_t mod> consteval
+  uint64_t binpower_ct() {
     return binpower_ct_impl<1, base % mod, exp, mod>();
   }
 
   // Comprueba si 'a' es un testigo de que 'n' es compuesto
-  bool check_composite(std::uint64_t n, std::uint64_t a, std::uint64_t d, int s) {
-    std::uint64_t x = binpower(a, d, n);
+  bool check_composite(uint64_t n, uint64_t a, uint64_t d, int s) {
+    uint64_t x = binpower(a, d, n);
     
     if (x == 1 || x == n - 1)
         return false; // Probablemente primo
     
     for (int r = 1; r < s; r++) {
-        x = static_cast<std::uint64_t>((static_cast<uint128_t>(x) * static_cast<uint128_t>(x)) % static_cast<uint128_t>(n));
+        x = mulmod(x,x,n);
         if (x == n - 1)
             return false; // Probablemente primo
     }
@@ -524,26 +567,25 @@ static constexpr std::array<std::uint16_t,16*409> array_of_primes_lt_65537{
     return true; // Definitivamente compuesto
   }
 
-  template<
-    std::uint64_t n, std::uint64_t a, std::uint64_t d, int s, int r = 0, std::uint64_t x = binpower_ct<a, d, n>()
-  > consteval 
+  template<uint64_t n, uint64_t a, uint64_t d, int s, int r = 0, uint64_t x = binpower_ct<a, d, n>()> 
+  consteval 
   bool check_composite_ct() {
     if constexpr (x == n - 1) return false;
     else if constexpr (r == s - 1) return true;
     else return check_composite_ct<n, a, d, s, r + 1, binpower_ct<x, 2, n>()>();
   }
 
-  bool isPrime(std::uint64_t n) {
+  bool isPrime(uint64_t n) {
     // 1. INTEGRACIÓN: Usar tu Lookup Table para uint16_t
     if (n <= 0xFFFF) {
-        return is_prime_leq_65537<std::uint16_t>(static_cast<std::uint16_t>(n));
+        return is_prime_leq_65537<uint16_t>(static_cast<uint16_t>(n));
     }
 
     // 2. Casos triviales para números grandes (pares)
     if ((n & 1) == 0) return false;
 
     // 3. Descomposición: n - 1 = d * 2^s
-    std::uint64_t d = n - 1;
+    uint64_t d = n - 1;
     int s = 0;
     while ((d & 1) == 0) {
         d >>= 1;
@@ -553,12 +595,12 @@ static constexpr std::array<std::uint16_t,16*409> array_of_primes_lt_65537{
     // 4. Bases Deterministas (Tu lista solicitada)
     // Nota: Para uint64_t, matemáticamente basta hasta el 37, 
     // pero incluimos hasta el 53 como pediste.
-    static const std::uint64_t bases[] = {
+    static const uint64_t bases[] = {
         2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 
         31, 37, 41, 43, 47, 53
     };
 
-    for (std::uint64_t a : bases) {
+    for (uint64_t a : bases) {
         // Si n es igual a una de las bases (ej. n=37), es primo.
         // Como ya filtramos n <= 0xFFFF, n siempre será mayor que estas bases,
         // pero mantenemos el check por seguridad general.
@@ -571,18 +613,18 @@ static constexpr std::array<std::uint16_t,16*409> array_of_primes_lt_65537{
     return true;
   }
 
-  constexpr std::uint32_t miller_rabin_witnesses[] = {
+  constexpr uint32_t miller_rabin_witnesses[] = {
          2,  3,   5,   7,  11,  13,  17,  19, 
         23, 29, 31, 37, 41, 43, 47, 53
     };
   
   struct DecompResult {
-    std::uint64_t d;
+    uint64_t d;
     int s;
   };
 
   // Descomponer n-1 = d*2^s
-  template<std::uint64_t n_minus_1, int s = 0> consteval
+  template<uint64_t n_minus_1, int s = 0> consteval
   DecompResult decompose_ct() {
     return (n_minus_1 & 1)
         ? DecompResult{n_minus_1, s}
@@ -590,7 +632,7 @@ static constexpr std::array<std::uint16_t,16*409> array_of_primes_lt_65537{
   }
 
   // Recursivo constexpr para probar divisibilidad por primos pequeños
-  template<std::uint64_t n, std::size_t I = 0>
+  template<uint64_t n, size_t I = 0>
   constexpr bool divides_by_small_prime_ct() {
     if constexpr (I >= array_of_primes_lt_65537.size()) return false;
     else if constexpr (array_of_primes_lt_65537[I] * array_of_primes_lt_65537[I] > n) return false;
@@ -599,18 +641,18 @@ static constexpr std::array<std::uint16_t,16*409> array_of_primes_lt_65537{
   }
 
   // Recursivo constexpr para Miller-Rabin con testigos fijos
-  template<std::size_t W = 0>
-  constexpr bool miller_rabin_ct(std::uint64_t n, std::uint64_t d, int s) {
+  template<size_t W = 0>
+  constexpr bool miller_rabin_ct(uint64_t n, uint64_t d, int s) {
     if constexpr (W >= sizeof(miller_rabin_witnesses)/sizeof(miller_rabin_witnesses[0])) return true;
     else if constexpr (miller_rabin_witnesses[W] >= n) return true;
     else if constexpr (check_composite_ct<n, miller_rabin_witnesses[W], d, s>()) return false;
     else return miller_rabin_ct<W + 1>(n, d, s);
   }
   // isPrime_ct principal
-  template<std::uint64_t n> consteval
+  template<uint64_t n> consteval
   bool isPrime_ct() {
     if constexpr (n < 2) return false;
-    if constexpr (n < 65537) return is_prime_leq_65537_ct<static_cast<std::uint16_t>(n)>();
+    if constexpr (n < 65537) return is_prime_leq_65537_ct<static_cast<uint16_t>(n)>();
     if constexpr (divides_by_small_prime_ct<n>()) return false;
     constexpr auto decomp = decompose_ct<n - 1>();
     return miller_rabin_ct<n, decomp.d, decomp.s>();

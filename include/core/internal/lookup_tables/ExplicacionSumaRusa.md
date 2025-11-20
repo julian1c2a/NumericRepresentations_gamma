@@ -1,4 +1,4 @@
-Entendido. Si no podemos usar `__int128` (ya sea por restricciones del compilador o estricto cumplimiento del estándar C++ antiguo), el problema principal es calcular $(a \cdot b) \pmod n$ sin que el producto intermedio $a \cdot b$ desborde los 64 bits.
+Si no podemos usar `__int128` (ya sea por restricciones del compilador o estricto cumplimiento del estándar C++ antiguo), el problema principal es calcular $(a \cdot b) \pmod n$ sin que el producto intermedio $a \cdot b$ desborde los 64 bits.
 
 Para esto, utilizaremos el método de **Multiplicación Rusa (Suma Binaria)**. Es conceptualmente idéntico a la exponenciación binaria, pero usando sumas en lugar de multiplicaciones.
 
@@ -57,6 +57,44 @@ std::uint64_t mulmod(std::uint64_t a, std::uint64_t b, std::uint64_t m) {
         b >>= 1;
     }
     return res;
+}
+
+
+// MulMod completamente templatizado y evaluado en tiempo de compilación
+std::uint64_t mulmod(std::uint64_t a, std::uint64_t b, std::uint64_t m) {
+    std::uint64_t res = 0;
+    a %= m;
+    
+    while (b > 0) {
+        // Si el bit actual de b es 1, sumamos a al resultado
+        if (b & 1) {
+            // Cuidado con la suma: (res + a) podría desbordar
+            // Lógica: si (m - res > a) entonces cabe, si no, hay que restar m
+            if (m - res > a) {
+                res += a;
+            } else {
+                res -= (m - a); // Equivalente a: res = (res + a) - m
+            }
+        }
+        
+        // Doblamos 'a' para la siguiente iteración: (a * 2) % m
+        if (m - a > a) {
+            a += a;
+        } else {
+            a -= (m - a); // Equivalente a: a = (a + a) - m
+        }
+        
+        b >>= 1;
+    }
+    return res;
+}
+
+template<std::uint64_t a, std::uint64_t b, std::uint64_t m, std::uint64_t res> consteval
+std::uint64_t mulmod_ct_impl(){
+    if constexpr (b > 0)
+        mulmod_ct_impl<((m-a > a)?(a+a):a-(m-a)),(b >> 1),m,(((m-res)>a)?(res+a):(res-(m-a)))>();
+    else
+        return res;
 }
 
 // Exponenciación Modular: (base^exp) % mod
