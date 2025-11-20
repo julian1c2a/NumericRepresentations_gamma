@@ -12,7 +12,7 @@ Aquí tienes el código completo adaptado:
 #include <cstdint>
 
 // -------------------------------------------------------------------------
-// TU LOOKUP TABLE (Simulada)
+// TU LOOKUP TABLE (Simulada, es un mock)
 // -------------------------------------------------------------------------
 bool isPrimeUint16(std::uint16_t n) {
     // Placeholder para tu lógica O(1)
@@ -35,6 +35,7 @@ std::uint64_t mulmod(std::uint64_t a, std::uint64_t b, std::uint64_t m) {
     std::uint64_t res = 0;
     a %= m;
     
+    // Lo siguiente es una multiplicación bit a bit
     while (b > 0) {
         // Si el bit actual de b es 1, sumamos a al resultado
         if (b & 1) {
