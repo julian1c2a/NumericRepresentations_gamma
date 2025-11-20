@@ -22,27 +22,34 @@ namespace NumRepr
             using std::uint32_t;
             using std::uint64_t;
 
-            // --- Búsqueda binaria constexpr sobre un array ---
-            template <size_t N, uint64_t value, size_t left = 0, size_t right = N>
-            consteval bool binary_search_consteval()
+            // --- Búsqueda binaria constexpr por template ---
+            template <uint64_t value, size_t left, size_t right>
+            struct binary_search_constexpr_impl
             {
-                if constexpr (left >= right)
-                    return false;
-                constexpr size_t mid = left + (right - left) / 2;
-                constexpr uint16_t from_prime_list = primes_lt_65537[mid]; // This line was added in the last edit
-                if constexpr (from_prime_list == value)
-                    return true;
-                if constexpr (from_prime_list < value)
-                    return binary_search_consteval<N, value, mid + 1, right>();
-                else
-                    return binary_search_consteval<N, value, left, mid>();
+                static constexpr size_t mid = left + (right - left) / 2;
+                static constexpr uint16_t mid_value = primes_lt_65537[mid];
+                static constexpr bool value_found = (mid_value == value);
+                static constexpr bool go_right = (mid_value < value);
+                static constexpr bool result = value_found ? true : (go_right ? binary_search_constexpr_impl<value, mid + 1, right>::result : binary_search_constexpr_impl<value, left, mid>::result);
+            };
+
+            template <uint64_t value, size_t pos>
+            struct binary_search_constexpr_impl<value, pos, pos>
+            {
+                static constexpr bool result = false;
+            };
+
+            template <uint64_t value>
+            constexpr bool binary_search_constexpr()
+            {
+                return binary_search_constexpr_impl<value, 0, primes_lt_65537.size()>::result;
             }
 
             // --- Primalidad para n < 65537 ---
             template <uint16_t value>
-            consteval bool is_prime_lt_65537_ct()
+            constexpr bool is_prime_lt_65537_ct()
             {
-                return binary_search_consteval<primes_lt_65537.size(), value>();
+                return binary_search_constexpr<value>();
             }
 
             // -------------------------------------------------------------------------
@@ -66,7 +73,7 @@ namespace NumRepr
 
             // Descomponer n-1 = d*2^s
             template <uint64_t n_minus_1, int s = 0>
-            consteval DecompResult decompose_ct()
+            constexpr DecompResult decompose_ct()
             {
                 if constexpr (n_minus_1 & 1)
                     return DecompResult{n_minus_1, s};
@@ -76,7 +83,7 @@ namespace NumRepr
 
             // Recursivo constexpr para probar divisibilidad por primos pequeños
             template <uint64_t n, size_t I = 0>
-            consteval bool divides_by_small_prime_ct()
+            constexpr bool divides_by_small_prime_ct()
             {
                 if constexpr (I >= primes_lt_65537.size())
                     return false;
@@ -90,7 +97,7 @@ namespace NumRepr
 
             // binpower recursivo para Miller-Rabin
             template <uint64_t base, uint64_t exp, uint64_t mod, uint64_t result = 1>
-            consteval uint64_t binpower_ct()
+            constexpr uint64_t binpower_ct()
             {
                 if constexpr (exp == 0)
                 {
@@ -112,7 +119,7 @@ namespace NumRepr
             // mulmod_ct constexpr seguro para evitar overflow
             // Implementación recursiva de mulmod_ct_impl
             template <uint64_t a, uint64_t b, uint64_t mod, uint64_t result = 0>
-            consteval uint64_t mulmod_ct_impl()
+            constexpr uint64_t mulmod_ct_impl()
             {
                 constexpr uint64_t new_a = (a << 1) % mod;
                 constexpr uint64_t new_b = b >> 1;
@@ -121,14 +128,14 @@ namespace NumRepr
             }
 
             template <uint64_t a, uint64_t b, uint64_t mod>
-            consteval uint64_t mulmod_ct()
+            constexpr uint64_t mulmod_ct()
             {
                 return mulmod_ct_impl<a % mod, b, mod, 0>();
             }
 
             // Implementación recursiva para check_composite_ct
             template <uint64_t x, uint64_t n, int s, int r = 1>
-            consteval bool check_composite_ct_impl()
+            constexpr bool check_composite_ct_impl()
             {
                 if constexpr (r >= s)
                 {
@@ -150,7 +157,7 @@ namespace NumRepr
 
             // check_composite para Miller-Rabin
             template <uint64_t n, uint64_t a, uint64_t d, int s>
-            consteval bool check_composite_ct()
+            constexpr bool check_composite_ct()
             {
                 constexpr uint64_t x = binpower_ct<a, d, n>();
                 if (x == 1 || x == n - 1)
@@ -160,7 +167,7 @@ namespace NumRepr
 
             // Recursivo constexpr para Miller-Rabin con testigos fijos
             template <uint64_t n, uint64_t d, int s, size_t W = 0>
-            consteval bool miller_rabin_ct()
+            constexpr bool miller_rabin_ct()
             {
                 if constexpr (W >= sizeof(miller_rabin_witnesses) / sizeof(miller_rabin_witnesses[0]))
                     return true;
@@ -174,12 +181,12 @@ namespace NumRepr
 
             // isPrime_ct principal
             template <uint64_t n>
-            consteval bool isPrime_ct()
+            constexpr bool isPrime_ct()
             {
                 if constexpr (n < 2)
                     return false;
                 if constexpr (n < 65537)
-                    return is_prime_leq_65537_ct<static_cast<uint16_t>(n)>();
+                    return is_prime_lt_65537_ct<static_cast<uint16_t>(n)>();
                 if constexpr (divides_by_small_prime_ct<n>())
                     return false;
                 constexpr auto decomp = decompose_ct<n - 1>();
