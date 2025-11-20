@@ -9,9 +9,9 @@
       "binaryDir": "${sourceDir}/build/build_targets/gcc/debug",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_C_COMPILER": "C:/msys64/ucrt64/bin/gcc.exe",
-        "CMAKE_CXX_COMPILER": "C:/msys64/ucrt64/bin/g++.exe",
-		"CMAKE_CXX_STANDARD": "gnu++26"
+        "CMAKE_C_COMPILER": "C:/msys/ucrt64/bin/gcc.exe",
+        "CMAKE_CXX_COMPILER": "C:/msys/ucrt64/bin/g++.exe",
+        "CMAKE_CXX_STANDARD": "23"
       }
     },
     {
@@ -22,9 +22,9 @@
       "binaryDir": "${sourceDir}/build/build_targets/gcc/release",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "CMAKE_C_COMPILER": "C:/msys64/ucrt64/bin/gcc.exe",
-        "CMAKE_CXX_COMPILER": "C:/msys64/ucrt64/bin/g++.exe",
-		"CMAKE_CXX_STANDARD": "gnu++26"
+        "CMAKE_C_COMPILER": "C:/msys/ucrt64/bin/gcc.exe",
+        "CMAKE_CXX_COMPILER": "C:/msys/ucrt64/bin/g++.exe",
+        "CMAKE_CXX_STANDARD": "23"
       }
     },
     {
@@ -37,7 +37,7 @@
         "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_C_COMPILER": "C:/msys64/clang64/bin/clang.exe",
         "CMAKE_CXX_COMPILER": "C:/msys64/clang64/bin/clang++.exe",
-		"CMAKE_CXX_STANDARD": "C++23"
+        "CMAKE_CXX_STANDARD": "C++23"
       }
     },
     {
@@ -50,7 +50,7 @@
         "CMAKE_BUILD_TYPE": "Release",
         "CMAKE_C_COMPILER": "C:/msys64/clang64/bin/clang.exe",
         "CMAKE_CXX_COMPILER": "C:/msys64/clang64/bin/clang++.exe",
-		"CMAKE_CXX_STANDARD": "C++23"
+        "CMAKE_CXX_STANDARD": "C++23"
       }
     },
     {
@@ -102,7 +102,6 @@
       "configurePreset": "msvc-release"
     }
   ],
-
   "testPresets": [
     {
       "name": "gcc-debug",
