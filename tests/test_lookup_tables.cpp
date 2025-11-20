@@ -47,7 +47,6 @@ TEST_CASE("LUT_of_primes: is_prime_lt_65537", "[LUT_of_primes]")
 }
 
 TEST_CASE("Lookup Tables", "[lookup_tables]")
-TEST_CASE("Lookup Tables", "[lookup_tables]")
 {
 
     SECTION("max_exponent_for_base_ct")
