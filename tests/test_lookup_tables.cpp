@@ -25,28 +25,28 @@ static_assert(!NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct<4>(), "4 no debe ser 
 static_assert(!NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct<65535>(), "65535 no debe ser primo");
 static_assert(!NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct<65536>(), "65536 no debe ser primo");
 
-TEST_CASE("LUT_of_primes: is_prime_leq_65537", "[LUT_of_primes]")
+TEST_CASE("LUT_of_primes: is_prime_lt_65537", "[LUT_of_primes]")
 {
-    using NumRepr::AuxFunc::LUT::is_prime_leq_65537;
+    using NumRepr::AuxFunc::LUT::is_prime_lt_65537;
 
     SECTION("Primos conocidos (runtime)")
     {
-        REQUIRE(is_prime_leq_65537(2));
-        REQUIRE(is_prime_leq_65537(3));
-        REQUIRE(is_prime_leq_65537(65521));
+        REQUIRE(is_prime_lt_65537(2));
+        REQUIRE(is_prime_lt_65537(3));
+        REQUIRE(is_prime_lt_65537(65521));
     }
 
     SECTION("No primos conocidos (runtime)")
     {
-        REQUIRE_FALSE(is_prime_leq_65537(0));
-        REQUIRE_FALSE(is_prime_leq_65537(1));
-        REQUIRE_FALSE(is_prime_leq_65537(4));
-        REQUIRE_FALSE(is_prime_leq_65537(65535));
-        REQUIRE_FALSE(is_prime_leq_65537(65536));
+        REQUIRE_FALSE(is_prime_lt_65537(0));
+        REQUIRE_FALSE(is_prime_lt_65537(1));
+        REQUIRE_FALSE(is_prime_lt_65537(4));
+        REQUIRE_FALSE(is_prime_lt_65537(65535));
+        REQUIRE_FALSE(is_prime_lt_65537(65536));
     }
 }
-}
 
+TEST_CASE("Lookup Tables", "[lookup_tables]")
 TEST_CASE("Lookup Tables", "[lookup_tables]")
 {
 
