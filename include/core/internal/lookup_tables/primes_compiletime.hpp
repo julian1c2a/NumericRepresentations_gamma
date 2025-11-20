@@ -41,7 +41,7 @@ namespace NumRepr
             // --- Primalidad para n < 65537 ---
             template <uint16_t value>
             consteval bool is_prime_lt_65537_ct()
-            { // Renamed from is_prime_leq_65537_ct
+            {
                 return binary_search_consteval<primes_lt_65537.size(), value>();
             }
 
@@ -160,7 +160,7 @@ namespace NumRepr
 
             // Recursivo constexpr para Miller-Rabin con testigos fijos
             template <uint64_t n, uint64_t d, int s, size_t W = 0>
-            constexpr bool miller_rabin_ct()
+            consteval bool miller_rabin_ct()
             {
                 if constexpr (W >= sizeof(miller_rabin_witnesses) / sizeof(miller_rabin_witnesses[0]))
                     return true;
@@ -174,7 +174,7 @@ namespace NumRepr
 
             // isPrime_ct principal
             template <uint64_t n>
-            constexpr bool isPrime_ct()
+            consteval bool isPrime_ct()
             {
                 if constexpr (n < 2)
                     return false;
