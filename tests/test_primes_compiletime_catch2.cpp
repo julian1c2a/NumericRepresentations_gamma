@@ -1,5 +1,5 @@
 #define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
+#include "external/catch.hpp"
 #include "../include/core/internal/lookup_tables/primes_compiletime.hpp"
 
 TEST_CASE("Primalidad compile-time y runtime", "[primes]")

@@ -1,6 +1,6 @@
 # Test de primalidad compile-time y runtime con Catch2
 add_executable(test_primes_compiletime_catch2 tests/test_primes_compiletime_catch2.cpp)
-target_include_directories(test_primes_compiletime_catch2 PRIVATE include)
+target_include_directories(test_primes_compiletime_catch2 PRIVATE include tests/external)
 target_link_libraries(test_primes_compiletime_catch2 PRIVATE Catch2::Catch2WithMain)
 add_test(NAME test_primes_compiletime_catch2 COMMAND test_primes_compiletime_catch2)
 cmake_minimum_required(VERSION 3.25)
