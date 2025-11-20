@@ -2,7 +2,7 @@ Si no podemos usar `__int128` (ya sea por restricciones del compilador o estrict
 
 Para esto, utilizaremos el método de **Multiplicación Rusa (Suma Binaria)**. Es conceptualmente idéntico a la exponenciación binaria, pero usando sumas en lugar de multiplicaciones.
 
-**Nota sobre rendimiento:** Al usar este método, cambiamos una multiplicación de CPU (muy rápida) por un bucle de sumas. Esto hace que el algoritmo pase de ser $O(k \log^3 n)$ a $O(k \log^4 n)$ (un poco más lento), pero es **100% seguro** para todo el rango de `uint64_t`.
+**Nota sobre rendimiento:** Al usar este método, cambiamos una multiplicación de CPU (muy rápida) por un bucle de sumas. Esto hace que el algoritmo pase de ser $O(n \log^3 n)$ a $O(n \log^4 n)$ (un poco más lento), pero es **100% seguro** para todo el rango de `uint64_t`.
 
 Aquí tienes el código completo adaptado:
 
