@@ -9,8 +9,8 @@
       "binaryDir": "${sourceDir}/build/build_targets/gcc/debug",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_C_COMPILER": "C:/msys/ucrt64/bin/gcc.exe",
-        "CMAKE_CXX_COMPILER": "C:/msys/ucrt64/bin/g++.exe",
+        "CMAKE_C_COMPILER": "C:/msys64/ucrt64/bin/gcc.exe",
+        "CMAKE_CXX_COMPILER": "C:/msys64/ucrt64/bin/g++.exe",
         "CMAKE_CXX_STANDARD": "23"
       }
     },
@@ -22,8 +22,8 @@
       "binaryDir": "${sourceDir}/build/build_targets/gcc/release",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "CMAKE_C_COMPILER": "C:/msys/ucrt64/bin/gcc.exe",
-        "CMAKE_CXX_COMPILER": "C:/msys/ucrt64/bin/g++.exe",
+        "CMAKE_C_COMPILER": "C:/msys64/ucrt64/bin/gcc.exe",
+        "CMAKE_CXX_COMPILER": "C:/msys64/ucrt64/bin/g++.exe",
         "CMAKE_CXX_STANDARD": "23"
       }
     },
