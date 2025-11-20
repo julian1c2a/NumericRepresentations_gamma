@@ -1,28 +1,44 @@
 {
-    "tasks": [
-        {
-            "type": "cppbuild",
-            "label": "C/C++: g++.exe compilar archivo activo",
-            "command": "C:\\ProgramData\\mingw64\\mingw64\\bin\\g++.exe",
-            "args": [
-                "-fdiagnostics-color=always",
-                "-g",
-                "${file}",
-                "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe"
-            ],
-            "options": {
-                "cwd": "${fileDirname}"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "detail": "Tarea generada por el depurador."
-        }
-    ],
-    "version": "2.0.0"
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "C/C++: g++.exe compilar archivo activo",
+			"command": "C:\\ProgramData\\mingw64\\mingw64\\bin\\g++.exe",
+			"args": [
+				"-fdiagnostics-color=always",
+				"-g",
+				"${file}",
+				"-o",
+				"${fileDirname}\\${fileBasenameNoExtension}.exe"
+			],
+			"options": {
+				"cwd": "${fileDirname}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "Tarea generada por el depurador."
+		},
+		{
+			"label": "Test LUT_of_primes.cpp",
+			"type": "shell",
+			"command": "g++",
+			"args": [
+				"-std=c++20",
+				"-O2",
+				"-Iinclude",
+				"tests/test_LUT_of_primes.cpp",
+				"-o",
+				"tests/test_LUT_of_primes.exe"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		}
+	],
+	"version": "2.0.0"
 }

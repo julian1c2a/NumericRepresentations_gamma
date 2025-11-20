@@ -1,5 +1,5 @@
 #define CATCH_CONFIG_MAIN
-#include "../tests/external/catch_amalgamated.hpp"
+#include "tests/external/catch_amalgamated.hpp"
 #include "core/internal/lookup_tables/LUT_of_primes.hpp"
 #include <vector>
 #include <random>
