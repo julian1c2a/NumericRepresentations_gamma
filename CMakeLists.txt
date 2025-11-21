@@ -1,26 +1,27 @@
-# Test de primalidad compile-time y runtime con Catch2
-add_executable(test_primes_compiletime_catch2 tests/test_primes_compiletime_catch2.cpp)
-target_include_directories(test_primes_compiletime_catch2 PRIVATE include tests/external)
-target_link_libraries(test_primes_compiletime_catch2 PRIVATE Catch2::Catch2WithMain)
-add_test(NAME test_primes_compiletime_catch2 COMMAND test_primes_compiletime_catch2)
 cmake_minimum_required(VERSION 3.25)
+
+# Política para manejo correcto de runtimes en MSVC moderno (Vital para UCRT)
+cmake_policy(SET CMP0091 NEW) 
+
 project(NumericRepresentations)
 
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# ---
-# NUEVO: Forzar la salida de los ejecutables (.exe) al directorio
-# CMAKE_BINARY_DIR. El CMAKE_BINARY_DIR se define en tu CMakePresets.json
-# para que coincida con la estructura que pediste.
-# ---
+# --- FIX PARA CLANG EN WINDOWS/MSYS2 ---
+if(WIN32 AND CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    set(CMAKE_CXX_LINK_EXECUTABLE 
+        "<CMAKE_CXX_COMPILER> <FLAGS> <CMAKE_CXX_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>")
+endif()
+# ---------------------------------------
+
+# --- CONFIGURACIÓN DE SALIDA ---
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 enable_testing()
 
-# Add Catch2
 include(FetchContent)
 FetchContent_Declare(
   Catch2
@@ -29,19 +30,17 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(Catch2)
 
-# ---
-# MODIFICADO: Eliminada la librería 'numeric_lib' y el test 'test_dig_t'.
-# Solo queda el test para lookup_tables.
-# ---
+# ==========================================
+# DEFINICIÓN DE TARGETS
+# ==========================================
 
-# ORDEN CORRECTO:
-# 1. Primero, CREA el objetivo (el ejecutable)
+add_executable(test_primes_compiletime_catch2 tests/test_primes_compiletime_catch2.cpp)
+target_include_directories(test_primes_compiletime_catch2 PRIVATE include tests/external)
+target_link_libraries(test_primes_compiletime_catch2 PRIVATE Catch2::Catch2WithMain)
+
 add_executable(test_lookup_tables tests/test_lookup_tables.cpp)
-
-# 2. Después, MODIFICA el objetivo (añadiendo directorios de inclusión)
 target_include_directories(test_lookup_tables PRIVATE include)
-
-# 3. Finalmente, MODIFICA el objetivo (añadiendo librerías enlazadas)
 target_link_libraries(test_lookup_tables PRIVATE Catch2::Catch2WithMain)
 
+add_test(NAME test_primes_compiletime_catch2 COMMAND test_primes_compiletime_catch2)
 add_test(NAME test_lookup_tables COMMAND test_lookup_tables)

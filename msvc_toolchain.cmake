@@ -1,0 +1,85 @@
+# msvc_toolchain.cmake
+# Configura el entorno de MSVC para Ninja inyectando rutas en los FLAGS de compilación.
+
+set(CMAKE_SYSTEM_NAME Windows)
+set(CMAKE_SYSTEM_PROCESSOR AMD64)
+
+# --- 1. RUTAS BASE (Verificadas por el usuario) ---
+set(MSVC_BASE "D:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207")
+set(KIT_BASE  "C:/Program Files (x86)/Windows Kits/10")
+set(KIT_VER   "10.0.26100.0")
+
+# --- 2. HERRAMIENTAS ---
+set(CMAKE_C_COMPILER   "${MSVC_BASE}/bin/Hostx64/x64/cl.exe")
+set(CMAKE_CXX_COMPILER "${MSVC_BASE}/bin/Hostx64/x64/cl.exe")
+set(CMAKE_LINKER       "${MSVC_BASE}/bin/Hostx64/x64/link.exe")
+set(CMAKE_RC_COMPILER  "${KIT_BASE}/bin/${KIT_VER}/x64/rc.exe")
+set(CMAKE_MT           "${KIT_BASE}/bin/${KIT_VER}/x64/mt.exe")
+
+# --- 3. DEFINICIÓN DE RUTAS DE LIBRERÍAS Y CABECERAS ---
+set(MSVC_LIB_DIRS
+    "${MSVC_BASE}/lib/x64"
+    "${KIT_BASE}/Lib/${KIT_VER}/ucrt/x64"
+    "${KIT_BASE}/Lib/${KIT_VER}/um/x64"
+)
+
+set(MSVC_INC_DIRS
+    "${MSVC_BASE}/include"
+    "${KIT_BASE}/Include/${KIT_VER}/ucrt"
+    "${KIT_BASE}/Include/${KIT_VER}/shared"
+    "${KIT_BASE}/Include/${KIT_VER}/um"
+    "${KIT_BASE}/Include/${KIT_VER}/winrt"
+)
+
+# --- 4. INYECCIÓN DE RUTAS EN LOS FLAGS (LA SOLUCIÓN) ---
+# Ninja no hereda variables de entorno creadas en CMake.
+# Por eso, "quemamos" las rutas directamente en los flags de compilación/linkado.
+
+# A) Inyectar Includes
+# Usamos /I estándar para máxima compatibilidad y evitamos el lío de /external si falla.
+set(FLAGS_INCLUDE "")
+foreach(DIR ${MSVC_INC_DIRS})
+    file(TO_NATIVE_PATH "${DIR}" DIR_NATIVE)
+    # Usamos /I (include standard) que siempre funciona
+    string(APPEND FLAGS_INCLUDE " /I \"${DIR_NATIVE}\"")
+endforeach()
+
+# B) Inyectar Libs (/LIBPATH)
+set(FLAGS_LIB "")
+foreach(DIR ${MSVC_LIB_DIRS})
+    file(TO_NATIVE_PATH "${DIR}" DIR_NATIVE)
+    string(APPEND FLAGS_LIB " /LIBPATH:\"${DIR_NATIVE}\"")
+endforeach()
+
+# --- 5. APLICACIÓN DE FLAGS INICIALES ---
+# Concatenamos nuestras rutas a los flags por defecto de CMake
+
+# Flags de compilación (C y C++)
+# Añadimos /EHsc (excepciones) y /DNOMINMAX (evita macros min/max de windows.h)
+set(CMAKE_C_FLAGS_INIT   "/DWIN32 /D_WINDOWS /W3 ${FLAGS_INCLUDE}")
+set(CMAKE_CXX_FLAGS_INIT "/DWIN32 /D_WINDOWS /W3 /GR /EHsc ${FLAGS_INCLUDE}")
+
+# Flags de enlazado (Linker)
+set(CMAKE_EXE_LINKER_FLAGS_INIT    "${FLAGS_LIB}")
+set(CMAKE_SHARED_LINKER_FLAGS_INIT "${FLAGS_LIB}")
+set(CMAKE_MODULE_LINKER_FLAGS_INIT "${FLAGS_LIB}")
+
+# --- 6. ENTORNO DE RESPALDO (Para try_compile durante configuración) ---
+# Esto sigue siendo útil para la fase de detección inicial de CMake
+set(ENV_LIB "")
+foreach(DIR ${MSVC_LIB_DIRS})
+    file(TO_NATIVE_PATH "${DIR}" DIR_NATIVE)
+    string(APPEND ENV_LIB "${DIR_NATIVE};")
+endforeach()
+set(ENV{LIB} "${ENV_LIB}")
+
+set(ENV_INC "")
+foreach(DIR ${MSVC_INC_DIRS})
+    file(TO_NATIVE_PATH "${DIR}" DIR_NATIVE)
+    string(APPEND ENV_INC "${DIR_NATIVE};")
+endforeach()
+set(ENV{INCLUDE} "${ENV_INC}")
+
+# Path a binarios
+file(TO_NATIVE_PATH "${MSVC_BASE}/bin/Hostx64/x64" BIN_NATIVE)
+set(ENV{PATH} "${BIN_NATIVE};$ENV{PATH}")
