@@ -5,6 +5,7 @@
 
 // Dependencia: Aritmética de 128 bits
 #include "../../append/int128_ops.hpp"
+#include "../../math/tables/EratosthenesSieve.hpp"
 
 #include <algorithm>
 #include <array>
@@ -47,28 +48,29 @@ namespace NumRepr {
       };
 
       // Versión runtime: primalidad para n < 65537
-      inline bool is_prime_leq_65537(uint16_t value) {
-        return std::binary_search(primes_lt_65537.begin(), primes_lt_65537.end(),
-                                  value);
+      inline bool is_prime_in_uint16(uint16_t value) {
+        return is_prime_lt_65537_lut[value];
       }
 
       // Versión runtime: primalidad general
+      // Algoritmo Miller-Rabin determinista para n < 2^64
       inline bool isPrime(uint64_t n) {
         if (n < 2)
           return false;
         if (n < 65537)
-          return is_prime_leq_65537(static_cast<uint16_t>(n));
+          return is_prime_in_uint16(static_cast<uint16_t>(n));
 
         // Prueba de divisibilidad por primos pequeños
         for (auto p : primes_lt_65537) {
-          if (uint64_t(p) * uint64_t(p) > n)
+          if (uint128_t(p) * uint128_t(p) > uint128_t(n))
             break;
           if (n % p == 0)
             return false;
         }
 
         // Miller-Rabin determinista para n < 2^64
-        static constexpr uint64_t witnesses[] = {2,  3,  5,  7,  11, 13, 17, 19, 23,
+        static constexpr uint64_t witnesses[] = {
+          2,  3,  5,  7,  11, 13, 17, 19, 23,
           29, 31, 37, 41, 43, 47, 53, 59, 61,
           67, 71, 73, 79, 83, 89, 97};
           uint64_t d = n - 1;

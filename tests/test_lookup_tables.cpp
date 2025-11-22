@@ -2,7 +2,7 @@
 #include <catch2/benchmark/catch_benchmark_all.hpp>
 #include <catch2/generators/catch_generators_range.hpp>
 #include "core/internal/lookup_tables/math_utils.hpp"
-#include "core/internal/lookup_tables/primes_compiletime.hpp"
+#include "core/internal/lookup_tables/primes_ct.hpp"
 #include "core/internal/lookup_tables/primes.hpp"
 
 // --- Verificaciones en tiempo de compilación ---

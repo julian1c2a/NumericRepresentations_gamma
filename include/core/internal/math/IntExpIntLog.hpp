@@ -31,7 +31,8 @@ namespace LUT {
  * @brief Calcula en tiempo de compilación el exponente máximo para una base
  * dada.
  */
-template <uint64_t base> consteval size_t max_exponent_for_base_ct() noexcept {
+template <uint64_t base> consteval 
+size_t max_exponent_for_base_ct() noexcept {
   if constexpr (base < 2)
     return numeric_limits<uint64_t>::max();
   else if constexpr (base == 2)
@@ -62,8 +63,10 @@ constexpr size_t max_exponent_for_base(uint64_t base) noexcept {
 } // namespace LUT
 
 // =============================================================================
-// 1. LOGARITMOS Y POTENCIAS DE 2 (Compile-time & Runtime)
+// 1. LOGARITMOS DE 2 (Compile-time & Runtime) (Optimized & Safe)
 // =============================================================================
+
+// --- Compiletime ---
 
 template <uint64_t n> constexpr uint64_t int_log2_ct() noexcept {
   if constexpr (n < 2u)
@@ -104,6 +107,8 @@ constexpr uint64_t int_log2(uint64_t n) noexcept {
   return res;
 }
 
+// --- Runtime & Safe ---
+
 constexpr expected<uint64_t, math_error_ec> int_log2_sf(uint64_t n) noexcept {
   if (n == 0)
     return unexpected(math_error_ec::baddomain);
@@ -119,6 +124,12 @@ constexpr uint64_t bit_width(uint64_t n) noexcept {
   return n == 0u ? 0 : int_log2(n) + 1;
 }
 
+// =============================================================================
+// 2. POTENCIAS DE 2 (Compile-time & Runtime) (Optimized & Safe)
+// =============================================================================
+
+// --- Runtime & Safe ---
+
 constexpr expected<uint64_t, math_error_ec> int_pow2(size_t exponent) noexcept {
   if (exponent < 64)
     return (1ull << exponent);
@@ -131,9 +142,10 @@ template <typename T> constexpr inline bool is_power_of_2(T num) noexcept {
 }
 
 // =============================================================================
-// 2. POTENCIAS ENTERAS GENÉRICAS (Base N)
+// 3. POTENCIAS ENTERAS GENÉRICAS (Base N)
 // =============================================================================
 
+// --- Runtime & Safe ---
 /**
  * @brief Calcula base^exponent con comprobación básica de overflow (retorna 0).
  */
@@ -170,6 +182,8 @@ constexpr inline uint64_t int_pow(uint64_t base, uint32_t exponent) noexcept {
   return result;
 }
 
+// --- Compiletime & Safe ---
+
 /**
  * @brief Versión compile-time de int_pow.
  */
@@ -189,10 +203,13 @@ constexpr inline uint64_t int_pow_ct() noexcept {
 }
 
 // =============================================================================
-// 3. LOGARITMOS EN BASE N (int_log)
+// 4. LOGARITMOS EN BASE N (int_log)
 // =============================================================================
 
-template <uint64_t base, int64_t n> constexpr int64_t int_log_ct() noexcept {
+// --- Compiletime & Safe ---
+
+template <uint64_t base, int64_t n> 
+constexpr int64_t int_log_ct() noexcept {
   static_assert(base > 1, "Base inválida para logaritmo");
   if constexpr (n <= 0)
     return -1;
@@ -201,6 +218,8 @@ template <uint64_t base, int64_t n> constexpr int64_t int_log_ct() noexcept {
   else
     return 1 + int_log_ct<base, n / base>();
 }
+
+// --- Runtime Optimized ---
 
 constexpr int64_t int_log(uint64_t base, int64_t n) noexcept {
   if (base <= 1)
@@ -213,11 +232,15 @@ constexpr int64_t int_log(uint64_t base, int64_t n) noexcept {
 }
 
 // =============================================================================
-// 4. CONTEO DE DÍGITOS (Helper para I/O)
+// 5. CONTEO DE DÍGITOS (Helper para I/O)
 // =============================================================================
 
-constexpr inline bool pow_leq_limit(uint64_t b, uint32_t exp,
-                                    uint64_t limit) noexcept {
+constexpr inline bool pow_leq_limit(
+    uint64_t b, 
+    uint32_t exp,
+    uint64_t limit
+  ) noexcept {
+  
   if (b == 0)
     return (exp == 0 ? 1 <= limit : 0 <= limit);
   if (b == 1 || exp == 0)
@@ -242,7 +265,11 @@ constexpr inline bool pow_leq_limit(uint64_t b, uint32_t exp,
   return result <= limit;
 }
 
-constexpr inline size_t count_digits_base(uint64_t n, uint64_t base) noexcept {
+// Conteo de dígitos en base genérica
+// --- Runtime Optimized ---
+
+constexpr inline 
+size_t count_digits_base(uint64_t n, uint64_t base) noexcept {
   if (base < 2)
     return 0;
   if (n == 0)

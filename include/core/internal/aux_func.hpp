@@ -242,7 +242,7 @@ conversion_to_int_safe(const A &arg) noexcept {
 }
 
 // NOTA: Eliminamos is_prime_ct y find_factor_ct de aquí.
-// Se deben usar desde "primes_compiletime.hpp" que es más robusto.
+// Se deben usar desde "primes_ct.hpp" que es más robusto.
 
 } // namespace AuxFunc
 } // namespace NumRepr

@@ -12,7 +12,8 @@ namespace NumRepr {
     namespace LUT {
       using std::numeric_limits;
       /**
-       * @brief Calcula en tiempo de compilación el exponente máximo para una base dada.
+       * @brief Calcula en tiempo de compilación el exponente máximo 
+       * para una base dada.
        */
       template <uint64_t base>
       consteval size_t max_exponent_for_base_ct() noexcept {

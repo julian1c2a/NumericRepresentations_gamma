@@ -2,13 +2,19 @@
 #define NUMREPR_CORE_INTERNAL_MATH_ROOTS_HPP
 
 #include "../../append/integers.hpp"
-#include "exp_log.hpp" // Necesario para bit_width y int_log2
+#include "IntExpIntLog.hpp" // Necesario para bit_width y int_log2
 
 #include <limits>
 #include <type_traits>
 
 namespace NumRepr {
 namespace AuxFunc {
+
+// =============================================================================
+// FUNCTOR GENÉRICO NEWTON-RAPHSON
+// =============================================================================
+
+// TODO: Generalizar para otras funciones
 
 // =============================================================================
 // RAÍCES CUADRADAS ENTERAS (Newton-Raphson)
@@ -27,8 +33,9 @@ namespace detail {
 template <uint64_t n> struct floorsqrt_ct_helper {
   static constexpr uint64_t log2_n = (n == 0) ? 0 : int_log2_ct<n>();
   static constexpr uint64_t x0_base = (1ull << (log2_n / 2));
-  static constexpr uint64_t x0 =
-      (x0_base * x0_base < n) ? (x0_base * 2) : x0_base;
+  static constexpr uint64_t x0 {
+      (x0_base * x0_base < n) ? (x0_base * 2) : x0_base 
+  };
   static constexpr uint64_t value = floorsqrt_ct_newton<n, x0>();
 };
 } // namespace detail
@@ -48,7 +55,7 @@ template <typename T> constexpr T floorsqrt(T n) noexcept {
   using UnsignedT = std::make_unsigned_t<T>;
   UnsignedT un = static_cast<UnsignedT>(n);
 
-  // Estimación inicial usando bit_width (de exp_log.hpp)
+  // Estimación inicial usando bit_width (de IntExpIntLog.hpp)
   UnsignedT x0 = UnsignedT(1) << (bit_width(un) / 2);
   if (x0 * x0 < un)
     x0 <<= 1; // Ajuste si subestimamos
@@ -69,6 +76,8 @@ template <uint64_t n> consteval uint64_t ceilsqrt_ct() noexcept {
   return (root * root == n) ? root : root + 1;
 }
 
+// ¡Ojo!: Posible overflow si n es grande cercano a numeric_limits<T>::max()
+// Salvado posiblemente el peligro si se detecta en floorsqrt
 template <typename T> constexpr T ceilsqrt(T n) noexcept {
   if (n <= 0)
     return 0;
