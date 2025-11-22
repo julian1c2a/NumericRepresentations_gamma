@@ -7,6 +7,7 @@
  * @details Centraliza todos los typedefs de enteros (signed/unsigned), tipos
  * de tamaño fijo y utilidades básicas como std::array.
  */
+#include "int128_ops.hpp"
 
 #include <cstddef> // Para std::size_t
 #include <cstdint> // Para tipos intN_t

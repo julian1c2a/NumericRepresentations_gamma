@@ -4,8 +4,8 @@
 #include "LUTs.hpp"
 
 // Dependencia: Aritmética de 128 bits
-#include "../../append/int128_ops.hpp"
-#include "../../math/tables/EratosthenesSieve.hpp"
+#include "core/internal/append/int128_ops.hpp"
+#include "core/internal/math/tables/EratosthenesSieve.hpp"
 
 #include <algorithm>
 #include <array>

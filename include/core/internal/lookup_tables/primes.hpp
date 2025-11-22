@@ -44,8 +44,9 @@ inline uint64_t binpower(uint64_t base, uint64_t exp, uint64_t mod) {
   uint64_t result = 1;
   base %= mod;
   while (exp > 0) {
-    if (exp & 1)
+    if (exp & 1) {
       result = mulmod(result, base, mod); // Usa mulmod seguro
+    }
     base = mulmod(base, base, mod);       // Usa mulmod seguro
     exp >>= 1;
   }

@@ -9,7 +9,6 @@
  * 2. Define uint128_t/sint128_t con aritmética completa y conversiones nativas.
  * 3. Proporciona mulmod (runtime) y mulmod_ct (compile-time).
  */
-#include "integers.hpp"
 
 
 #include <cstdint>
@@ -24,15 +23,39 @@
 #endif
 
 namespace NumRepr {
+    // --- Tipos de Tamaño Fijo (Stdint) ---
+    using size_t = std::size_t;
 
+    // Signed Fixed Width
+    using sint8_t = std::int8_t;
+    using sint16_t = std::int16_t;
+    using sint32_t = std::int32_t;
+    using sint64_t = std::int64_t;
+    using int8_t = std::int8_t;
+    using int16_t = std::int16_t;
+    using int32_t = std::int32_t;
+    using int64_t = std::int64_t;
+
+    // Unsigned Fixed Width
+    using uint8_t = std::uint8_t;
+    using uint16_t = std::uint16_t;
+    using uint32_t = std::uint32_t;
+    using uint64_t = std::uint64_t;
+
+    // Max Types
+    using intmax_t = std::intmax_t;
+    using uintmax_t = std::uintmax_t;
+
+    // --- Utilidades del Espacio de Nombres ---
+    using std::array; // Disponible como NumRepr::array
     using std::integral;
     using std::is_signed_v;
     using std::strong_ordering;
     using std::unsigned_integral;
 
-    // ===========================================================================
+    //==========================================================================
     // 1. DETECCIÓN DE SOPORTE NATIVO
-    // ===========================================================================
+    //==========================================================================
 
     #if !defined(NUMREPR_DISABLE_INT128)
     #if defined(__SIZEOF_INT128__)
@@ -46,9 +69,9 @@ namespace NumRepr {
     #endif
     #endif
 
-    // ===========================================================================
+    // =========================================================================
     // 2. DEFINICIÓN DE TIPOS (Nativo vs Emulado)
-    // ===========================================================================
+    // =========================================================================
 
     #if defined(NUMREPR_HAS_NATIVE_INT128)
     using uint128_t = unsigned __int128;
@@ -395,7 +418,7 @@ namespace NumRepr {
     }
 
     template <uint64_t A, uint64_t B, uint64_t Mod>
-    consteval uint64_t<uint64_t, A, B, Mod> mulmod_ct() {
+    consteval uint64_t mulmod_ct<uint64_t, A, B, Mod>() {
         static_assert(Mod != 0, "El modulo no puede ser 0");
         if constexpr (Mod == 1) return 0;
         if constexpr (A == 0 || B == 0) return 0;
