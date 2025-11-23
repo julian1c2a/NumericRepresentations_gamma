@@ -1,5 +1,5 @@
-#ifndef REGISTER_VARIANT_T_HPP_INCLUDED
-#define REGISTER_VARIANT_T_HPP_INCLUDED
+#ifndef NUMREPR_INCLUDE_VARIANTS_REGISTER_VARIANT_T_HPP_INCLUDED
+#define NUMREPR_INCLUDE_VARIANTS_REGISTER_VARIANT_T_HPP_INCLUDED
 
 #include <variant>
 #include "core/internal/auxiliary_functions.hpp"
@@ -488,4 +488,4 @@ std::ostream &operator<<(std::ostream &,const register_variant_t&);
 
 
 
-#endif // REGISTER_VARIANT_T_HPP_INCLUDED
+#endif // NUMREPR_INCLUDE_VARIANTS_REGISTER_VARIANT_T_HPP_INCLUDED

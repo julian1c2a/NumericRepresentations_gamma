@@ -1,8 +1,8 @@
-#ifndef NUMREPR_INCLUDE_CORE_INTERNAL_LOOKUP_TABLES_PRIMES_CT_HPP
-#define NUMREPR_INCLUDE_CORE_INTERNAL_LOOKUP_TABLES_PRIMES_CT_HPP
+#ifndef NUMREPR_INCLUDE_CORE_INTERNAL_MATH_PRIMES_CT_HPP_INCLUDED
+#define NUMREPR_INCLUDE_CORE_INTERNAL_MATH_PRIMES_CT_HPP_INCLUDED
 
-#include "math/tables/LUTs.hpp"
-#include "math/tables/EratosthenesSieve.hpp"
+#include "tables/PrimeList.hpp"
+#include "tables/EratosthenesSieve.hpp"
 
 #include <cstdint>
 #include <array>
@@ -258,4 +258,4 @@ namespace NumRepr
 	}
 }
 
-#endif // NUMREPR_INCLUDE_CORE_INTERNAL_LOOKUP_TABLES_PRIMES_CT_HPP
+#endif // NUMREPR_INCLUDE_CORE_INTERNAL_MATH_PRIMES_CT_HPP_INCLUDED

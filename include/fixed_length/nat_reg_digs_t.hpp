@@ -18,8 +18,8 @@
  * @copyright MIT License
  */
 
-#ifndef NAT_REG_DIGS_T__HPP__INCLUDED
-#define NAT_REG_DIGS_T__HPP__INCLUDED
+#ifndef NUMREPR_INCLUDE_FIXED_LENGTH_NAT_REG_DIGS_T_HPP_INCLUDED
+#define NUMREPR_INCLUDE_FIXED_LENGTH_NAT_REG_DIGS_T_HPP_INCLUDED
 
 #include "reg_digs_t.hpp"
 #include "core/internal/basic_types.hpp"
@@ -1856,4 +1856,4 @@ namespace NumRepr
   }
 
 } // namespace NumRepr
-#endif // NAT_REG_DIGS_T__HPP__INCLUDED
+#endif // NUMREPR_INCLUDE_FIXED_LENGTH_NAT_REG_DIGS_T_HPP_INCLUDED

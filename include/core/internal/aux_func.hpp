@@ -1,12 +1,11 @@
-#ifndef NUMREPR_CORE_INTERNAL_AUXILIARY_FUNCTIONS_HPP_INCLUDED
-#define NUMREPR_CORE_INTERNAL_AUXILIARY_FUNCTIONS_HPP_INCLUDED
+#ifndef NUMREPR_INCLUDE_CORE_INTERNAL_AUX_FUNC_HPP_INCLUDED
+#define NUMREPR_INCLUDE_CORE_INTERNAL_AUX_FUNC_HPP_INCLUDED
 
 #include "append/expected.hpp"
 #include "append/integers.hpp"
 
 #include <limits>
 #include <type_traits>
-// ELIMINADO: #include <expected> (usamos el wrapper de append)
 
 namespace NumRepr {
 namespace AuxFunc {
@@ -247,4 +246,4 @@ conversion_to_int_safe(const A &arg) noexcept {
 } // namespace AuxFunc
 } // namespace NumRepr
 
-#endif // NUMREPR_CORE_INTERNAL_AUXILIARY_FUNCTIONS_HPP_INCLUDED
+#endif // NUMREPR_INCLUDE_CORE_INTERNAL_AUX_FUNC_HPP_INCLUDED

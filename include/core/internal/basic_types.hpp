@@ -1,5 +1,5 @@
-#ifndef BASIC_TYPES_HPP_INCLUDED
-#define BASIC_TYPES_HPP_INCLUDED
+#ifndef NUMREPR_INCLUDE_CORE_INTERNAL_BASIC_TYPES_HPP_INCLUDED
+#define NUMREPR_INCLUDE_CORE_INTERNAL_BASIC_TYPES_HPP_INCLUDED
 
 #include <cstdint>
 
@@ -1353,4 +1353,4 @@ void assign_with_order(auto &dest, const Ts &...args) noexcept {
 
 } // namespace NumRepr
 
-#endif // BASIC_TYPES_HPP_INCLUDED
+#endif // NUMREPR_INCLUDE_CORE_INTERNAL_BASIC_TYPES_HPP_INCLUDED

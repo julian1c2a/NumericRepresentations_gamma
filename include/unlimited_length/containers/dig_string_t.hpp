@@ -1,5 +1,5 @@
-#ifndef DIG_STRING_T_HPP_INCLUDED
-#define DIG_STRING_T_HPP_INCLUDED
+#ifndef NUMREPR_INCLUDE_UNLIMITED_LENGTH_CONTAINERS_DIG_STRING_T_HPP_INCLUDED
+#define NUMREPR_INCLUDE_UNLIMITED_LENGTH_CONTAINERS_DIG_STRING_T_HPP_INCLUDED
 
 #include <string>
 #include "int_reg_digs_t.hpp"
@@ -159,5 +159,5 @@ inline constexpr ullint max_base_B_en_Int_T() noexcept {
       static_cast<ullint>(ceil((n_digs_base_B * log(dos)) / log(base)));
   return ret;
 }
-} // namespace NumRepr
-#endif //  DIG_STRING_T__HPP__INCLUDED
+} // close namespace NumRepr
+#endif // NUMREPR_INCLUDE_UNLIMITED_LENGTH_CONTAINERS_DIG_STRING_T_HPP_INCLUDED

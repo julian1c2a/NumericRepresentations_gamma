@@ -1,5 +1,5 @@
-#ifndef INT_REG_DIGS_T_HPP
-#define INT_REG_DIGS_T_HPP
+#ifndef NUMREPR_INCLUDE_FIXED_LENGTH_INT_REG_DIGS_T_HPP_INCLUDED
+#define NUMREPR_INCLUDE_FIXED_LENGTH_INT_REG_DIGS_T_HPP_INCLUDED
 
 #include "nat_reg_digs_t.hpp"
 #include "core/internal/basic_types.hpp"
@@ -2125,4 +2125,4 @@ namespace NumRepr
   }
 
 } // END OF NAMESPACE NUMREPR
-#endif
+#endif // NUMREPR_INCLUDE_FIXED_LENGTH_INT_REG_DIGS_T_HPP_INCLUDED

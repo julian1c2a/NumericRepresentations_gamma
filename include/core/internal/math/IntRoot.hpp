@@ -1,5 +1,5 @@
-#ifndef NUMREPR_CORE_INTERNAL_MATH_ROOTS_HPP
-#define NUMREPR_CORE_INTERNAL_MATH_ROOTS_HPP
+#ifndef NUMREPR_INCLUDE_CORE_INTERNAL_MATH_INTROOT_HPP_INCLUDED
+#define NUMREPR_INCLUDE_CORE_INTERNAL_MATH_INTROOT_HPP_INCLUDED
 
 #include "../../append/integers.hpp"
 #include "IntExpIntLog.hpp" // Necesario para bit_width y int_log2
@@ -104,4 +104,4 @@ template <uint64_t n> consteval bool is_perfect_square_ct() noexcept {
 } // namespace AuxFunc
 } // namespace NumRepr
 
-#endif // NUMREPR_CORE_INTERNAL_MATH_ROOTS_HPP
+#endif // NUMREPR_INCLUDE_CORE_INTERNAL_MATH_INTROOT_HPP_INCLUDED

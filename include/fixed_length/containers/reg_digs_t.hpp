@@ -1,5 +1,5 @@
-#ifndef REG_DIGS_T_HPP_INCLUDED
-#define REG_DIGS_T_HPP_INCLUDED
+#ifndef NUMREPR_INCLUDE_FIXED_LENGTH_CONTAINERS_REG_DIGS_T_HPP_INCLUDED
+#define NUMREPR_INCLUDE_FIXED_LENGTH_CONTAINERS_REG_DIGS_T_HPP_INCLUDED
 
 #include <algorithm> // Para std::reverse, std::find_if, std::count_if
 #include "core/dig_t.hpp"
@@ -3484,4 +3484,4 @@ namespace NumRepr
 
 } // END NAMESPACE NumRepr
 
-#endif // REG_DIGS_T_HPP_INCLUDED
+#endif // NUMREPR_INCLUDE_FIXED_LENGTH_CONTAINERS_REG_DIGS_T_HPP_INCLUDED

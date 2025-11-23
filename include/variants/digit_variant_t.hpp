@@ -1,5 +1,5 @@
-#ifndef DIGIT_VARIANT_T_HPP_INCLUDED
-#define DIGIT_VARIANT_T_HPP_INCLUDED
+#ifndef NUMREPR_INCLUDE_VARIANTS_DIGIT_VARIANT_T_HPP_INCLUDED
+#define NUMREPR_INCLUDE_VARIANTS_DIGIT_VARIANT_T_HPP_INCLUDED
 
 #include <variant>
 #include <cassert>
@@ -476,6 +476,6 @@ namespace NumRepr
 
   std::ostream &operator<<(std::ostream &, const digit_variant &);
 
-} // END OF NAMESPACE NUMREPR IN THIS TRANSLATION UNIT
+} // close namespace NumRepr
 
-#endif // DIGIT_VARIANT_T_HPP_INCLUDED
+#endif // NUMREPR_INCLUDE_VARIANTS_DIGIT_VARIANT_T_HPP_INCLUDED

@@ -6,8 +6,8 @@
  * en lugar de número cuando se usa con std::cout.
  */
 
-#ifndef DIG_T_DISPLAY_HELPERS_HPP
-#define DIG_T_DISPLAY_HELPERS_HPP
+#ifndef NUMREPR_INCLUDE_DIG_T_DISPLAY_HELPERS_HPP_INCLUDED
+#define NUMREPR_INCLUDE_DIG_T_DISPLAY_HELPERS_HPP_INCLUDED
 
 #include <iostream>
 #include <type_traits>
@@ -73,4 +73,4 @@ namespace NumRepr
 
 } // namespace NumRepr
 
-#endif // DIG_T_DISPLAY_HELPERS_HPP
+#endif // NUMREPR_INCLUDE_DIG_T_DISPLAY_HELPERS_HPP_INCLUDED

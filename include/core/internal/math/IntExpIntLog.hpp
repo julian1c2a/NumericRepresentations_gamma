@@ -1,8 +1,8 @@
-#ifndef NUMREPR_CORE_INTERNAL_MATH_EXP_LOG_HPP
-#define NUMREPR_CORE_INTERNAL_MATH_EXP_LOG_HPP
+#ifndef NUMREPR_INCLUDE_CORE_INTERNAL_MATH_INTEXPINTLOG_HPP_INCLUDED
+#define NUMREPR_INCLUDE_CORE_INTERNAL_MATH_INTEXPINTLOG_HPP_INCLUDED
 
-#include "../../append/expected.hpp"
-#include "../../append/integers.hpp"
+#include "../append/expected.hpp"
+#include "../append/integers.hpp"
 
 #include <concepts>
 #include <limits>
@@ -302,4 +302,4 @@ constexpr inline size_t count_digits_base10(uint64_t n) noexcept {
 } // namespace AuxFunc
 } // namespace NumRepr
 
-#endif // NUMREPR_CORE_INTERNAL_MATH_EXP_LOG_HPP
+#endif // NUMREPR_INCLUDE_CORE_INTERNAL_MATH_INTEXPINTLOG_HPP_INCLUDED

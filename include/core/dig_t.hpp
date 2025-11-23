@@ -3,8 +3,8 @@
  * @brief Copia adaptada de include/dig_t.hpp para el nuevo layout
  */
 
-#ifndef CORE_DIG_T_HPP_INCLUDED
-#define CORE_DIG_T_HPP_INCLUDED
+#ifndef NUMREPR_INCLUDE_CORE_DIG_T_HPP_INCLUDED
+#define NUMREPR_INCLUDE_CORE_DIG_T_HPP_INCLUDED
 
 #include <array>
 #include <expected>
@@ -3521,4 +3521,4 @@ namespace NumRepr {
 
 } // namespace NumRepr
 
-#endif // CORE_DIG_T_HPP_INCLUDED
+#endif // NUMREPR_INCLUDE_CORE_DIG_T_HPP_INCLUDED
