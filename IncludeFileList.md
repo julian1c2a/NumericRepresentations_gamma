@@ -13,6 +13,8 @@ De estas cabeceras `C++ hpp` necesito pruebas (integradas en `Catch2` + `CTest`)
 
 De estas cabeceras `C++ hpp` necesito pruebas (integradas en `Catch2` + `CTest`) en `NumRepr/tests`. A `date: 23/11/2025` están casi finalizadas. Falta una función de seguridad, tanto en tiempo de compilación como de ejecución para las funciones exponenciales, que tiene una cadena de `ifs` dependiente de la tabla de parejas `{base, máximo exponente en uint64_t}` que se borró milagrosamente. Para las demás sí que necesito las pruebas.
 
+Estoy teniendo la mala idea de renombrar `IntExpIntLog.hpp` a `Int_ExpLog.hpp`, y de seguir ahondando en la refactorización, haciendo como en las cabeceras `primes`, dividiendo las que merezcan la pena entre sufijos `""` (para las funciones en tiempo de ejecución) y `"_ct"` (para las de tiempo de compilación). ¿?
+
     NumRepr/include/core/internal/math/IntExpIntLog.hpp
     NumRepr/include/core/internal/math/IntRoot.hpp
     NumRepr/include/core/internal/math/math_utils.hpp
