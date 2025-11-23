@@ -4,16 +4,19 @@
 /**
  * @file expected.hpp
  * @brief Abstracción para std::expected (C++23).
- * @details Este archivo gestiona la inclusión de <expected>.
- * - Si <expected> está disponible (C++23), importa std::expected y
- * std::unexpected al namespace NumRepr.
- * - Si no está disponible, define una implementación propia (polyfill) dentro
- * de NumRepr.
- * * De esta forma, el resto del código solo debe hacer #include
- * "append/expected.hpp" y usar NumRepr::expected.
+ * @details Este archivo gestiona la inclusión de <expected> de forma robusta.
+ * Verifica no solo la existencia del archivo, sino el soporte real de la feature
+ * (__cpp_lib_expected).
  */
 
-#if __has_include(<expected>)
+// Intentamos incluir <version> para tener acceso a las macros de features (C++20 standard)
+#if __has_include(<version>)
+#include <version>
+#endif
+
+// Verificamos si la librería realmente soporta expected (C++23 feature)
+// Solo confiar en __has_include(<expected>) falla en modo C++20 con compiladores nuevos
+#if defined(__cpp_lib_expected)
 
 #include <expected>
 
@@ -25,7 +28,9 @@ using std::unexpected;
 
 #else
 
-#include <exception> // Para std::bad_variant_access (usualmente en <variant>, pero por seguridad)
+// --- POLYFILL PARA C++20 O ANTERIOR ---
+
+#include <exception> 
 #include <utility>
 #include <variant>
 
@@ -33,8 +38,6 @@ namespace NumRepr {
 
 /**
  * @brief Envoltorio para indicar que un valor representa un error.
- * @details Necesario para desambiguar tipos cuando T y E son convertibles entre
- * sí.
  */
 template <typename E> struct unexpected {
   E value_;
@@ -49,8 +52,6 @@ template <typename E> unexpected(E) -> unexpected<E>;
 
 /**
  * @brief Clase expected (polyfill parcial de C++23).
- * @tparam T Tipo del valor esperado.
- * @tparam E Tipo del error.
  */
 template <typename T, typename E> class expected {
   std::variant<T, E> v_;
@@ -84,6 +85,6 @@ public:
 
 } // namespace NumRepr
 
-#endif // __has_include(<expected>)
+#endif // defined(__cpp_lib_expected)
 
 #endif // NUMREPR_INCLUDE_CORE_INTERNAL_APPEND_EXPECTED_HPP_INCLUDED

@@ -1,43 +1,43 @@
 #ifndef NUMREPR_INCLUDE_CORE_INTERNAL_MATH_MATH_UTILS_HPP_INCLUDED
 #define NUMREPR_INCLUDE_CORE_INTERNAL_MATH_MATH_UTILS_HPP_INCLUDED
 
-#include "append/integers.hpp"
-
+#include "../append/integers.hpp"
+#include "IntExpIntLog.hpp" // Aquí reside ahora la lógica real
 
 #include <cstdint>
 #include <limits>
 
 namespace NumRepr {
-  namespace AuxFunc {
-    namespace LUT {
-      using std::numeric_limits;
-      /**
-       * @brief Calcula en tiempo de compilación el exponente máximo 
-       * para una base dada.
-       */
-      template <uint64_t base>
-      consteval size_t max_exponent_for_base_ct() noexcept {
-        if constexpr (base < 2) return numeric_limits<uint64_t>::max();
-        else if constexpr (base == 2) return 63;
-        else if constexpr (base == 3) return 40;
-        else if constexpr (base == 10) return 19;
-        // ... (puedes mantener tu tabla completa de ifs aquí) ...
-        else return 1; // Default safe
-      }
+namespace AuxFunc {
+namespace LUT {
+    
+    // --- WRAPPERS DE COMPATIBILIDAD ---
+    // Redirigen las llamadas antiguas a la nueva implementación 
+    // segura en IntExpIntLog.hpp
+    // Esto permite borrar la lógica duplicada sin romper código existente.
 
-      /**
-       * @brief Calcula en tiempo de ejecución el exponente máximo.
-       */
-      constexpr size_t max_exponent_for_base(uint64_t base) noexcept {
-        if (base < 2) return numeric_limits<uint64_t>::max();
-        else if (base == 2) return 63;
-        else if (base == 3) return 40;
-        else if (base == 10) return 19;
-        // ...
-        else return 1;
-      }
-    } // namespace LUT
-  } // namespace AuxFunc
+    /**
+     * @brief Calcula en tiempo de compilación el exponente máximo 
+     * para una base dada.
+     * @deprecated Usar 
+     * NumRepr::AuxFunc::LUT::Safety::max_exponent_for_base_ct directamente.
+     */
+    template <uint64_t base>
+    consteval size_t max_exponent_for_base_ct() noexcept {
+        return NumRepr::AuxFunc::LUT::Safety::max_exponent_for_base_ct<base>();
+    }
+
+    /**
+     * @brief Calcula en tiempo de ejecución el exponente máximo.
+     * @deprecated Usar 
+     * NumRepr::AuxFunc::Safety::max_exponent_for_base directamente.
+     */
+    constexpr size_t max_exponent_for_base(uint64_t base) noexcept {
+        return NumRepr::AuxFunc::LUT::Safety::max_exponent_for_base(base);
+    }
+
+} // namespace LUT
+} // namespace AuxFunc
 } // namespace NumRepr
 
 #endif // NUMREPR_INCLUDE_CORE_INTERNAL_MATH_MATH_UTILS_HPP_INCLUDED

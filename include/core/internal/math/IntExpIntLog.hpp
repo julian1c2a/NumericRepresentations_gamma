@@ -27,40 +27,87 @@ enum class math_error_ec : uint8_t {
 // =============================================================================
 
 namespace LUT {
-/**
+
+  /**
  * @brief Calcula en tiempo de compilación el exponente máximo para una base
  * dada.
  */
-template <uint64_t base> consteval 
-size_t max_exponent_for_base_ct() noexcept {
-  if constexpr (base < 2)
-    return numeric_limits<uint64_t>::max();
-  else if constexpr (base == 2)
-    return 63;
-  else if constexpr (base == 3)
-    return 40;
-  else if constexpr (base == 10)
-    return 19;
-  else
-    return 1; // Fallback seguro para bases grandes no tabuladas
+// =============================================================================
+// 0. SEGURIDAD: CHECKERS DE EXPONENTE MÁXIMO (Basado en Tabla)
+// =============================================================================
+
+namespace Safety {
+
+/**
+ * @brief Obtiene el exponente máximo seguro para una base dada (uint64_t).
+ * @details Busca en la tabla LUT el rango correspondiente a la base.
+ * La tabla contiene pares {base_inicio, max_exp}.
+ * Si base >= base_inicio[i], entonces max_exp es max_exp[i].
+ * Se recorre la tabla de mayor a menor para encontrar el rango.
+ */
+constexpr inline uint64_t max_exponent_for_base(uint64_t base) noexcept {
+    // Accedemos a la tabla en el namespace correcto
+    const auto& table = NumRepr::AuxFunc::LUT::base_maxexp_table;
+
+    // Búsqueda lineal inversa: Eficiente para tablas pequeñas (~30 elementos)
+    // y garantiza constexpr simple.
+    for (size_t i = table.size(); i > 0; --i) {
+        const auto& entry = table[i - 1];
+        if (base >= entry.first) {
+            return entry.second;
+        }
+    }
+    // Fallback seguro (técnicamente inalcanzable si la tabla empieza en 0)
+    return ~0ull; 
 }
 
 /**
- * @brief Calcula en tiempo de ejecución el exponente máximo.
+ * @brief Versión Compile-Time de la seguridad.
+ * @details Evalúa la función constexpr en tiempo de compilación.
  */
-constexpr size_t max_exponent_for_base(uint64_t base) noexcept {
-  if (base < 2)
-    return numeric_limits<uint64_t>::max();
-  else if (base == 2)
-    return 63;
-  else if (base == 3)
-    return 40;
-  else if (base == 10)
-    return 19;
-  else
-    return 1;
+// --- Implementación Recursiva para Compile-Time (_ct) ---
+
+namespace internal {
+    // Búsqueda recursiva en tiempo de compilación sobre la tabla estática.
+    // I: Índice actual a comprobar (empezando por el final).
+    template <size_t I>
+    consteval uint64_t find_max_exp_recursive_ct(uint64_t base) {
+        // Referencia a la tabla constexpr
+        constexpr auto& table = NumRepr::AuxFunc::LUT::base_maxexp_table;
+        
+        // Caso base implícito por recursión: comprobamos el elemento actual
+        if (base >= table[I].first) {
+            return table[I].second;
+        }
+        
+        // Paso recursivo: si no hemos encontrado, bajamos al índice anterior
+        if constexpr (I > 0) {
+          return find_max_exp_recursive_ct<I - 1>(base);
+        } else {
+        // Fallback por seguridad (tabla[0] suele ser 0, 
+        // así que base >= 0 siempre cumple antes)
+          return ~0ull; 
+        }
+    }
+} // namespace internal
+
+/**
+ * @brief Versión Compile-Time de la seguridad (Totalmente Recursiva).
+ * @details Garantiza que no se genere código de bucles 
+ * en tiempo de compilación, desenrrollando la búsqueda
+ * mediante plantillas.
+ */
+template <uint64_t base>
+consteval uint64_t max_exponent_for_base_ct() noexcept {
+    using NumRepr::AuxFunc::LUT::base_maxexp_table;
+    // Iniciamos la búsqueda desde el último elemento de la tabla
+    constexpr size_t last_idx {base_maxexp_table.size() - 1};
+    return internal::find_max_exp_recursive_ct<last_idx>(base);
 }
-} // namespace LUT
+
+} // close namespace Safety
+
+} // close namespace LUT
 
 // =============================================================================
 // 1. LOGARITMOS DE 2 (Compile-time & Runtime) (Optimized & Safe)
@@ -150,18 +197,14 @@ template <typename T> constexpr inline bool is_power_of_2(T num) noexcept {
  * @brief Calcula base^exponent con comprobación básica de overflow (retorna 0).
  */
 constexpr inline uint64_t int_pow(uint64_t base, uint32_t exponent) noexcept {
+  using LUT::Safety::max_exponent_for_base;
   // Usamos la utilidad LUT local
-  if (exponent > LUT::max_exponent_for_base(base))
-    return 0;
+  if (exponent > max_exponent_for_base(base)) { return 0; }
 
-  if (base == 0)
-    return (exponent == 0) ? 1 : 0;
-  if (base == 1)
-    return 1;
-  if (exponent == 0)
-    return 1;
-  if (exponent == 1)
-    return base;
+  if (base == 0) { return ((exponent == 0) ? 1 : 0); }
+  if (base == 1) { return 1; }
+  if (exponent == 0) { return 1; }
+  if (exponent == 1) { return base; }
 
   uint64_t result = 1;
   uint64_t cur = base;
@@ -188,7 +231,7 @@ constexpr inline uint64_t int_pow(uint64_t base, uint32_t exponent) noexcept {
  * @brief Versión compile-time de int_pow.
  */
 template <uint64_t base, size_t exponent>
-  requires(exponent <= LUT::max_exponent_for_base_ct<base>())
+  requires(exponent <= LUT::Safety::max_exponent_for_base_ct<base>())
 constexpr inline uint64_t int_pow_ct() noexcept {
   if constexpr (exponent == 0)
     return 1;
