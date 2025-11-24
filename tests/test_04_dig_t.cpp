@@ -116,11 +116,11 @@ TEST_CASE("dig_t: Operadores Aritméticos", "[core][dig_t][math]") {
     SECTION("Potencias (^, ^=)") {
         dig_t<7> base(2);
         // 2^3 = 8 = 1 (mod 7)
-        CHECK((base ^ 3).get() == 1);
+        CHECK((base ^ 3u).get() == 1);
         
         dig_t<10> base10(3);
         // 3^2 = 9 (mod 10)
-        base10 ^= 2;
+        base10 ^= 2u;
         CHECK(base10.get() == 9);
     }
 }
