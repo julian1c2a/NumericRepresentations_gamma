@@ -1,7 +1,7 @@
 #ifndef NUMREPR_INCLUDE_CORE_INTERNAL_MATH_PRIMES_HPP_INCLUDED
 #define NUMREPR_INCLUDE_CORE_INTERNAL_MATH_PRIMES_HPP_INCLUDED
 
-#include "LUTs.hpp"
+#include "tables/PrimeList.hpp"
 
 // Dependencia: Aritmética de 128 bits
 #include "core/internal/append/int128_ops.hpp"

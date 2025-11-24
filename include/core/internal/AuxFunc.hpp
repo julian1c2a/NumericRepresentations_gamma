@@ -19,6 +19,8 @@ namespace AuxFunc {
     // No redefinimos nada aquí para evitar errores de "multiple definition".
     
     using std::numeric_limits;
+    using isPrime;
+    using isPrime_ct;
 
 } // namespace AuxFunc
 } // namespace NumRepr
