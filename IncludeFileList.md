@@ -83,3 +83,9 @@ A `date: 23/11/2025`, solo tengo que compilar `GetTableMaxExp4Base.cpp`, que tie
 **TESTS**
 
 A generar y readaptar los que se puedan, a `date: 23/11/2025`. Inhabilitar los que no se puedan para que el panorama quede claro.
+
+Ya se han construido y pasado exitosamente test_01_math_tables y test_02_append `date: 24/11/2025` a las `hour: 18:09`.
+
+    NumRepr/tests/test_01_math_tables.cpp
+    NumRepr/tests/test_02_append.cpp
+
