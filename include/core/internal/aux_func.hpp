@@ -5,36 +5,20 @@
 #include "append/expected.hpp"
 #include "append/integers.hpp"
 
-// CORRECCIÓN: Incluir los nuevos módulos matemáticos donde se movió la lógica
+// Incluimos los nuevos módulos donde ahora vive la lógica real
 #include "math/IntExpIntLog.hpp"
 #include "math/IntRoot.hpp"
+#include "conversions.hpp" // Para conversion_to_int_safe
 
 #include <limits>
 #include <type_traits>
 
 namespace NumRepr {
 namespace AuxFunc {
-using std::numeric_limits;
-
-// El enum math_error_ec ahora vive en IntExpIntLog.hpp, no lo redefinimos aquí.
-
-// --- Logaritmos y Potencias ---
-// Las definiciones se han movido a math/IntExpIntLog.hpp. 
-// Al incluir ese archivo, las funciones están disponibles en el namespace NumRepr::AuxFunc.
-
-// --- Runtime functions ---
-// También movidas a math/IntExpIntLog.hpp
-
-// --- Raíces (Newton-Raphson) ---
-// Movidas a math/IntRoot.hpp
-
-// --- Conteo de dígitos y Conversiones ---
-// Movidas a math/IntExpIntLog.hpp (conteo) y conversions.hpp (conversiones)
-
-// Mantenemos conversion_to_int_safe aquí solo si no causa conflicto con conversions.hpp.
-// Dado el error de redefinición con conversions.hpp, es mejor delegar o eliminar si ya está allá.
-// El error original mostraba conflicto en ConversionError y conversion_to_int_safe.
-// conversions.hpp es el lugar correcto para esto.
+    // Este namespace ahora se puebla automáticamente al incluir los headers de arriba.
+    // No redefinimos nada aquí para evitar errores de "multiple definition".
+    
+    using std::numeric_limits;
 
 } // namespace AuxFunc
 } // namespace NumRepr

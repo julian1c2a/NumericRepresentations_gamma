@@ -483,8 +483,20 @@ atoull_consume(std::string_view sv) noexcept {
  *
  * @see atoull_checked() para versión runtime con std::expected
  */
+/**
+ * @brief Convierte string literal a ullint_t en tiempo de compilación.
+ */
 template <const auto &STR> consteval ullint_t atoull_ct() {
-  constexpr std::string_view sv{STR.data(), STR.size()};
+  // Detectamos si es un array crudo (char[]) o un objeto con .data() (std::array)
+  constexpr std::string_view sv = []() consteval {
+      if constexpr (std::is_array_v<std::remove_cvref_t<decltype(STR)>>) {
+          // Para char[], string_view calcula la longitud hasta \0
+          return std::string_view(STR); 
+      } else {
+          // Para std::array u otros, usamos data() y size()
+          return std::string_view(STR.data(), STR.size());
+      }
+  }();
 
   if (sv.empty()) {
     throw "atoull_ct: empty string";
@@ -495,6 +507,8 @@ template <const auto &STR> consteval ullint_t atoull_ct() {
 
   for (size_t idx = 0; idx < sv.size(); ++idx) {
     char c = sv[idx];
+    // Saltamos el terminador nulo si se coló en la vista (común en std::array de chars)
+    if (c == '\0') continue;
 
     if (c < '0' || c > '9') {
       throw "atoull_ct: non-digit character found";
@@ -502,16 +516,11 @@ template <const auto &STR> consteval ullint_t atoull_ct() {
 
     unsigned digit = static_cast<unsigned>(c - '0');
 
-    // Overflow check: i > (maxv - digit) / 10
     if (i > (maxv - digit) / 10) {
       throw "atoull_ct: overflow detected";
     }
 
     i = i * 10 + digit;
-  }
-
-  if (i == 0 && sv.size() > 0 && sv[0] != '0') {
-    throw "atoull_ct: no digits parsed";
   }
 
   return i;
@@ -555,12 +564,11 @@ concept uint_type_for_radix_c = is_uint_type_for_radix_v<UINT_T>;
  * @note USAGE: ACTIVELY USED - Para constrains en funciones genéricas
  */
 template <typename UINT_T>
-constexpr bool is_unsigned_type_v =
-    is_uint_type_for_radix_v<UINT_T> || std::is_same_v<UINT_T, std::uint64_t> ||
-    std::is_same_v<UINT_T, ullint_t> || std::is_same_v<UINT_T, ulint_t>;
+constexpr bool is_uint_type_for_radix_v =
+  std::is_unsigned_v<UINT_T> && (sizeof(UINT_T) < 8);
 
 template <typename UINT_T>
-concept unsigned_integral_c = is_unsigned_type_v<UINT_T>;
+concept uint_type_for_radix_c = is_uint_type_for_radix_v<UINT_T>;
 
 /**
  * @brief Concept para tipos signed (incluye sint64_t custom).
@@ -571,12 +579,13 @@ concept unsigned_integral_c = is_unsigned_type_v<UINT_T>;
  *
  * @note USAGE: ACTIVELY USED - Para operaciones con enteros con signo
  */
-template <typename SINT_T>
-constexpr bool is_signed_type_v =
-    std::is_signed_v<SINT_T> || std::is_same_v<SINT_T, sint64_t>;
+template <typename UINT_T>
+constexpr bool is_unsigned_type_v =
+    is_uint_type_for_radix_v<UINT_T> || std::is_same_v<UINT_T, std::uint64_t> ||
+    std::is_same_v<UINT_T, ullint_t> || std::is_same_v<UINT_T, ulint_t>;
 
-template <typename SINT_T>
-concept signed_integral_c = is_signed_type_v<SINT_T>;
+template <typename UINT_T>
+concept unsigned_integral_c = is_unsigned_type_v<UINT_T>;
 
 /**
  * @brief Concept genérico para tipos integrales (signed o unsigned).
@@ -586,8 +595,16 @@ concept signed_integral_c = is_signed_type_v<SINT_T>;
  * @note USAGE: ACTIVELY USED - Para algoritmos que trabajan con cualquier
  * integral
  */
+template <typename SINT_T>
+constexpr bool is_signed_type_v =
+    std::is_signed_v<SINT_T> || std::is_same_v<SINT_T, sint64_t>;
+
+template <typename SINT_T>
+concept signed_integral_c = is_signed_type_v<SINT_T>;
+
 template <typename INT_TYPE>
 inline constexpr bool is_integral_type_v = std::is_integral_v<INT_TYPE>;
+
 template <typename INT_T>
 concept integral_c = is_integral_type_v<INT_T>;
 
