@@ -16,8 +16,8 @@
 namespace NumRepr {
 
   using type_traits::maxbase;
-  using type_traits::sig_SInt_for_UInt_t;
-  using type_traits::sig_UInt_for_UInt_t;
+  using type_traits::nextsz_SInt_for_SInt_t;
+  using type_traits::nextsz_UInt_for_UInt_t;
   using type_traits::sqrt_max;
   using type_traits::suitable_base;
   using type_traits::uint_type_for_radix_c;
@@ -87,7 +87,7 @@ namespace NumRepr {
      * @note Usado en operaciones aritméticas donde (B-1)×(B-1) debe caber
      * @example typename dig_t<255>::nextsz_uint_t es uint16_t
      */
-    using nextsz_uint_t = typename type_traits::sig_UInt_for_UInt_t<uint_t>;
+    using nextsz_uint_t = typename type_traits::nextsz_UInt_for_UInt_t<uint_t>;
     
     /**
      * @brief Tipo entero con signo superior - para aritmética con signo
@@ -98,7 +98,7 @@ namespace NumRepr {
      * @note Usado en normaliza() para manejar valores negativos correctamente
      * @example typename dig_t<10>::nextsz_int_t es int16_t
      */
-    using nextsz_int_t = typename type_traits::sig_SInt_for_UInt_t<uint_t>;
+    using nextsz_int_t = typename type_traits::nextsz_SInt_for_UInt_t<uint_t>;
     
     /**
      * @brief Par de valores uint_t - actualmente usado en multiplicaciones
@@ -1442,9 +1442,9 @@ namespace NumRepr {
      *          Maneja correctamente tipos signed/unsigned de diferentes tamaños.
      * 
      * **CASOS MANEJADOS:**
-     * - Int_t signed y sizeof(Int_t) > sizeof(uint_t): usa sig_SInt_for_SInt_t
+     * - Int_t signed y sizeof(Int_t) > sizeof(uint_t): usa nextsz_SInt_for_SInt_t
      * - Int_t signed y sizeof(Int_t) ≤ sizeof(uint_t): usa nextsz_int_t
-     * - Int_t unsigned y sizeof(Int_t) > sizeof(uint_t): usa sig_UInt_for_UInt_t
+     * - Int_t unsigned y sizeof(Int_t) > sizeof(uint_t): usa nextsz_UInt_for_UInt_t
      * - Int_t unsigned y sizeof(Int_t) ≤ sizeof(uint_t): usa nextsz_uint_t
      * 
      * @note Prevención de overflow según tamaño de tipos
@@ -1459,11 +1459,11 @@ namespace NumRepr {
       const Int_t tmp{normaliza<Int_t>(arg)};
       if constexpr (std::is_signed_v<Int_t>) { /// TIPO CON SIGNO
         if constexpr (sizeof(Int_t) > sizeof(uint_t)) { /// TIPO ENTERO MAYOR QUE UINT_T
-          using SIG2_SINT_T = type_traits::sig_SInt_for_SInt_t<Int_t>;
-          const SIG2_SINT_T norm_arg{tmp};
-          SIG2_SINT_T este{m_d};
+          using NEXT2SZ_SINT_T = type_traits::nextsz_SInt_for_SInt_t<Int_t>;
+          const NEXT2SZ_SINT_T norm_arg{tmp};
+          NEXT2SZ_SINT_T este{m_d};
           este *= norm_arg;
-          este %= static_cast<SIG2_SINT_T>(B);
+          este %= static_cast<NEXT2SZ_SINT_T>(B);
           m_d = static_cast<uint_t>(este);
           return (*this);
         } else { /// TIPO ENTERO MENOR O IGUAL QUE UINT_T
@@ -1476,11 +1476,11 @@ namespace NumRepr {
         }
       } else { /// TIPO SIN SIGNO
         if constexpr (sizeof(Int_t) > sizeof(uint_t)) { /// TIPO ENTERO MAYOR QUE UINT_T
-          using SIG2_UINT_T = type_traits::sig_UInt_for_UInt_t<Int_t>;
-          const SIG2_UINT_T norm_arg{tmp};
-          SIG2_UINT_T este{m_d};
+          using NEXT2SZ_UINT_T = type_traits::nextsz_UInt_for_UInt_t<Int_t>;
+          const NEXT2SZ_UINT_T norm_arg{tmp};
+          NEXT2SZ_UINT_T este{m_d};
           este *= norm_arg;
-          este %= static_cast<SIG2_UINT_T>(B);
+          este %= static_cast<NEXT2SZ_UINT_T>(B);
           m_d = static_cast<uint_t>(este);
           return (*this);
         } else { /// TIPO ENTERO MENOR O IGUAL QUE UINT_T
