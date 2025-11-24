@@ -5,8 +5,8 @@
 #include "append/integers.hpp"
 
 // Inclusiones matemáticas modularizadas
-#include "math/exp_log.hpp"
-#include "math/roots.hpp"
+#include "math/IntExpIntLog.hpp"
+#include "math/IntRoot.hpp"
 
 #include <limits>
 #include <type_traits>
