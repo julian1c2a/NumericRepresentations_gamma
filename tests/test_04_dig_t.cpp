@@ -132,7 +132,7 @@ TEST_CASE("dig_t: Operadores Aritméticos", "[core][dig_t][math]") {
 TEST_CASE("dig_t: Álgebra y Primalidad", "[core][dig_t][algebra]") {
     
     SECTION("Base Prima (B=7) -> Es un Cuerpo") {
-        CHECK(dig_t<7>::is_prime());
+        CHECK(dig_t<7>::isPrime());
         
         dig_t<7> x(3);
         CHECK(x.is_unit()); // Todo elemento != 0 es unidad
@@ -144,7 +144,7 @@ TEST_CASE("dig_t: Álgebra y Primalidad", "[core][dig_t][algebra]") {
     }
 
     SECTION("Base Compuesta (B=10)") {
-        CHECK_FALSE(dig_t<10>::is_prime());
+        CHECK_FALSE(dig_t<10>::isPrime());
         
         dig_t<10> x(3); // Coprimo con 10 -> Unidad
         CHECK(x.is_unit());
