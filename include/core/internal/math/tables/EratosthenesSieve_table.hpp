@@ -11,7 +11,8 @@ namespace LUT {
 
 // Generador consteval de la criba.
 // Calcula los primos < 65537 en tiempo de compilación y devuelve un bitset.
-// Esto reemplaza al string literal gigante y es mucho más robusto y rápido de compilar.
+// Esto reemplaza al string literal gigante y es mucho más robusto y rápido 
+// de compilar.
 consteval std::bitset<65536> generate_prime_lut_ct() {
     std::bitset<65536> bs;
     bs.set(); // Todos true
