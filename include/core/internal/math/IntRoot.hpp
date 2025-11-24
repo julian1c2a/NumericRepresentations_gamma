@@ -1,7 +1,8 @@
 #ifndef NUMREPR_INCLUDE_CORE_INTERNAL_MATH_INTROOT_HPP_INCLUDED
 #define NUMREPR_INCLUDE_CORE_INTERNAL_MATH_INTROOT_HPP_INCLUDED
 
-#include "../../append/integers.hpp"
+// CORRECCIÓN: Ruta relativa ajustada de ../../ a ../
+#include "../append/integers.hpp"
 #include "IntExpIntLog.hpp" // Necesario para bit_width y int_log2
 
 #include <limits>
@@ -23,10 +24,15 @@ namespace AuxFunc {
 // Helper para Newton-Raphson en compile-time
 template <uint64_t n, uint64_t x0>
 constexpr uint64_t floorsqrt_ct_newton() noexcept {
-  return (x0 == 0) ? 0
-                   : (((x0 + n / x0) / 2) >= x0
-                          ? x0
-                          : floorsqrt_ct_newton<n, (x0 + n / x0) / 2>());
+  return
+    ( 
+      (x0 == 0) ? 0
+        : (
+          ((x0 + n / x0) / 2) >= x0
+          ? x0
+          : floorsqrt_ct_newton<n, (x0 + n / x0) / 2>()
+          )
+    );
 }
 
 namespace detail {

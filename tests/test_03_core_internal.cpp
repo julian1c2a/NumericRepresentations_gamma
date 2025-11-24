@@ -58,15 +58,19 @@ TEST_CASE("atoull_checked: Conversión segura", "[core][internal][basic_types]")
     }
 }
 
+// Variables estáticas para pasar como referencia a template NTTP
+static constexpr char NUM_STR[] = "123456789";
+static constexpr char ZERO_STR[] = "0";
+
 TEST_CASE("atoull_ct: Literal de usuario compile-time", "[core][internal][basic_types]") {
-    // Si esto compila, es un éxito parcial, static_assert confirma el valor.
     using namespace NumRepr::type_traits;
     
-    constexpr uint64_t val = atoull_ct<"123456789">();
+    // CORRECCIÓN: Pasar la variable estática, no el literal directo
+    constexpr uint64_t val = atoull_ct<NUM_STR>();
     static_assert(val == 123456789, "atoull_ct valor incorrecto");
 
     // Casos de borde
-    constexpr uint64_t val_0 = atoull_ct<"0">();
+    constexpr uint64_t val_0 = atoull_ct<ZERO_STR>();
     static_assert(val_0 == 0);
 }
 
@@ -79,7 +83,8 @@ TEST_CASE("pack2array: Conversión de variadic packs", "[core][internal][pack]")
 
     SECTION("Generación de std::array") {
         constexpr auto arr = pack2array<int, int, int>{}(10, 20, 30);
-        static_assert(std::is_same_v<decltype(arr), std::array<int, 3>>);
+        // CORRECCIÓN: std::is_same_v necesita tipos exactos
+        static_assert(std::is_same_v<std::remove_cv_t<decltype(arr)>, std::array<int, 3>>);
         CHECK(arr[0] == 10);
         CHECK(arr[1] == 20);
         CHECK(arr[2] == 30);
@@ -152,7 +157,6 @@ TEST_CASE("AuxFunc: Raíces Cuadradas", "[core][internal][aux_func]") {
 // =============================================================================
 
 // Mock simple de un "Dígito" para probar conversion_to_int_safe
-// Simula la interfaz operator() const que usa la función.
 struct MockDigit {
     uint8_t v;
     constexpr uint8_t operator()() const { return v; }
@@ -160,29 +164,22 @@ struct MockDigit {
 
 TEST_CASE("Conversions: Array to Integer", "[core][internal][conversions]") {
     
-    // Base 10, Longitud 3
     std::array<MockDigit, 3> arr10 = {MockDigit{1}, MockDigit{2}, MockDigit{3}}; 
-    // Representa: [1, 2, 3] -> little endian? 
-    // conversion_to_int_safe itera desde L-1 hasta 0.
-    // Si arr es {d0, d1, d2}, y L-1 es el más significativo (convención usual big-int arrays),
-    // entonces acc = d2, luego acc*B + d1, luego acc*B + d0.
-    // Vamos a verificar la convención usada en la implementación.
-    
-    // La implementación hace: 
-    // uint64_t acc{digit_val}; // Toma L-1 (índice 2)
-    // Loop L-2 hasta 0: acc *= base; acc += digit_val (índice ix)
-    // Entonces: index 0 es LSB, index L-1 es MSB.
-    // Para {1, 2, 3}: 3*100 + 2*10 + 1 = 321.
+    // La implementación itera desde L-2 hasta 0, sumando L-1 al principio.
+    // L-1 (índice 2) es el más significativo.
+    // 3 * 100 + 2 * 10 + 1 = 321.
 
     SECTION("Conversión Segura (Base 10)") {
         auto res = conversion_to_int_safe<10, 3>(arr10);
         REQUIRE(res.has_value());
-        CHECK(res.value() == 321); // 3*100 + 2*10 + 1
+        CHECK(res.value() == 321); 
     }
 
     SECTION("Conversión Segura (Base 2)") {
-        // {1, 0, 1, 1} -> 1*8 + 1*4 + 0*2 + 1*1 = 13
         std::array<MockDigit, 4> arr2 = {MockDigit{1}, MockDigit{0}, MockDigit{1}, MockDigit{1}};
+        // Indices: 0, 1, 2, 3
+        // L=4. MSB es index 3 (valor 1).
+        // 1*8 + 1*4 + 0*2 + 1*1 = 13
         auto res = conversion_to_int_safe<2, 4>(arr2);
         REQUIRE(res.has_value());
         CHECK(res.value() == 13);
@@ -194,10 +191,5 @@ TEST_CASE("Conversions: Array to Integer", "[core][internal][conversions]") {
         auto err = conversion_to_int_safe<10, 2>(invalid);
         REQUIRE_FALSE(err.has_value());
         CHECK(err.error() == ConversionError::InvalidDigit);
-
-        // Overflow (forzamos un valor gigante)
-        // Necesitamos una base grande y muchos dígitos para saturar uint64_t
-        // O una base pequeña y muchos dígitos.
-        // 2^64 tiene 64 bits. Array de 65 elementos base 2 todos en 1 overflow.
     }
 }

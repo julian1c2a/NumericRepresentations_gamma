@@ -4,7 +4,7 @@
 #include "append/expected.hpp"
 #include "append/integers.hpp"
 
-// Inclusiones matemáticas modularizadas
+// CORRECCIÓN: Nombres de archivo correctos
 #include "math/IntExpIntLog.hpp"
 #include "math/IntRoot.hpp"
 
@@ -39,7 +39,8 @@ conversion_to_int_safe(const A &arg) noexcept {
   uint64_t acc{digit_val};
   constexpr uint64_t max_before_mult = numeric_limits<uint64_t>::max() / base;
 
-  for (int64_t ix{L - 2}; ix >= 0; --ix) {
+  // CORRECCIÓN: Usar un tipo con signo para el índice del bucle para evitar overflow al comparar >= 0
+  for (int64_t ix{static_cast<int64_t>(L) - 2}; ix >= 0; --ix) {
     if (acc > max_before_mult)
       return unexpected(ConversionError::Overflow);
 
@@ -62,7 +63,7 @@ template <auto B, auto L, typename A>
 consteval inline uint64_t conversion_to_int_ct(const A &arg) noexcept {
   constexpr uint64_t base{static_cast<uint64_t>(B)};
   uint64_t acc{arg[L - 1]()};
-  for (int64_t ix{L - 2}; ix >= 0; --ix) {
+  for (int64_t ix{static_cast<int64_t>(L) - 2}; ix >= 0; --ix) {
     acc *= base;
     acc += static_cast<uint64_t>(arg[ix]());
   }
