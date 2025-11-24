@@ -554,23 +554,6 @@ template <typename UINT_T>
 concept uint_type_for_radix_c = is_uint_type_for_radix_v<UINT_T>;
 
 /**
- * @brief Concept para cualquier tipo unsigned (incluye uint64_t).
- *
- * @details Extiende uint_type_for_radix_c para incluir también std::uint64_t.
- *          Usado para validaciones generales de tipos unsigned.
- *
- * @tparam UINT_T Tipo a verificar
- *
- * @note USAGE: ACTIVELY USED - Para constrains en funciones genéricas
- */
-template <typename UINT_T>
-constexpr bool is_uint_type_for_radix_v =
-  std::is_unsigned_v<UINT_T> && (sizeof(UINT_T) < 8);
-
-template <typename UINT_T>
-concept uint_type_for_radix_c = is_uint_type_for_radix_v<UINT_T>;
-
-/**
  * @brief Concept para tipos signed (incluye sint64_t custom).
  *
  * @details Valida tipos signed estándar y el tipo custom sint64_t.
