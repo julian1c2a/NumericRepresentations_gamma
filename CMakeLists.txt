@@ -34,14 +34,24 @@ FetchContent_MakeAvailable(Catch2)
 # DEFINICIÓN DE TARGETS
 # ==========================================
 
+# Test existente 1
 add_executable(test_primes_compiletime_catch2 tests/test_primes_compiletime_catch2.cpp)
 target_include_directories(test_primes_compiletime_catch2 PRIVATE include tests/external)
 target_link_libraries(test_primes_compiletime_catch2 PRIVATE Catch2::Catch2WithMain)
 
+# Test existente 2
 add_executable(test_lookup_tables tests/test_lookup_tables.cpp)
 target_include_directories(test_lookup_tables PRIVATE include)
 target_link_libraries(test_lookup_tables PRIVATE Catch2::Catch2WithMain)
 
+# --- NUEVO TEST: Tablas Matemáticas y Funciones Básicas ---
+add_executable(test_01_math_tables tests/test_01_math_tables.cpp)
+target_include_directories(test_01_math_tables PRIVATE include)
+target_link_libraries(test_01_math_tables PRIVATE Catch2::Catch2WithMain)
+
+# ==========================================
+# REGISTRO DE TESTS (CTest)
+# ==========================================
 add_test(NAME test_primes_compiletime_catch2 COMMAND test_primes_compiletime_catch2)
 add_test(NAME test_lookup_tables COMMAND test_lookup_tables)
 add_test(NAME test_01_math_tables COMMAND test_01_math_tables)
