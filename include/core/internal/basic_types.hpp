@@ -1120,20 +1120,28 @@ template <typename UINT_T> consteval UINT_T sqrt_max() {
   return static_cast<UINT_T>(x);
 }
 
+
 namespace ugly_details_for_suitable_type_deduction {
 template <typename T, T Radix> struct UIntTypeForRadix;
 template <integral_c T, T Radix> struct UIntTypeForRadix<T, Radix> {
   using UIntType = std::conditional_t<
-      static_cast<uint64_t>(Radix) <= maxbase<uint8_t>(), uint8_t,
-      std::conditional_t<static_cast<uint64_t>(Radix) <= maxbase<uint16_t>(),
-                         uint16_t,
-                         std::conditional_t<static_cast<uint64_t>(Radix) <=
-                                                maxbase<uint32_t>(),
-                                            uint32_t, uint64_t>>>;
+      static_cast<uint64_t>(Radix) <= maxbase<uint8_t>(), 
+      uint8_t,
+        std::conditional_t<
+          static_cast<uint64_t>(Radix) <= maxbase<uint16_t>(), 
+          uint16_t,
+          std::conditional_t<static_cast<uint64_t>(Radix) <= maxbase<uint32_t>(), 
+          uint32_t, 
+          uint64_t>>>;
 };
-} // namespace ugly_details_for_suitable_type_deduction
-
+} 
 using namespace ugly_details_for_suitable_type_deduction;
+
+template <ullint_t Radix>
+using TypeFromIntNumber_t = 
+  typename UIntTypeForRadix<
+    decltype(Radix), Radix
+  >::UIntType;
 
 template <ullint_t Radix>
 using TypeFromIntNumber_t =
