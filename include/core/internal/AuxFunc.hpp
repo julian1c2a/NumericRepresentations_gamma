@@ -2,13 +2,16 @@
 #ifndef NUMREPR_INCLUDE_CORE_INTERNAL_AUX_FUNC_HPP_INCLUDED
 #define NUMREPR_INCLUDE_CORE_INTERNAL_AUX_FUNC_HPP_INCLUDED
 
+// --- Módulos de Extras ---
 #include "append/expected.hpp"
 #include "append/integers.hpp"
 
-// Incluimos los nuevos módulos donde ahora vive la lógica real
+// --- Módulos Matemáticos ---
 #include "math/IntExpIntLog.hpp"
 #include "math/IntRoot.hpp"
-#include "conversions.hpp" // Para conversion_to_int_safe
+#include "conversions.hpp"
+#include "math/primes.hpp"      // isPrime (runtime)
+#include "math/primes_ct.hpp"   // isPrime_ct (compile-time)
 
 #include <limits>
 #include <type_traits>
