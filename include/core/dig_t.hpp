@@ -260,8 +260,8 @@ namespace NumRepr {
      * @see is_unit() - verifica si un dígito específico tiene inverso
      * @see mult_inv() - calcula el inverso multiplicativo
      */
-    consteval static bool is_prime() noexcept {
-      return AuxFunc::is_prime(static_cast<std::size_t>(B));
+    consteval static bool isPrime() noexcept {
+      return AuxFunc::isPrime(static_cast<std::size_t>(B));
     }
 
     // =========================================================================
@@ -562,10 +562,10 @@ namespace NumRepr {
      *          en el if constexpr. Puede ignorarse o suprimir con pragma.
      * 
      * @see mult_inv() para calcular el inverso multiplicativo
-     * @see is_prime() para verificar si ℤ/Bℤ es un cuerpo
+     * @see isPrime() para verificar si ℤ/Bℤ es un cuerpo
      */
     constexpr bool is_unit() const noexcept {
-      if constexpr (is_prime()) {
+      if constexpr (isPrime()) {
         if (!is_0()) { return true; } 
         else { return false; }
       } else {
@@ -592,7 +592,7 @@ namespace NumRepr {
      * @example En ℤ/6ℤ: 2 es divisor de 0 porque 2×3 ≡ 0 (mod 6)
      */
     constexpr bool is_0_divisor() const noexcept {
-      if constexpr (is_prime()) {
+      if constexpr (isPrime()) {
         if (is_0()) { return true; } 
         else { return false; }
       } else {
@@ -670,7 +670,7 @@ namespace NumRepr {
           // Evita repetir todo el ciclo for de is_unit() en cada iteración
           for (dig_t index(2); !index.is_Bm1(); ++index) {
             // index es unidad si gcd(B, index.m_d) == 1
-            if constexpr (is_prime()) {
+            if constexpr (isPrime()) {
               // Si B es primo, todos los índices [2, B-1] son unidades
               if (((*this) * index).is_1()) return index;
             } else {
