@@ -24,10 +24,11 @@ namespace NumRepr {
         uint64_t result = 1;
         base %= mod;
         while (exp > 0) {
-          if (exp & 1)
-            result = NumRepr::mulmod(result, base, mod); // Usa la versión centralizada
-            base = NumRepr::mulmod(base, base, mod);       // Usa la versión centralizada
-            exp >>= 1;
+          if (exp & 1) {
+            result = NumRepr::mulmod(result, base, mod); 
+          }
+          base = NumRepr::mulmod(base, base, mod);       
+          exp >>= 1;
         }
         return result;
       }
@@ -37,12 +38,14 @@ namespace NumRepr {
        */
       inline bool check_composite(uint64_t a, uint64_t d, uint64_t n, int s) {
         uint64_t x = binpower(a, d, n);
-        if (x == 1 || x == n - 1)
+        if (x == 1 || x == n - 1) { 
           return false;
+        }
         for (int r = 1; r < s; ++r) {
           x = NumRepr::mulmod(x, x, n); // Usa la versión centralizada
-          if (x == n - 1)
+          if (x == n - 1) {
             return false;
+          }
         }
         return true;
       };
