@@ -43,10 +43,15 @@ add_executable(test_lookup_tables tests/test_lookup_tables.cpp)
 target_include_directories(test_lookup_tables PRIVATE include)
 target_link_libraries(test_lookup_tables PRIVATE Catch2::Catch2WithMain)
 
-# Nuevo test
+# Test test_01_math_tables (ya ha pasado con éxito)
 add_executable(test_01_math_tables tests/test_01_math_tables.cpp)
 target_include_directories(test_01_math_tables PRIVATE include)
 target_link_libraries(test_01_math_tables PRIVATE Catch2::Catch2WithMain)
+
+# Nuevo Test test_02_append
+add_executable(test_02_append tests/test_02_append.cpp)
+target_include_directories(test_02_append PRIVATE include)
+target_link_libraries(test_02_append PRIVATE Catch2::Catch2WithMain)
 
 # ==========================================
 # REGISTRO CTEST
@@ -54,3 +59,4 @@ target_link_libraries(test_01_math_tables PRIVATE Catch2::Catch2WithMain)
 add_test(NAME test_primes_compiletime_catch2 COMMAND test_primes_compiletime_catch2)
 add_test(NAME test_lookup_tables COMMAND test_lookup_tables)
 add_test(NAME test_01_math_tables COMMAND test_01_math_tables)
+add_test(NAME test_02_append COMMAND test_02_append)
