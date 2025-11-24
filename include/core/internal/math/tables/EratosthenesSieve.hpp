@@ -1,7 +1,7 @@
 #ifndef NUMREPR_INCLUDE_CORE_INTERNAL_MATH_TABLES_ERATOSTHENES_SIEVE_HPP_INCLUDED
 #define NUMREPR_INCLUDE_CORE_INTERNAL_MATH_TABLES_ERATOSTHENES_SIEVE_HPP_INCLUDED
 
-#include "core/internal/math/tables/EratosthenesSieve_table.hpp"
+#include "EratosthenesSieve_table.hpp" // Tabla pre-calculada para 65536
 #include <bitset>
 #include <cstddef>
 
@@ -9,57 +9,58 @@ namespace NumRepr {
 namespace AuxFunc {
 namespace LUT {
 
+// Tamaño por defecto alineado con la tabla precalculada
 constexpr size_t N = 65536;
 
-// --- Criba de Eratóstenes completamente recursiva constexpr (plantillas) ---
-template <size_t N, size_t I, size_t J, typename Bitset>
-constexpr Bitset mark_multiples_ct(Bitset bs) {
-	if constexpr (J < N) {
-		bs[J] = false;
-		return mark_multiples_ct<N, I, J + I, Bitset>(bs);
-	} else {
-		return bs;
-	}
+// --- Criba Genérica en Tiempo de Compilación (C++20 Iterativo) ---
+// Reemplaza a toda la maquinaria recursiva anterior (mark_multiples_ct, sieve_step_ct).
+// Al ser 'consteval', se garantiza que se ejecuta en compilación.
+
+template <size_t Size>
+consteval std::bitset<Size> make_prime_bitset_ct() {
+    std::bitset<Size> bs;
+    bs.set(); // Inicializar todos a true (1)
+    
+    if (Size > 0) bs[0] = 0;
+    if (Size > 1) bs[1] = 0;
+    
+    // Algoritmo estándar iterativo (válido en C++20 constexpr/consteval)
+    for (size_t i = 2; i * i < Size; ++i) {
+        if (bs[i]) {
+            for (size_t j = i * i; j < Size; j += i) {
+                bs[j] = 0;
+            }
+        }
+    }
+    return bs;
 }
 
-template <size_t N, size_t I, typename Bitset>
-constexpr Bitset sieve_step_ct(Bitset bs) {
-	if constexpr (I * I < N) {
-		if (bs[I]) {
-			bs = mark_multiples_ct<N, I, I * I, Bitset>(bs);
-		}
-		return sieve_step_ct<N, I + 1, Bitset>(bs);
-	} else {
-		return bs;
-	}
-}
-
-template <size_t N>
-constexpr std::bitset<N> make_prime_bitset_ct() {
-	std::bitset<N> bs{};
-	bs.set();
-	bs[0] = false;
-	bs[1] = false;
-	return sieve_step_ct<N, 2, std::bitset<N>>(bs);
-}
-
-// --- Tabla principal heredada del lookup generado offline ---
+// --- Tabla principal heredada del lookup generado ---
 using ::NumRepr::AuxFunc::LUT::is_prime_lt_65537_lut;
 
-// --- Función iterativa (opcional, no usada por defecto) ---
+// --- Función Runtime ---
+// Genera la criba en tiempo de ejecución.
+// Útil para tamaños dinámicos o muy grandes donde compile-time sería muy lento.
 inline std::bitset<N> make_prime_bitset() {
-	std::bitset<N> is_prime{};
-	is_prime.set(); // Marca todos como verdaderos
-	is_prime[0] = false;
-	is_prime[1] = false;
-	for (size_t i = 2; i * i < N; ++i) {
-		if (is_prime[i]) {
-			for (size_t j = i * i; j < N; j += i) {
-				is_prime[j] = false;
-			}
-		}
-	}
-	return is_prime;
+    // Si el tamaño coincide con la tabla precalculada, devolvemos una copia directa.
+    // Esto es O(N/64) operaciones de copia vs O(N log log N) de cálculo.
+    if constexpr (N == 65536) {
+        return is_prime_lt_65537_lut;
+    } else {
+        // Implementación iterativa idéntica a la CT pero en runtime
+        std::bitset<N> bs;
+        bs.set();
+        bs[0] = 0;
+        bs[1] = 0;
+        for (size_t i = 2; i * i < N; ++i) {
+            if (bs[i]) {
+                for (size_t j = i * i; j < N; j += i) {
+                    bs[j] = false;
+                }
+            }
+        }
+        return bs;
+    }
 }
 
 } // namespace LUT

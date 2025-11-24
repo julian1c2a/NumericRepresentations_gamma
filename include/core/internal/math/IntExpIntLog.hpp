@@ -3,6 +3,7 @@
 
 #include "../append/expected.hpp"
 #include "../append/integers.hpp"
+#include "tables/MaxExp4Base_table.hpp"
 
 #include <concepts>
 #include <limits>

@@ -1,21 +1,21 @@
 cmake_minimum_required(VERSION 3.25)
 
-# Política para manejo correcto de runtimes en MSVC moderno (Vital para UCRT)
+# Política para manejo correcto de runtimes en MSVC moderno
 cmake_policy(SET CMP0091 NEW) 
 
 project(NumericRepresentations)
 
-set(CMAKE_CXX_STANDARD 20)
+# CAMBIO IMPORTANTE: Subimos a C++23 para soporte de std::expected y constexpr bitset
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # --- FIX PARA CLANG EN WINDOWS/MSYS2 ---
 if(WIN32 AND CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    set(CMAKE_CXX_LINK_EXECUTABLE 
-        "<CMAKE_CXX_COMPILER> <FLAGS> <CMAKE_CXX_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>")
+  set(CMAKE_CXX_LINK_EXECUTABLE 
+    "<CMAKE_CXX_COMPILER> <FLAGS> <CMAKE_CXX_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>")
 endif()
-# ---------------------------------------
 
-# --- CONFIGURACIÓN DE SALIDA ---
+# --- SALIDAS ---
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
@@ -31,26 +31,25 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(Catch2)
 
 # ==========================================
-# DEFINICIÓN DE TARGETS
+# TARGETS
 # ==========================================
 
-# Test existente 1
+# Tests antiguos
 add_executable(test_primes_compiletime_catch2 tests/test_primes_compiletime_catch2.cpp)
 target_include_directories(test_primes_compiletime_catch2 PRIVATE include tests/external)
 target_link_libraries(test_primes_compiletime_catch2 PRIVATE Catch2::Catch2WithMain)
 
-# Test existente 2
 add_executable(test_lookup_tables tests/test_lookup_tables.cpp)
 target_include_directories(test_lookup_tables PRIVATE include)
 target_link_libraries(test_lookup_tables PRIVATE Catch2::Catch2WithMain)
 
-# --- NUEVO TEST: Tablas Matemáticas y Funciones Básicas ---
+# Nuevo test
 add_executable(test_01_math_tables tests/test_01_math_tables.cpp)
 target_include_directories(test_01_math_tables PRIVATE include)
 target_link_libraries(test_01_math_tables PRIVATE Catch2::Catch2WithMain)
 
 # ==========================================
-# REGISTRO DE TESTS (CTest)
+# REGISTRO CTEST
 # ==========================================
 add_test(NAME test_primes_compiletime_catch2 COMMAND test_primes_compiletime_catch2)
 add_test(NAME test_lookup_tables COMMAND test_lookup_tables)
