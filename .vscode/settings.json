@@ -7,5 +7,7 @@
     "geminicodeassist.codeGenerationPaneViewEnabled": true,
     "geminicodeassist.inlineSuggestions.nextEditPredictions": true,
     "geminicodeassist.updateChannel": "Default",
-    "geminicodeassist.verboseLogging": true
+    "geminicodeassist.verboseLogging": true,
+    "cmake.options.statusBarVisibility": "visible",
+    "diffEditor.codeLens": true
 }

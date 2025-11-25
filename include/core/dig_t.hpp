@@ -9,9 +9,9 @@
 #include <array>
 #include <expected>
 #include <string>
+#include <tuple>
 
-#include "internal/basic_types.hpp"
-#include "internal/AuxFunc.hpp"
+#include "core/internal/basic_types.hpp"
 
 namespace NumRepr {
 
@@ -28,16 +28,17 @@ namespace NumRepr {
    *          mediante std::expected sin lanzar excepciones
    */
   enum class parse_error_t : int {
-    empty_or_null,    ///< String vacío, nullptr o demasiado corto (< 4 chars)
-    invalid_prefix,   ///< Prefijo inválido (esperado: "d[", "dig#", "d#", "dig[")
-    invalid_digit,    ///< Carácter no numérico en el valor del dígito
-    no_digits,        ///< No se encontraron dígitos en el valor
-    missing_delimiter,///< Falta delimitador de cierre (']' o '#')
-    missing_B,        ///< Falta carácter 'B' antes de la base
+    empty_or_null,      ///< String vacío, nullptr o demasiado corto (< 4 chars)
+    invalid_prefix,     ///< Prefijo inválido (esperado: "d[", "di
+                        ///< g#", "d#", "dig[")
+    invalid_digit,      ///< Carácter no numérico en el valor del dígito
+    no_digits,          ///< No se encontraron dígitos en el valor
+    missing_delimiter,  ///< Falta delimitador de cierre (']' o '#')
+    missing_B,          ///< Falta carácter 'B' antes de la base
     invalid_base_digit, ///< Carácter no numérico en la base
-    no_base_digits,   ///< No se encontraron dígitos en la base
-    base_mismatch,    ///< Base leída no coincide con la base template B
-    unknown           ///< Error desconocido (no usado actualmente)
+    no_base_digits,     ///< No se encontraron dígitos en la base
+    base_mismatch,      ///< Base leída no coincide con la base template B
+    unknown             ///< Error desconocido (no usado actualmente)
   };
 
   template <std::uint64_t B>
@@ -95,7 +96,7 @@ namespace NumRepr {
      *          - uint8_t → int16_t
      *          - uint16_t → int32_t
      *          - uint32_t → int64_t
-     * @note Usado en normaliza() para manejar valores negativos correctamente
+     * @note Usado en normalize() para manejar valores negativos correctamente
      * @example typename dig_t<10>::nextsz_int_t es int16_t
      */
     using nextsz_int_t = typename type_traits::nextsz_SInt_for_UInt_t<uint_t>;
@@ -105,7 +106,7 @@ namespace NumRepr {
      * @details Formato: [cociente, resto] para operaciones que producen dos valores
      * @note Usado extensivamente en mult() para devolver carry y resultado
      */
-    using uintspair = std::array<uint_t, 2>;
+    using uintspair = typename std::array<uint_t, 2>;
     
     /**
      * @brief Par de dígitos dig_t - actualmente NO usado
@@ -144,6 +145,7 @@ namespace NumRepr {
      * 
      * @note ESTRATEGIA ANTI-OVERFLOW:
      *       - Si B > √(MAX_uint_t): promociona a nextsz_uint_t antes de multiplicar
+     *                               Otra posible estrategia es usar `mulmod`
      *       - Si B ≤ √(MAX_uint_t): multiplica directamente en uint_t
      * 
      * @note Evaluada completamente en tiempo de compilación (consteval)
@@ -153,21 +155,13 @@ namespace NumRepr {
     template <uint_t n, uint_t m>
       requires((n < B) && (m < B))
     static consteval uintspair mult() noexcept {
-      if constexpr (B > type_traits::sqrt_max<uint_t>()) {
-        constexpr nextsz_uint_t sup_n{n};
-        constexpr nextsz_uint_t sup_m{m};
-        constexpr nextsz_uint_t result{sup_n * sup_m};
-        constexpr uint_t ret_1{result / B};
-        constexpr uint_t ret_0{result % B};
-        constexpr uintspair ret{ret_1, ret_0};
-        return ret;
-      } else {
-        constexpr uint_t result{n * m};
-        constexpr uint_t ret_1{result / B};
-        constexpr uint_t ret_0{result % B};
-        constexpr uintspair ret{ret_1, ret_0};
-        return ret;
-      }
+      constexpr nextsz_uint_t sup_n{n};
+      constexpr nextsz_uint_t sup_m{m};
+      constexpr nextsz_uint_t result{sup_n * sup_m};
+      constexpr uint_t ret_1{static_cast<uint_t>(result / B)};
+      constexpr uint_t ret_0{static_cast<uint_t>(result % B)};
+      constexpr uintspair ret{ret_1, ret_0};
+      return ret;
     }
 
   public:
@@ -261,7 +255,7 @@ namespace NumRepr {
      * @see mult_inv() - calcula el inverso multiplicativo
      */
     consteval static bool isPrime() noexcept {
-      return AuxFunc::isPrime(static_cast<std::size_t>(B));
+      return AuxFunc::LUT::isPrime_ct(static_cast<std::size_t>(B));
     }
 
     // =========================================================================
@@ -319,6 +313,26 @@ namespace NumRepr {
 
   private:
     // =========================================================================
+    // HELPER PARA INVERSO MULTIPLICATIVO - ALGORITMO EXTENDIDO DE EUCLIDES
+    // =========================================================================
+    /**
+     * @brief Helper que calcula los coeficientes de la identidad de Bézout.
+     * @return std::array<nextsz_int_t, 3> conteniendo {g, x, y} tal que a*x + b*y = g = gcd(a, b).
+    */
+    constexpr static std::array<nextsz_int_t, 3> bezout_coeffs(nextsz_int_t a, nextsz_int_t b) noexcept {
+        nextsz_int_t x = 1, y = 0;
+        nextsz_int_t x1 = 0, y1 = 1;
+        nextsz_int_t a1 = a, b1 = b;
+        while (b1) {
+            nextsz_int_t q = a1 / b1;
+            std::tie(a1, b1) = std::make_tuple(b1, a1 - q * b1);
+            std::tie(x, x1) = std::make_tuple(x1, x - q * x1);
+            std::tie(y, y1) = std::make_tuple(y1, y - q * y1);
+        }
+        return {a1, x, y};
+    }
+
+    // =========================================================================
     // FUNCIÓN NORMALIZA - Reducción módulo B desde cualquier entero
     // =========================================================================
     
@@ -339,57 +353,37 @@ namespace NumRepr {
      * @note CORRECCIÓN PARA NEGATIVOS: Si x < 0, suma ⌈|x|/B⌉×B hasta x ≥ 0
      * @note Método estático fundamental para toda operación aritmética
      * 
-     * @example normaliza(-7) en base 10 → 3 (porque -7 ≡ 3 (mod 10))
-     * @example normaliza(23) en base 10 → 3
+     * @example normalize(-7) en base 10 → 3 (porque -7 ≡ 3 (mod 10))
+     * @example normalize(23) en base 10 → 3
      */
     template <type_traits::integral_c Int_t>
-    constexpr static inline uint_t normaliza(Int_t arg) noexcept {
+    constexpr static inline uint_t normalize(Int_t arg) noexcept {
       if constexpr (std::is_same_v<Int_t, uint_t>) { return (arg % B); }
       else if constexpr (std::is_signed_v<Int_t>) {
-        if constexpr (
-            type_traits::maxbase<Int_t>() >= type_traits::maxbase<nextsz_int_t>()
-        ) {
-          constexpr Int_t sint_0{0};
-          constexpr Int_t sint_B{B};
-          Int_t cparg{arg};
-          if (arg < sint_0) {
-            Int_t coc{(-arg) / sint_B};
-            coc *= sint_B;
-            cparg += coc;
-            if (cparg < 0)
-              cparg += sint_B;
-            if (cparg >= sint_B)
-              cparg -= sint_B;
-          }
-          else { cparg %= sint_B; }
-			return static_cast<uint_t>(cparg);
-        } else {
-          constexpr nextsz_int_t sint_0{0};
-          constexpr nextsz_int_t sint_B{B};
-          nextsz_int_t cparg{arg};
-          if (arg < sint_0) {
-            nextsz_int_t coc{(-arg) / sint_B};
-            coc *= sint_B;
-            cparg += coc;
-            if (cparg < 0)
-              cparg += sint_B;
-            if (cparg >= sint_B)
-              cparg -= sint_B;
-          } else { cparg %= sint_B; }
-          
-          return static_cast<uint_t>(cparg);
+        // Usamos un tipo de cálculo que sea seguro para la operación de módulo,
+        // el más grande entre el tipo de entrada y nuestro nextsz_int_t.
+        using calc_t = std::conditional_t<(sizeof(Int_t) > sizeof(nextsz_int_t)), Int_t, nextsz_int_t>;
+
+        calc_t temp_arg = arg;
+        calc_t temp_B = B;
+        
+        calc_t result = temp_arg % temp_B;
+
+        if (result < 0) {
+            result += temp_B;
         }
+        return static_cast<uint_t>(result);
       } else {
         if constexpr (maxbase<Int_t>() < maxbase<uint_t>()) {
           constexpr nextsz_uint_t uint_B{B};
           nextsz_uint_t cparg{arg};
           if (arg >= uint_B) { cparg %= uint_B; }
-			return static_cast<uint_t>(cparg);
+			    return static_cast<uint_t>(cparg);
         } else {
           constexpr Int_t uint_B{B};
           Int_t cparg{arg};
           if (arg >= uint_B) { cparg %= uint_B; }
-			return static_cast<uint_t>(cparg);
+			    return static_cast<uint_t>(cparg);
         }
       }
     }
@@ -408,7 +402,7 @@ namespace NumRepr {
      * @example dig_t<10>(-7) → valor 3 (porque -7 ≡ 3 (mod 10))
      */
     template <type_traits::integral_c Int_t>
-    constexpr dig_t(Int_t arg) noexcept : m_d(normaliza<Int_t>(arg)) {}
+    constexpr dig_t(Int_t arg) noexcept : m_d(normalize<Int_t>(arg)) {}
     
     /**
      * @brief Constructor de copia (generado por defecto)
@@ -480,7 +474,7 @@ namespace NumRepr {
      * ```
      */
     template <auto Arr>
-    [[nodiscard]] static inline std::expected<dig_t, parse_error_t>
+    [[nodiscard]] consteval static inline std::expected<dig_t, parse_error_t>
     from_array_ct() noexcept;
 
     // =========================================================================
@@ -493,13 +487,13 @@ namespace NumRepr {
      * @param a Valor a asignar
      * @return Referencia a *this
      * @note ANTI-AUTOASIGNACIÓN: Si Int_t es uint_t, verifica &a != &m_d
-     * @note Normaliza automáticamente mediante normaliza<Int_t>(a)
+     * @note Normaliza automáticamente mediante normalize<Int_t>(a)
      */
     template <type_traits::integral_c Int_t>
     constexpr const dig_t &operator=(const Int_t &a) noexcept {
       if constexpr (std::is_same_v<Int_t, uint_t>) {
-        if (&a != &m_d) { m_d = normaliza<Int_t>(a); }
-      } else { m_d = normaliza<Int_t>(a); }
+        if (&a != &m_d) { m_d = normalize<Int_t>(a); }
+      } else { m_d = normalize<Int_t>(a); }
       return (*this);
     }
     
@@ -565,11 +559,13 @@ namespace NumRepr {
      * @see isPrime() para verificar si ℤ/Bℤ es un cuerpo
      */
     constexpr bool is_unit() const noexcept {
-      if constexpr (isPrime()) {
+      if constexpr (AuxFunc::LUT::isPrime_ct<B>()) {
         if (!is_0()) { return true; } 
         else { return false; }
       } else {
-        if (is_1()) return true;
+        if (is_0()) return false;
+        else if (is_1()) return true;
+        else if (is_Bm1()) return true;
         else if (std::gcd(B, m_d) != ui_1()) return false;
         else return true;
       }
@@ -592,97 +588,49 @@ namespace NumRepr {
      * @example En ℤ/6ℤ: 2 es divisor de 0 porque 2×3 ≡ 0 (mod 6)
      */
     constexpr bool is_0_divisor() const noexcept {
-      if constexpr (isPrime()) {
+      if constexpr (AuxFunc::LUT::isPrime_ct<B>()) {
         if (is_0()) { return true; } 
         else { return false; }
       } else {
         if (is_0()) return true;
+        else if (is_1()) return false;
+        else if (is_Bm1()) return false;
         else if (std::gcd(B, m_d) != ui_1()) return true;
         else return false;
       }
     }
 
     /**
-     * @brief Calcula el inverso multiplicativo del dígito si es una unidad
-     * @return Dígito b tal que (*this) × b ≡ 1 (mod B)
-     * @note Si no es unidad, devuelve dig_0() (comportamiento por defecto)
+     * @brief Calcula el inverso multiplicativo del dígito si es una unidad.
+     * @return Dígito b tal que (*this) × b ≡ 1 (mod B).
+     * @note Si no es unidad, devuelve dig_0().
      * 
-     * @details ALGORITMO ACTUAL (INEFICIENTE): Búsqueda exhaustiva entre
-     *          todos los candidatos que son unidades, hasta encontrar uno
-     *          que multiplicado por (*this) dé 1 módulo B.
+     * @details ALGORITMO: Usa el Algoritmo Extendido de Euclides para encontrar
+     *          el gcd y el inverso en un solo paso. Si gcd(m_d, B) es 1, el
+     *          coeficiente de Bézout correspondiente es el inverso.
+     *
+     * @note COMPLEJIDAD: O(log B).
      * 
-     * @note OPTIMIZACIONES PRESENTES:
-     *       - Si m_d == 1: inverso es 1 → O(1)
-     *       - Si m_d == B-1: inverso es B-1 (porque (B-1)² ≡ 1 (mod B)) → O(1)
-     *       - Caso general: itera sobre [2, B-1] comprobando is_unit() → O(B × log B)
-     * 
-     * @warning INEFICIENCIA CRÍTICA (caso general):
-     *          Complejidad O(B × log B) donde:
-     *          - Itera hasta B-1 candidatos (bucle for)
-     *          - Cada iteración llama is_unit() → std::gcd() → O(log B)
-     *          - Cada iteración hace multiplicación y comparación
-     *          
-     *          IMPACTO:
-     *          - B = 256: ~2000 operaciones
-     *          - B = 65536: ~1 millón de operaciones
-     *          - B = 2³²: IMPRACTICABLE (billones de operaciones)
-     * 
-     * @warning BUG POTENCIAL en línea "for (dig_t index(2); !is_Bm1(); ++index)":
-     *          La condición !is_Bm1() NO verifica index, verifica *this.
-     *          Debería ser "!index.is_Bm1()" → bucle infinito si m_d == B-1.
-     *          Actualmente funciona por casualidad gracias al check previo.
-     * 
-     * @warning MEJORAS PROPUESTAS (urgentes para bases grandes):
-     *          1. ALGORITMO EXTENDIDO DE EUCLIDES: O(log B)
-     *             Calcula inverso directamente sin búsqueda:
-     *             ```cpp
-     *             // Extended GCD: ax + By = gcd(a,B) = 1
-     *             // Devuelve x tal que ax ≡ 1 (mod B)
-     *             ```
-     * 
-     *          2. TABLA PRECALCULADA (compile-time):
-     *             ```cpp
-     *             static constexpr std::array<uint_t, B> inv_table = 
-     *                 generate_inverse_table<B>();
-     *             return dig_t(inv_table[m_d]);
-     *             ```
-     *             Complejidad: O(1) runtime, O(B log B) compile-time
-     * 
-     *          3. EXPONENCIACIÓN MODULAR (si B es primo):
-     *             Por Pequeño Teorema de Fermat: a^(B-2) ≡ a⁻¹ (mod B)
-     *             Complejidad: O(log B) usando exponenciación rápida
-     * 
-     * @note PRECONDICIÓN IMPLÍCITA: is_unit() debería ser true
-     * @note POSTCONDICIÓN: Si is_unit(), entonces (*this) * mult_inv() == 1
-     * 
-     * @example En ℤ/7ℤ: mult_inv() de 3 es 5 porque 3×5 = 15 ≡ 1 (mod 7)
-     * @example En ℤ/10ℤ: 2 no tiene inverso → devuelve 0
-     * @example En ℤ/256ℤ: Puede tardar ~2000 operaciones en caso general
-     * 
-     * @see is_unit() para verificar si existe inverso válido
+     * @see is_unit() para verificar si existe inverso (aunque no es necesario llamarlo antes).
      */
     constexpr dig_t mult_inv() const noexcept {
-      if (is_unit()) {
-        if (is_1()) return dig_1();
-        else if (is_Bm1()) return dig_max();
-        else {
-          // OPTIMIZACIÓN: Comprobar gcd inline en lugar de llamar index.is_unit()
-          // Evita repetir todo el ciclo for de is_unit() en cada iteración
-          for (dig_t index(2); !index.is_Bm1(); ++index) {
-            // index es unidad si gcd(B, index.m_d) == 1
-            if constexpr (isPrime()) {
-              // Si B es primo, todos los índices [2, B-1] son unidades
-              if (((*this) * index).is_1()) return index;
-            } else {
-              // Si B es compuesto, verificar gcd inline
-              if (std::gcd(B, index.m_d) == ui_1()) {
-                if (((*this) * index).is_1()) return index;
-              }
-            }
-          }
-          return dig_0();
-        }
-      } else return dig_0();
+      // El caso 0 no es una unidad, y el algoritmo de euclides podría tener
+      // comportamiento indefinido con 0.
+      if (is_0()) {
+        return dig_0();
+      }
+
+      // Calcula gcd(m_d, B) y los coeficientes de Bézout en un solo paso.
+      auto const& [g, x, y] = bezout_coeffs(static_cast<nextsz_int_t>(m_d), ssi_B());
+
+      // Existe un inverso si y solo si el gcd es 1.
+      if (g == 1) {
+        // El constructor de dig_t se encarga de normalizar 'x' si es negativo.
+        return dig_t(x);
+      } else {
+        // No es una unidad, no hay inverso.
+        return dig_0();
+      }
     }
 
     /**
@@ -730,55 +678,28 @@ namespace NumRepr {
      * @see sum_digs() para obtener el dígito de la suma (sin carry)
      */
     constexpr static dig_t sum_carry(dig_t arg_1, dig_t arg_2) noexcept {
-      if constexpr (B <= type_traits::middle_max<uint_t>()) { // B <= MID
-        if constexpr ((B % 2) == 0) { /// B PAR
-          constexpr uint_t Bdiv2{B / 2};
-          /// NOS ASEGURAMOS QUE ENTRE LOS DOS ARGUMENTOS 
-          /// NO SUPERAMOS EL MÁXIMO DEL TIPO UINT_T
-          if ((arg_1() < Bdiv2) && (arg_2() < Bdiv2)) { return dig_0(); } /// NO HAY ACARREO
-          else if ((arg_1() >= Bdiv2) && (arg_2() >= Bdiv2)) { return dig_1(); } /// HAY ACARREO
-          else if (arg_1() >= B - arg_2()) { return dig_1(); } /// HAY ACARREO (CONDICIÓN LÍMITE)
-          else { return dig_0(); } /// NO HAY ACARREO (CONDICIÓN LÍMITE)
-        } else { // B IMPAR
-          constexpr uint_t Bdiv2_1{B / 2};
-          constexpr uint_t Bdiv2_2{(B / 2) + 1};
-          /// NOS ASEGURAMOS QUE ENTRE LOS DOS ARGUMENTOS 
+      if constexpr ((B % 2) == 0) { // B PAR
+        constexpr nextsz_uint_t Bdiv2{B / 2};
+        /// NOS ASEGURAMOS QUE ENTRE LOS DOS ARGUMENTOS 
+        /// NO SUPERAMOS EL MÁXIMO DEL TIPO UINT_T
+        if ((arg_1.get() < Bdiv2) && (arg_2.get() < Bdiv2)) { return dig_0(); } /// NO HAY ACARREO
+        else if ((arg_1.get() >= Bdiv2) && (arg_2.get() >= Bdiv2)) { return dig_1(); } /// HAY ACARREO
+        else if (arg_1.get() >= B - arg_2.get()) { return dig_1(); } /// HAY ACARREO (CONDICIÓN LÍMITE)
+        else { return dig_0(); } /// NO HAY ACARREO (CONDICIÓN LÍMITE)
+      } else { // B IMPAR
+        constexpr nextsz_uint_t Bdiv2_1{B / 2};
+        constexpr nextsz_uint_t Bdiv2_2{(B / 2) + 1};
+          /// NOS ASEGURAMOS QUE ENTRE LOS DOS ARGUMENTOS
           /// NO SUPERAMOS EL MÁXIMO DEL TIPO UINT_T
           /// SON DOS CONDICIONES SIMÉTRICAS
-          if (((arg_1() < Bdiv2_1) && (arg_2() < Bdiv2_2)) ||
-              ((arg_1() < Bdiv2_2) && (arg_2() < Bdiv2_1)))  /// NO HAY ACARREO 
-            { return dig_0(); }
-          else if (((arg_1() >= Bdiv2_1) && (arg_2() >= Bdiv2_2)) ||
-                   ((arg_1() >= Bdiv2_2) && (arg_2() >= Bdiv2_1)))  /// HAY ACARREO 
-            { return dig_1(); }
-          else if (arg_1() >= B - arg_2()) { return dig_1(); } /// HAY ACARREO (CONDICIÓN LÍMITE)
-          else { return dig_0(); } /// NO HAY ACARREO (CONDICIÓN LÍMITE)
-        }
-      } else { // B > MID
-        if constexpr ((B % 2) == 0) { // B PAR
-          constexpr nextsz_uint_t Bdiv2{B / 2};
-          /// NOS ASEGURAMOS QUE ENTRE LOS DOS ARGUMENTOS 
-          /// NO SUPERAMOS EL MÁXIMO DEL TIPO UINT_T
-          if ((arg_1() < Bdiv2) && (arg_2() < Bdiv2)) { return dig_0(); } /// NO HAY ACARREO
-          else if ((arg_1() >= Bdiv2) && (arg_2() >= Bdiv2)) { return dig_1(); } /// HAY ACARREO
-          else if (arg_1() >= B - arg_2()) { return dig_1(); } /// HAY ACARREO (CONDICIÓN LÍMITE)
-          else { return dig_0(); } /// NO HAY ACARREO (CONDICIÓN LÍMITE)
-        }
-        else { // B IMPAR
-          constexpr nextsz_uint_t Bdiv2_1{B / 2};
-          constexpr nextsz_uint_t Bdiv2_2{(B / 2) + 1};
-            /// NOS ASEGURAMOS QUE ENTRE LOS DOS ARGUMENTOS
-            /// NO SUPERAMOS EL MÁXIMO DEL TIPO UINT_T
-            /// SON DOS CONDICIONES SIMÉTRICAS
-          if (((arg_1() < Bdiv2_1) && (arg_2() < Bdiv2_2)) ||
-              ((arg_1() < Bdiv2_2) && (arg_2() < Bdiv2_1)))  /// NO HAY ACARREO
-            { return dig_0(); }
-          else if (((arg_1() >= Bdiv2_1) && (arg_2() >= Bdiv2_2)) ||
-                   ((arg_1() >= Bdiv2_2) && (arg_2() >= Bdiv2_1)))  /// HAY ACARREO
-            { return dig_1(); }
-          else if (arg_1() >= B - arg_2()) { return dig_1(); } /// HAY ACARREO (CONDICIÓN LÍMITE)
-          else { return dig_0(); } /// NO HAY ACARREO (CONDICIÓN LÍMITE)
-        }
+        if (((arg_1.get() < Bdiv2_1) && (arg_2.get() < Bdiv2_2)) ||
+            ((arg_1.get() < Bdiv2_2) && (arg_2.get() < Bdiv2_1)))  /// NO HAY ACARREO
+          { return dig_0(); }
+        else if (((arg_1.get() >= Bdiv2_1) && (arg_2.get() >= Bdiv2_2)) ||
+                 ((arg_1.get() >= Bdiv2_2) && (arg_2.get() >= Bdiv2_1)))  /// HAY ACARREO
+          { return dig_1(); }
+        else if (arg_1.get() >= B - arg_2.get()) { return dig_1(); } /// HAY ACARREO (CONDICIÓN LÍMITE)
+        else { return dig_0(); } /// NO HAY ACARREO (CONDICIÓN LÍMITE)
       }
     }
 
@@ -789,8 +710,8 @@ namespace NumRepr {
     // los operadores & y | se interpretan como MIN y MAX respectivamente.
     // 
     // EQUIVALENCIA CON LÓGICA BOOLEANA (cuando dígitos ∈ {0,1}):
-    // - a & b ≡ min(a,b) ≡ a AND b
-    // - a | b ≡ max(a,b) ≡ a OR b
+    // - a & b ≡ min(a,b) ≡ a AND b  ≡ a && b
+    // - a | b ≡ max(a,b) ≡ a OR b ≡ a || b
     // 
     // Para dígitos generales en [0, B-1], min/max es la generalización natural.
     // =========================================================================
@@ -1199,7 +1120,7 @@ namespace NumRepr {
     template <type_traits::integral_c Int_t> constexpr 
     bool operator==(Int_t rhs) noexcept {
       const dig_t &lhs{*this};
-      return (lhs.m_d == normaliza<Int_t>(rhs));
+      return (lhs.m_d == normalize<Int_t>(rhs));
     }
 
     /**
@@ -1229,7 +1150,7 @@ namespace NumRepr {
     template <type_traits::integral_c Int_t> constexpr 
     std::weak_ordering operator<=>(Int_t rhs) const noexcept {
       const dig_t &lhs{*this};
-      const uint_t rhs_B{normaliza<Int_t>(rhs)};
+      const uint_t rhs_B{normalize<Int_t>(rhs)};
       return ((lhs() < rhs_B)   ? std::weak_ordering::less
                                 : (lhs() > rhs_B) ? std::weak_ordering::greater
                                                   : std::weak_ordering::equivalent);
@@ -1308,14 +1229,14 @@ namespace NumRepr {
     template <type_traits::integral_c Int_t> constexpr 
     const dig_t &operator+=(Int_t arg) noexcept {
       if constexpr (B >= type_traits::middle_max<uint_t>()) {
-        const nextsz_uint_t arg1{normaliza<Int_t>(arg)};
+        const nextsz_uint_t arg1{normalize<Int_t>(arg)};
         nextsz_uint_t arg2{m_d};
         arg2 += arg1;
         if (arg2 >= static_cast<Int_t>(B)) arg2 -= static_cast<Int_t>(B);
         m_d = static_cast<uint_t>(arg2);
         return (*this);
       } else {
-        const uint_t arg1{normaliza<Int_t>(arg)};
+        const uint_t arg1{normalize<Int_t>(arg)};
         uint_t arg2{m_d};
         arg2 += arg1;
         if (arg2 >= static_cast<Int_t>(B)) arg2 -= static_cast<Int_t>(B);
@@ -1380,7 +1301,7 @@ namespace NumRepr {
      */
     template <type_traits::integral_c Int_t> constexpr
     const dig_t &operator-=(Int_t arg) noexcept {
-      nextsz_int_t tmp{normaliza<Int_t>(arg)};
+      nextsz_int_t tmp{normalize<Int_t>(arg)};
       nextsz_int_t este{m_d};
       este -= tmp;
       if (este < static_cast<nextsz_int_t>(0)) este += ssi_B();
@@ -1456,7 +1377,7 @@ namespace NumRepr {
      */
     template <type_traits::integral_c Int_t> constexpr
     const dig_t &operator*=(Int_t arg) noexcept {
-      const Int_t tmp{normaliza<Int_t>(arg)};
+      const Int_t tmp{normalize<Int_t>(arg)};
       if constexpr (std::is_signed_v<Int_t>) { /// TIPO CON SIGNO
         if constexpr (sizeof(Int_t) > sizeof(uint_t)) { /// TIPO ENTERO MAYOR QUE UINT_T
           using NEXT2SZ_SINT_T = type_traits::nextsz_SInt_for_SInt_t<Int_t>;
@@ -1569,7 +1490,7 @@ namespace NumRepr {
      */
     template <type_traits::integral_c Int_t> constexpr
     const dig_t &operator/=(Int_t arg) noexcept {
-      uint_t cparg{normaliza<Int_t>(arg)};
+      uint_t cparg{normalize<Int_t>(arg)};
       dig_t tmp{cparg};
       (*this) /= tmp;
       return (*this);
@@ -1625,7 +1546,7 @@ namespace NumRepr {
      */
     template <type_traits::integral_c Int_t> constexpr
     const dig_t &operator%=(Int_t arg) noexcept {
-      dig_t cparg{normaliza<Int_t>(arg)};
+      dig_t cparg{normalize<Int_t>(arg)};
       if (cparg != dig_0()) (*this) %= cparg;
       return (*this);
     }
@@ -1920,7 +1841,7 @@ namespace NumRepr {
     template <type_traits::integral_c Int_type> constexpr
     dig_t operator+(Int_type arg) const noexcept { 
         dig_t ret(*this); 
-        ret += normaliza<Int_type>(arg); 
+        ret += normalize<Int_type>(arg); 
         return ret; 
     }
 
@@ -1928,7 +1849,7 @@ namespace NumRepr {
     template <type_traits::integral_c Int_type> constexpr
     dig_t operator-(Int_type arg) const noexcept { 
         dig_t ret(*this); 
-        const dig_t tmp(normaliza<Int_type>(arg)); 
+        const dig_t tmp(normalize<Int_type>(arg)); 
         ret -= tmp; 
         return ret; 
     }
@@ -1937,7 +1858,7 @@ namespace NumRepr {
     template <type_traits::integral_c Int_type> constexpr
     dig_t operator*(Int_type arg) const noexcept { 
         dig_t ret(*this); 
-        const dig_t tmp(normaliza<Int_type>(arg)); 
+        const dig_t tmp(normalize<Int_type>(arg)); 
         ret *= tmp; return ret; 
     }
     
@@ -1977,7 +1898,7 @@ namespace NumRepr {
     constexpr
     dig_t operator/(Int_type arg) const noexcept { 
       dig_t ret(*this); 
-      const dig_t cparg(normaliza<Int_type>(arg)); 
+      const dig_t cparg(normalize<Int_type>(arg)); 
       if (cparg != dig_0()) ret /= cparg; 
       return ret; 
     }
@@ -2016,7 +1937,7 @@ namespace NumRepr {
     constexpr
     dig_t operator%(Int_type arg) const noexcept { 
       dig_t ret(*this); 
-      const dig_t cparg(normaliza<Int_type>(arg)); 
+      const dig_t cparg(normalize<Int_type>(arg)); 
       if (cparg != dig_0()) ret %= cparg; 
       return ret; 
     }
@@ -3301,7 +3222,7 @@ namespace NumRepr {
     }
   }
 
-    /// SOBRECARGAS DE LOS OPERADORES DE FLUJO
+  /// SOBRECARGAS DE LOS OPERADORES DE FLUJO
   template <std::uint64_t Base>
     requires(Base > 1)
   std::istream &operator>>(std::istream &is, dig_t<Base> &arg) {
@@ -3518,6 +3439,62 @@ namespace NumRepr {
   }
 
   /** @} */ // end of make_digit group
+   
+  /**
+   * @defgroup simple math functions to extend cmath group
+   * @{
+   * 
+   * @brief `max`, `min` y otras
+   * 
+   * @details Esta familia proporciona sobrecargas de `std::max()` y `std::min()`:
+   * 
+   */
+
+  /**
+   * @brief función max para una cantidad variable de dígitos de la misma base
+   * @ingroup max(dig_t<Base>...)
+   * @tparam Base Base del sistema numérico (debe coincidir con la del string) 
+   * @note Para casos donde la base es dinámica, se necesitaría usar std::variant
+   *       con todas las bases posibles, lo cual es poco práctico.
+   */
+  template <std::uint64_t Base, typename... Args>
+    requires 
+      (
+        (Base > 1)
+        &&
+        (Base <= std::numeric_limits<std::uint32_t>::max())
+        && 
+        (std::is_same_v<Args,dig_t<Base>> && ...)
+      )
+  [[nodiscard]] constexpr dig_t<Base> max(dig_t<Base> first, Args... args) noexcept {
+    dig_t<Base> current_max = first;
+    ((current_max = (args > current_max ? args : current_max)), ...);
+    return current_max;
+  }
+
+  /**
+   * @brief función min para una cantidad variable de dígitos de la misma base
+   * @ingroup min(dig_t<Base>...)
+   * @tparam Base Base del sistema numérico (debe coincidir con la del string) 
+   * @note Para casos donde la base es dinámica, se necesitaría usar std::variant
+   *       con todas las bases posibles, lo cual es poco práctico.
+   */
+  template <std::uint64_t Base, typename... Args>
+    requires 
+      (
+        (Base > 1)
+        &&
+        (Base <= std::numeric_limits<std::uint32_t>::max())
+        && 
+        (std::is_same_v<Args,dig_t<Base>> && ...)
+      )
+  [[nodiscard]] constexpr dig_t<Base> min(dig_t<Base> first, Args... args) noexcept {
+    dig_t<Base> current_max = first;
+    ((current_max = (args > current_max ? args : current_max)), ...);
+    return current_max;
+  }
+  /** @} */ // end of  simple math functions to extend cmath group
+  
 
 } // namespace NumRepr
 
