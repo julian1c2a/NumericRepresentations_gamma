@@ -10,10 +10,11 @@
 #include <expected>
 #include <string>
 #include <tuple>
+#include <numeric> // For std::gcd, std::iota#include <tuple>
 #include <algorithm>
 #include <cstddef>
 
-#include "core/internal/basic_types.hpp"
+#include "internal/basic_types.hpp"
 
 namespace NumRepr {
 
@@ -165,6 +166,7 @@ namespace NumRepr {
       constexpr uintspair ret{ret_1, ret_0};
       return ret;
     }
+
 
   public:
     // =========================================================================
@@ -613,7 +615,27 @@ namespace NumRepr {
      *
      * @note COMPLEJIDAD: O(log B).
      * 
-     * @see is_unit() para verificar si existe inverso (aunque no es necesario llamarlo antes).
+     * @warning MEJORAS PROPUESTAS (urgentes para bases grandes):
+     *          2. TABLA PRECALCULADA (compile-time):
+     *             ```cpp
+     *             static constexpr std::array<uint_t, B> inv_table = 
+     *                 generate_inverse_table<B>();
+     *             return dig_t(inv_table[m_d]);
+     *             ```
+     *             Complejidad: O(1) runtime, O(B log B) compile-time
+     * 
+     *          3. EXPONENCIACIÓN MODULAR (si B es primo):
+     *             Por Pequeño Teorema de Fermat: a^(B-2) ≡ a⁻¹ (mod B)
+     *             Complejidad: O(log B) usando exponenciación rápida
+     * 
+     * @note PRECONDICIÓN IMPLÍCITA: is_unit() debería ser true
+     * @note POSTCONDICIÓN: Si is_unit(), entonces (*this) * mult_inv() == 1
+     * 
+     * @example En ℤ/7ℤ: mult_inv() de 3 es 5 porque 3×5 = 15 ≡ 1 (mod 7)
+     * @example En ℤ/10ℤ: 2 no tiene inverso → devuelve 0
+     * @example En ℤ/256ℤ: Puede tardar ~2000 operaciones en caso general
+     * 
+     * @see is_unit() para verificar si existe inverso válido
      */
     constexpr dig_t mult_inv() const noexcept {
       // El caso 0 no es una unidad, y el algoritmo de euclides podría tener
@@ -704,7 +726,7 @@ namespace NumRepr {
         else { return dig_0(); } /// NO HAY ACARREO (CONDICIÓN LÍMITE)
       }
     }
-
+    
     // =========================================================================
     // OPERADORES LÓGICOS BITWISE - Interpretación como MIN/MAX
     // =========================================================================
@@ -741,8 +763,7 @@ namespace NumRepr {
      * @example dig_t<10>(3) & dig_t<10>(5) → dig_t<10>(3)
      * @example dig_t<2>(1) & dig_t<2>(1) → dig_t<2>(1) (AND booleano)
      */
-    constexpr 
-    dig_t operator&(const dig_t &arg) const noexcept { 
+    constexpr dig_t operator&(const dig_t &arg) const noexcept { 
         return (((*this) <= arg) ? (*this) : arg); 
     }
     
@@ -757,8 +778,7 @@ namespace NumRepr {
      * 
      * @see operator& para documentación completa
      */
-    constexpr 
-    dig_t operator&&(const dig_t &arg) const noexcept { 
+    constexpr dig_t operator&&(const dig_t &arg) const noexcept { 
         return (((*this) <= arg) ? (*this) : arg); 
     }
     
@@ -3488,12 +3508,12 @@ namespace NumRepr {
         &&
         (Base <= std::numeric_limits<std::uint32_t>::max())
         && 
-        (std::is_same_v<Args,dig_t<Base>> && ...)
+        (std::is_same_v<Args,dig_t<Base>> && ...) // All arguments must be dig_t<Base>
       )
   [[nodiscard]] constexpr dig_t<Base> min(dig_t<Base> first, Args... args) noexcept {
-    dig_t<Base> current_max = first;
-    ((current_max = (args > current_max ? args : current_max)), ...);
-    return current_max;
+    dig_t<Base> current_min = first;
+    ((current_min = (args < current_min ? args : current_min)), ...);
+    return current_min;
   }
   /** @} */ // end of  simple math functions to extend cmath group
   
