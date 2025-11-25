@@ -10,6 +10,8 @@
 #include <expected>
 #include <string>
 #include <tuple>
+#include <algorithm>
+#include <cstddef>
 
 #include "core/internal/basic_types.hpp"
 
