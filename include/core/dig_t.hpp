@@ -205,7 +205,7 @@ namespace NumRepr {
     }
     template <std::integral TInt_type = uint_t>
       requires(
-      !std::is_same_v<T, bool> &&
+      !std::is_same_v<TInt_type, bool> &&
       (
         static_cast <uint64_t> (numeric_limits<TInt_type>::max()) >= 
         static_cast <uint64_t> (B - 1)
@@ -224,7 +224,7 @@ namespace NumRepr {
 
     template <std::integral TInt_type = uint_t>
       requires(
-      !std::is_same_v<T, bool> &&
+      !std::is_same_v<TInt_type, bool> &&
       (
         static_cast <uint64_t> (numeric_limits<TInt_type>::max()) >= 
         static_cast <uint64_t> (B - 1)
