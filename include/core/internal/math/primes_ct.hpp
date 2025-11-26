@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <concepts>
 #include <type_traits>
+#include "core/internal/append/int128_ops.hpp"
 
 namespace NumRepr
 {
@@ -64,7 +65,7 @@ namespace NumRepr
 			template <uint64_t value>
 			constexpr bool is_prime_lt_65537_ct()
 			{
-				if constexpr (value < 2 || value >= 65537)
+				if constexpr (value < 2 || value >= 65536)
 					return false;
 				return is_prime_lt_65537_lut[value];
 			}

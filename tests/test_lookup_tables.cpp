@@ -1,7 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/benchmark/catch_benchmark_all.hpp>
 #include <catch2/generators/catch_generators_range.hpp>
-#include "core/internal/lookup_tables/math_utils.hpp"
+#include "core/internal/math/math_utils.hpp"
 #include "core/internal/lookup_tables/primes_ct.hpp"
 #include "core/internal/lookup_tables/primes.hpp"
 
