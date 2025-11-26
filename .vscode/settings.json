@@ -8,6 +8,15 @@
     "geminicodeassist.inlineSuggestions.nextEditPredictions": true,
     "geminicodeassist.updateChannel": "Default",
     "geminicodeassist.verboseLogging": true,
+    "cmake.cmakePath": "C:/Program Files/CMake/bin/cmake.exe",
+    "cmake.generator": "MinGW Makefiles",
+    "cmake.configureSettings": {
+        "CMAKE_C_COMPILER": "C:/msys64/ucrt64/bin/gcc.exe",
+        "CMAKE_MAKE_PROGRAM": "C:/msys64/ucrt64/bin/mingw32-make.exe"
+    },
+    "terminal.integrated.env.windows": {
+        "PATH": "C:\\msys64\\ucrt64\\bin;C:\\msys64\\usr\\bin;${env:PATH}"
+    },
     "cmake.options.statusBarVisibility": "visible",
     "diffEditor.codeLens": true,
     "cmakeIntelliSence.cmakePath": "c:\\msys64\\ucrt64\\bin\\cmake.exe",
