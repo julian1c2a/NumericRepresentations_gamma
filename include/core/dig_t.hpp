@@ -3207,23 +3207,29 @@ namespace NumRepr {
   /// FUNCIÓN DE PARSEO DESDE UNA CADENA DE CARACTERES CSTR (STATIC)
   template <std::uint64_t Base>
     requires(Base > 1)
-  constexpr std::expected<dig_t<Base>, parse_error_t> dig_t<Base>::from_cstr(const char *str) noexcept {
-    if (str == nullptr) {
-      return std::unexpected(parse_error_t::empty_or_null);
+  constexpr 
+  std::expected<dig_t<Base>, parse_error_t> 
+  dig_t<Base>::from_cstr(const char *str) noexcept {
+    
+    if (str == nullptr) { 
+      return std::unexpected(parse_error_t::empty_or_null); 
+    }
+    
+    std::size_t len = 0; 
+    
+    while (str[len] != '\0') { 
+      len++; 
+    }
+    
+    auto result = parse_impl(str, len, Base);
+
+    if (!result) { 
+      return std::unexpected(result.error()); 
     }
 
-    std::size_t len = 0;
-    while (str[len] != '\0')
-      len++;
-
-    auto [value, success] = parse_impl(str, len, Base);
-
-    if (!success) {
-      return std::unexpected(parse_error_t::unknown);
-    }
-
-    return dig_t<Base>(value);
+    return dig_t<Base>(*result);
   }
+
 
   /**
    * @brief Factory consteval para crear dig_t desde std::array SIN excepciones
@@ -3252,63 +3258,100 @@ namespace NumRepr {
    * @see from_string() para versión runtime sin excepciones
    * @see from_cstr() para versión constexpr sin excepciones
    */
-  template <std::uint64_t Base>
-    requires(Base > 1)
   template <auto Arr>
-  consteval std::expected<dig_t<Base>, parse_error_t>
+  consteval 
+  std::expected<dig_t<Base>, parse_error_t>
   dig_t<Base>::from_array_ct() noexcept {
     auto result = parse_impl_ct(Arr);
-    
-    if (result.has_value()) {
-      return dig_t<Base>(*result);
-    } else {
-      return std::unexpected(result.error());
-    }
+    if (result.has_value()) return dig_t<Base>(*result);
+    else return std::unexpected(result.error());
   }
 
   /// IMPLEMENTACIÓN DE LOS CONSTRUCTORES DESDE CADENA DE CARACTERES
   template <std::uint64_t Base>
     requires(Base > 1)
-  dig_t<Base>::dig_t(const std::string &str) noexcept {
-    auto result = from_string(str);
-    if (result) {
-      *this = *result;
-    } else {
-      // Si parsing falla, construir dig_t(0)
-      m_d = 0;
-    }
-  }
-
-  /// IMPLEMENTACIÓN DE LOS CONSTRUCTORES DESDE CADENA DE CARACTERES CSTR
-  template <std::uint64_t Base>
-    requires(Base > 1)
   constexpr dig_t<Base>::dig_t(const char *str) noexcept {
     auto result = from_cstr(str);
-    if (result) {
-      *this = *result;
-    } else {
-      // Si parsing falla o str==nullptr, construir dig_t(0)
-      m_d = 0;
-    }
+    if (result) *this = *result; else m_d = 0;
   }
 
-  /// SOBRECARGAS DE LOS OPERADORES DE FLUJO
   template <std::uint64_t Base>
     requires(Base > 1)
   std::istream &operator>>(std::istream &is, dig_t<Base> &arg) {
-    std::string input_str;
-    is >> input_str;
-
-    if (is.fail()) { return is; }
-
+    std::string input_str; is >> input_str;
+    if (is.fail()) return is;
     auto result = dig_t<Base>::from_string(input_str);
-    if (result) {
-      arg = *result;
-    } else {
-      is.setstate(std::ios::failbit);
-    }
-
+    if (result) arg = *result; else is.setstate(std::ios::failbit);
     return is;
+  }
+
+  template <std::uint64_t Base>
+    requires(Base > 1)
+  std::ostream &operator<<(std::ostream &os, dig_t<Base> arg) {
+    os << "d[" << static_cast<std::int64_t>(arg.get())
+       << "]B" << static_cast<std::int64_t>(Base);
+    return os;
+  }
+
+  namespace detail {
+    struct ParseResult {
+        std::uint64_t value;
+        std::uint64_t base;
+    };
+
+    consteval ParseResult parse_make_digit_str(std::string_view sv) {
+        if (!sv.starts_with("dig[")) throw "make_digit format error: must start with 'dig['";
+        constexpr auto end_of_prefix = 4;
+        const auto close_bracket_pos = sv.find(']', end_of_prefix);
+        if (close_bracket_pos == std::string_view::npos) throw "make_digit format error: missing ']'";
+        const auto b_pos = sv.find('B', close_bracket_pos);
+        if (b_pos == std::string_view::npos) throw "make_digit format error: missing 'B' for base";
+        const std::string_view value_sv = sv.substr(end_of_prefix, close_bracket_pos - end_of_prefix);
+        const std::string_view base_sv = sv.substr(b_pos + 1);
+        if (value_sv.empty()) throw "make_digit format error: value cannot be empty";
+        if (base_sv.empty()) throw "make_digit format error: base cannot be empty";
+        const auto value = type_traits::atoull(value_sv);
+        const auto base = type_traits::atoull(base_sv);
+        if (base <= 1) throw "make_digit error: base must be greater than 1";
+        return { .value = value, .base = base };
+    }
+  } 
+
+  template <fixed_string Str>
+  consteval auto make_digit() {
+      constexpr std::string_view sv = Str;
+      constexpr auto info = detail::parse_make_digit_str(sv);
+      return []<std::uint64_t Base, std::uint64_t Value>() {
+          static_assert(Base > 1, "Base must be > 1");
+          return dig_t<Base>(Value);
+      }.template operator()<info.base, info.value>();
+  }
+  
+  template <std::uint64_t Base, auto Arr>
+    requires(Base > 1)
+  [[nodiscard]] inline auto make_digit() noexcept 
+    -> std::expected<dig_t<Base>, parse_error_t> {
+    return dig_t<Base>::template from_array_ct<Arr>();
+  }
+
+  template <std::uint64_t Base>
+    requires(Base > 1)
+  [[nodiscard]] inline std::expected<dig_t<Base>, parse_error_t> 
+  make_digit(const std::string& str) noexcept {
+    return dig_t<Base>::from_string(str);
+  }
+
+  template <std::uint64_t Base>
+    requires(Base > 1)
+  [[nodiscard]] constexpr std::expected<dig_t<Base>, parse_error_t> 
+  make_digit(const char* str) noexcept {
+    return dig_t<Base>::from_cstr(str);
+  }
+
+  template <std::uint64_t Base, type_traits::integral_c Int_t>
+    requires(Base > 1)
+  constexpr dig_t<Base> make_digit(Int_t value) noexcept {
+    return dig_t<Base>(value);
   }
 
   /// IMPLEMENTACIÓN DEL OPERADOR DE SALIDA
