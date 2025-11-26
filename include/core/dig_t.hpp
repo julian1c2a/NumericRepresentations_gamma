@@ -2986,29 +2986,36 @@ namespace NumRepr {
      * @see from_string() para versión que lanza excepciones
      * @see from_cstr() para wrapper constexpr
      */
-    static constexpr 
-    std::pair<uint_t, bool> parse_impl(
+      static constexpr 
+      std::expected<uint_t, parse_error_t> parse_impl(
         const char *str, std::size_t size, 
-        std::uint64_t base_template) noexcept {
-      if (!str || size < 4) return {0, false};
+        std::uint64_t base_template
+      ) noexcept {
+      if (!str || size < 4) {
+        return std::unexpected(parse_error_t::empty_or_null);
+      }
 
-      // FSM 1: Parsear prefijo y detectar delimitadores
       auto prefix = parse_prefix_fsm(str, size);
-      if (!prefix) return {0, false};
+      if (!prefix) { 
+        return std::unexpected(prefix.error()); 
+      }
 
-      // FSM 2: Parsear número entre delimitadores
-      auto number = parse_number_fsm(str, size, prefix->next_pos, prefix->delimiter_close);
-      if (!number) return {0, false};
+      auto number = parse_number_fsm(
+        str, size, prefix->next_pos, prefix->delimiter_close
+      );
+      if (!number) { 
+        return std::unexpected(number.error()); 
+      }
 
-      // FSM 3: Parsear y validar base
-      auto base = parse_base_fsm(str, size, number->next_pos, base_template);
-      if (!base) return {0, false};
+      auto base = parse_base_fsm(
+        str, size, number->next_pos, base_template
+      );
+      if (!base) { 
+        return std::unexpected(base.error()); 
+      }
 
-      // NO normalizamos aquí - el constructor de dig_t ya lo hará
-      // Convertir a uint_t para el return
       uint_t numero_parseado = static_cast<uint_t>(number->value);
-
-      return {numero_parseado, true};
+      return numero_parseado;
     }
 
   public:
