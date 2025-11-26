@@ -3275,6 +3275,78 @@ namespace NumRepr {
   // ===========================================================================
   // FUNCIONES LIBRES - FACTORY FUNCTIONS
   // ===========================================================================
+
+  namespace detail {
+    struct ParseResult {
+        std::uint64_t value;
+        std::uint64_t base;
+    };
+
+    consteval ParseResult parse_make_digit_str(std::string_view sv) {
+        if (!sv.starts_with("dig[")) {
+            throw "make_digit format error: must start with 'dig['";
+        }
+        
+        constexpr auto end_of_prefix = 4; // length of "dig["
+        const auto close_bracket_pos = sv.find(']', end_of_prefix);
+        if (close_bracket_pos == std::string_view::npos) {
+            throw "make_digit format error: missing ']'";
+        }
+
+        const auto b_pos = sv.find('B', close_bracket_pos);
+        if (b_pos == std::string_view::npos) {
+            throw "make_digit format error: missing 'B' for base";
+        }
+
+        const std::string_view value_sv = sv.substr(end_of_prefix, close_bracket_pos - end_of_prefix);
+        const std::string_view base_sv = sv.substr(b_pos + 1);
+        
+        if (value_sv.empty()) {
+            throw "make_digit format error: value cannot be empty";
+        }
+        if (base_sv.empty()) {
+            throw "make_digit format error: base cannot be empty";
+        }
+
+        const auto value = type_traits::atoull(value_sv);
+        const auto base = type_traits::atoull(base_sv);
+
+        if (base <= 1) {
+            throw "make_digit error: base must be greater than 1";
+        }
+
+        return { .value = value, .base = base };
+    }
+  } // namespace detail
+
+  /**
+   * @brief Factory function para crear dig_t desde un string literal en tiempo de compilación, deduciendo la base.
+   * @tparam Str El string literal con el formato "dig[valor]Bbase".
+   * @return Un objeto dig_t<base> con el valor normalizado.
+   * @note Esta función es `consteval`, garantizando que toda la operación ocurre en tiempo de compilación.
+   * @note Un formato inválido resultará en un error de compilación.
+   * @example
+   * constexpr auto d = make_digit<"dig[25]B13">(); // d es dig_t<13> con valor 12
+   */
+  template <const auto& Str>
+  consteval auto make_digit() {
+      constexpr std::string_view sv = []() consteval {
+        if constexpr (std::is_array_v<std::remove_cvref_t<decltype(Str)>>) {
+            // para char[], string_view se calcula hasta el \0
+            return std::string_view(Str); 
+        } else {
+            // para std::array
+            return std::string_view(Str.data(), Str.size());
+        }
+      }();
+
+      constexpr auto info = detail::parse_make_digit_str(sv);
+      
+      return []<std::uint64_t Base, std::uint64_t Value>() {
+          static_assert(Base > 1, "Base must be > 1");
+          return dig_t<Base>(Value);
+      }.template operator()<info.base, info.value>();
+  }
   
   /**
    * @defgroup make_digit Factory functions para creación conveniente de dig_t

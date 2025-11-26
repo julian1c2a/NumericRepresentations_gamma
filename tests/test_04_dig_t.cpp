@@ -221,6 +221,26 @@ TEST_CASE("dig_t: I/O y Strings", "[core][dig_t][io]") {
         ss << display(d); // Debería imprimir "5" (65%10), no 'A' ni 5 (raw)
         CHECK(ss.str() == "5");
     }
+
+    SECTION("Factory 'make_digit' con deducción de base") {
+        constexpr auto d = make_digit<"dig[25]B13">();
+        
+        // El tipo debe ser dig_t<13>
+        STATIC_CHECK(std::is_same_v<decltype(d), const NumRepr::dig_t<13>>);
+        
+        // El valor debe ser 25 % 13 = 12
+        STATIC_CHECK(d.get() == 12);
+        
+        // Probamos con otra base
+        constexpr auto d2 = make_digit<"dig[10]B2">();
+        STATIC_CHECK(std::is_same_v<decltype(d2), const NumRepr::dig_t<2>>);
+        STATIC_CHECK(d2.get() == 0); // 10 % 2 = 0
+
+        // Un caso más
+        constexpr auto d3 = make_digit<"dig[100]B99">();
+        STATIC_CHECK(std::is_same_v<decltype(d3), const NumRepr::dig_t<99>>);
+        STATIC_CHECK(d3.get() == 1); // 100 % 99 = 1
+    }
 }
 
 // =============================================================================
