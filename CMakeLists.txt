@@ -88,6 +88,11 @@ add_executable(test_09_dig_t_algebra tests/test_09_dig_t_algebra.cpp)
 target_include_directories(test_09_dig_t_algebra PRIVATE include)
 target_link_libraries(test_09_dig_t_algebra PRIVATE Catch2::Catch2WithMain)
 
+# Test test_10_dig_t_io
+add_executable(test_10_dig_t_io tests/test_10_dig_t_io.cpp)
+target_include_directories(test_10_dig_t_io PRIVATE include)
+target_link_libraries(test_10_dig_t_io PRIVATE Catch2::Catch2WithMain)
+
 # ==========================================
 # REGISTRO CTEST
 # ==========================================
@@ -102,3 +107,4 @@ add_test(NAME test_06_dig_t_assignations COMMAND test_06_dig_t_assignations)
 add_test(NAME test_07_dig_t_conversions COMMAND test_07_dig_t_conversions)
 add_test(NAME test_08_dig_t_operadores COMMAND test_08_dig_t_operadores)
 add_test(NAME test_09_dig_t_algebra COMMAND test_09_dig_t_algebra)
+add_test(NAME test_10_dig_t_io COMMAND test_10_dig_t_io)
