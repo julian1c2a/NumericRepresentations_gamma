@@ -473,7 +473,8 @@ namespace NumRepr {
      * @note No lanza excepciones, usa std::expected para manejo de errores
      * @note Usa parse_impl internamente
      */
-    static std::expected<dig_t, parse_error_t> from_string(const std::string &str) noexcept;
+    static std::expected<dig_t, parse_error_t> 
+    from_string(const std::string &str) noexcept;
     
     /**
      * @brief Parsing desde C-string (versión static factory) SIN excepciones
@@ -3081,7 +3082,7 @@ namespace NumRepr {
       auto base { 
         parse_base_fsm(arr, size, number->next_pos, B);
       };
-      
+
       if (!base) { 
         return std::unexpected(base.error()); 
       }
@@ -3193,14 +3194,14 @@ namespace NumRepr {
   /// FUNCIÓN DE PARSEO DESDE UNA CADENA DE CARACTERES (STATIC)
   template <std::uint64_t Base>
     requires(Base > 1)
-  std::expected<dig_t<Base>, parse_error_t> dig_t<Base>::from_string(const std::string &str) noexcept {
-    auto [value, success] = parse_impl(str.c_str(), str.size(), Base);
+  std::expected<dig_t<Base>, parse_error_t> dig_t<Base>::from_string(
+    const std::string &str) noexcept {
 
-    if (!success) {
-      return std::unexpected(parse_error_t::unknown);
+    const auto result { parse_impl(str.c_str(), str.size(), Base) };
+    if (!result) { 
+      return std::unexpected(result.error()); 
     }
-
-    return dig_t<Base>(value);
+    return dig_t<Base>(*result);
   }
 
   /// FUNCIÓN DE PARSEO DESDE UNA CADENA DE CARACTERES CSTR (STATIC)
