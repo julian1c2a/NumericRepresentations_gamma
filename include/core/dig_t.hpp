@@ -233,8 +233,7 @@ namespace NumRepr {
       return static_cast<TInt_type>(m_d); 
     }
     
-    template <>
-    constexpr bool get<bool>() const noexcept { 
+    constexpr bool bool_get() const noexcept { 
       return is_not_0(); 
     }
 
