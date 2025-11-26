@@ -180,6 +180,46 @@ namespace NumRepr {
      * @note Conversión explícita - requiere static_cast<uint_t>(digit)
      */
     constexpr explicit operator uint_t() const noexcept { return m_d; }
+
+    if constexpr (!std::is_same_v<nextsz_uint_t, uint_t>) {
+      constexpr explicit operator nextsz_uint_t() const noexcept {
+        return static_cast<nextsz_uint_t>(m_d);
+      }
+    }
+
+    if constexpr (!std::is_same_v<size_t, uint_t> &&
+                  !std::is_same_v<size_t, nextsz_uint_t>) {
+      constexpr explicit operator size_t() const noexcept {
+        return static_cast<size_t>(m_d);
+      }
+    }
+
+    if constexpr (!std::is_same_v<uint32_t, uint_t> &&
+                  !std::is_same_v<uint32_t, nextsz_uint_t> &&
+                  !std::is_same_v<uint32_t, size_t>) {
+      constexpr explicit operator uint32_t() const noexcept {
+        return static_cast<uint32_t>(m_d);
+      }
+    }
+
+    if constexpr (!std::is_same_v<uint64_t, uint_t> &&
+                  !std::is_same_v<uint64_t, nextsz_uint_t> &&
+                  !std::is_same_v<uint64_t, size_t> &&
+                  !std::is_same_v<uint64_t, uint32_t>) {
+      constexpr explicit operator uint64_t() const noexcept {
+        return static_cast<uint64_t>(m_d);
+      }
+    }
+
+    if constexpr (!std::is_same_v<int64_t, uint_t> &&
+                  !std::is_same_v<int64_t, nextsz_uint_t> &&
+                  !std::is_same_v<int64_t, size_t> &&
+                  !std::is_same_v<int64_t, uint32_t> &&
+                  !std::is_same_v<int64_t, uint64_t>) {
+      constexpr explicit operator int64_t() const noexcept {
+        return static_cast<int64_t>(m_d);
+      }
+    }
     
     /**
      * @brief Obtiene el valor del dígito
@@ -188,15 +228,6 @@ namespace NumRepr {
      * @see operator()() para sintaxis alternativa (deprecated)
      */
     constexpr uint_t get() const noexcept { return m_d; }
-    
-    /**
-     * @brief Conversión explícita a nextsz_uint_t (tipo superior sin signo)
-     * @return Valor del dígito convertido a tipo superior
-     * @note Útil para operaciones que requieren más bits (evitar overflow)
-     */
-    constexpr explicit operator nextsz_uint_t() const noexcept { 
-        return static_cast<nextsz_uint_t>(m_d); 
-    }
     
     /**
      * @brief Conversión explícita a nextsz_int_t (tipo superior con signo)

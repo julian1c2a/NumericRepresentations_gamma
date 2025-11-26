@@ -68,6 +68,16 @@ add_executable(test_05_dig_t_constructors tests/test_05_dig_t_constructors.cpp)
 target_include_directories(test_05_dig_t_constructors PRIVATE include)
 target_link_libraries(test_05_dig_t_constructors PRIVATE Catch2::Catch2WithMain)
 
+# Test test_06_dig_t_assignations
+add_executable(test_06_dig_t_assignations tests/test_06_dig_t_assignations.cpp)
+target_include_directories(test_06_dig_t_assignations PRIVATE include)
+target_link_libraries(test_06_dig_t_assignations PRIVATE Catch2::Catch2WithMain)
+
+# Test test_07_dig_t_conversions
+add_executable(test_07_dig_t_conversions tests/test_07_dig_t_conversions.cpp)
+target_include_directories(test_07_dig_t_conversions PRIVATE include)
+target_link_libraries(test_07_dig_t_conversions PRIVATE Catch2::Catch2WithMain)
+
 # ==========================================
 # REGISTRO CTEST
 # ==========================================
@@ -78,3 +88,5 @@ add_test(NAME test_02_append COMMAND test_02_append)
 add_test(NAME test_03_core_internal COMMAND test_03_core_internal)
 add_test(NAME test_04_dig_t COMMAND test_04_dig_t)
 add_test(NAME test_05_dig_t_constructors COMMAND test_05_dig_t_constructors)
+add_test(NAME test_06_dig_t_assignations COMMAND test_06_dig_t_assignations)
+add_test(NAME test_07_dig_t_conversions COMMAND test_07_dig_t_conversions)
