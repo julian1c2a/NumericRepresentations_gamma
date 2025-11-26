@@ -3059,22 +3059,24 @@ namespace NumRepr {
     static constexpr std::expected<uint_t, parse_error_t> 
     parse_impl_ct(const std::array<char, N>& arr) noexcept {
       constexpr std::size_t size = N;
-      
-      // FSM 1: Parsear prefijo y detectar delimitadores
       auto prefix = parse_prefix_fsm(arr, size);
       if (!prefix) return std::unexpected(prefix.error());
-
-      // FSM 2: Parsear número entre delimitadores
-      auto number = parse_number_fsm(arr, size, prefix->next_pos, prefix->delimiter_close);
-      if (!number) return std::unexpected(number.error());
-
-      // FSM 3: Parsear y validar base
+      auto number = parse_number_fsm(
+        arr, size, prefix->next_pos, prefix->delimiter_close
+      );
+      if (!number) { 
+        return std::unexpected(number.error()); 
+      }
+      
       auto base = parse_base_fsm(arr, size, number->next_pos, B);
-      if (!base) return std::unexpected(base.error());
+      if (!base) { 
+        return std::unexpected(base.error()); 
+      }
 
-      // Normalización final (el constructor NO normaliza desde parse_impl_ct)
-      uint_t numero_final = static_cast<uint_t>(number->value % static_cast<nextsz_uint_t>(B));
-
+      uint_t numero_final { 
+        static_cast<uint_t>(number->value % static_cast<nextsz_uint_t>(B)) 
+      };
+      
       return numero_final;
     }
 
