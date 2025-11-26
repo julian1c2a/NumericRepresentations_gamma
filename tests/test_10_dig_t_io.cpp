@@ -111,8 +111,8 @@ TEST_CASE("dig_t: Parsing Compile-Time", "[core][dig_t][io][ct]") {
         // Valor normalizado: 25 % 13 = 12
         STATIC_CHECK(d.get() == 12);
         
-        // Otro caso
-        constexpr auto d2 = make_digit<fixed_string("d[10]B2")>();
+        // Otro caso: corregido a "dig[...]" porque la factoría literal es estricta
+        constexpr auto d2 = make_digit<fixed_string("dig[10]B2")>();
         STATIC_CHECK(std::is_same_v<decltype(d2), const dig_t<2>>);
         STATIC_CHECK(d2.get() == 0); // 10 es par -> 0
     }
