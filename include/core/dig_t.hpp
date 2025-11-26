@@ -1198,8 +1198,8 @@ namespace NumRepr {
     std::weak_ordering operator<=>(Int_t rhs) const noexcept {
       const dig_t &lhs{*this};
       const uint_t rhs_B{normalize<Int_t>(rhs)};
-      return ((lhs() < rhs_B)   ? std::weak_ordering::less
-                                : (lhs() > rhs_B) ? std::weak_ordering::greater
+      return ((lhs.get() < rhs_B)   ? std::weak_ordering::less
+                                : (lhs.get() > rhs_B) ? std::weak_ordering::greater
                                                   : std::weak_ordering::equivalent);
     }
 
