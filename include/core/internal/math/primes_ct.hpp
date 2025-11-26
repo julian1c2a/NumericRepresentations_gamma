@@ -75,12 +75,14 @@ namespace NumRepr
 			//------------------------------------------------------------------
 
 			// --- Miller-Rabin determinista constexpr para n < 2^64 ---
-			// Testigos fijos recomendados para n < 2^64:
-			static constexpr uint64_t miller_rabin_witnesses[]{
+			// Testigos fijos recomendados para n < 2^64.
+            // Usamos std::array para mayor seguridad y métodos constexpr.
+			static constexpr array<uint64_t, 25> miller_rabin_witnesses{{
 				2, 3, 5, 7, 11, 13, 17,
 				19, 23, 29, 31, 37, 41, 43,
 				47, 53, 59, 61, 67, 71, 73,
-				79, 83, 89, 97};
+				79, 83, 89, 97
+            }};
 
 			// Tipo para la descomposición MILLER-RABIN n-1 = d*2^s
 			struct DecompResult
@@ -213,33 +215,40 @@ namespace NumRepr
 			template <uint64_t n, uint64_t d, int s, size_t W = 0>
 			constexpr bool miller_rabin_ct()
 			{
-				constexpr size_t sz_miller_rabin_witnesses {
-					sizeof(miller_rabin_witnesses)
-				};
-				constexpr size_t num_witnesses_ind_0 {
-					sizeof(miller_rabin_witnesses[0])
-				};
-				constexpr size_t total_witnesses {
-					sz_miller_rabin_witnesses / num_witnesses_ind_0
-				};
+                // SIMPLIFICACIÓN: Usamos .size() directamente gracias a std::array
+				constexpr size_t total_witnesses = miller_rabin_witnesses.size();
                 
-				constexpr bool composite {
-					check_composite_ct<
-						n, 
-						miller_rabin_witnesses[W], 
-						d, 
-						s
-					>()
-				};
-                
+				// CAMBIO CRÍTICO: Validar límite ANTES de instanciar check_composite_ct
+                // Esto previene la recursión infinita y el acceso fuera de límites
 				if constexpr (W >= total_witnesses)
+				{
 					return true;
-				else if constexpr (miller_rabin_witnesses[W] >= n)
-					return true;
-				else if constexpr (composite)
-					return false;
+				}
 				else
-					return miller_rabin_ct<n, d, s, W + 1>();
+				{
+					// Ahora es seguro acceder a miller_rabin_witnesses[W]
+					if constexpr (miller_rabin_witnesses[W] >= n)
+					{
+						return true;
+					}
+					else
+					{
+						// Instanciar check_composite SOLO si estamos en rango y es necesario
+						constexpr bool composite {
+							check_composite_ct<
+								n, 
+								miller_rabin_witnesses[W], 
+								d, 
+								s
+							>()
+						};
+
+						if constexpr (composite)
+							return false;
+						else
+							return miller_rabin_ct<n, d, s, W + 1>();
+					}
+				}
 			}
 
 			// isPrime_ct principal
