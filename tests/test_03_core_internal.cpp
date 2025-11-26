@@ -1,7 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include "core/internal/basic_types.hpp"
-#include "core/internal/aux_func.hpp"
+#include "core/internal/AuxFunc.hpp"
 #include "core/internal/conversions.hpp"
 
 #include <array>

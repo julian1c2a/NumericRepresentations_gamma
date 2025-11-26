@@ -1,0 +1,11 @@
+[ 88%] Built target Catch2
+[ 90%] Built target Catch2WithMain
+[ 92%] Built target test_primes_compiletime_catch2
+[ 93%] Building CXX object CMakeFiles/test_lookup_tables.dir/tests/test_lookup_tables.cpp.obj
+D:\gdrive\numericrepresentations_gamma\tests\test_lookup_tables.cpp:5:10: fatal error: core/internal/lookup_tables/primes_ct.hpp: No such file or directory
+    5 | #include "core/internal/lookup_tables/primes_ct.hpp"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+mingw32-make[2]: *** [CMakeFiles\test_lookup_tables.dir\build.make:79: CMakeFiles/test_lookup_tables.dir/tests/test_lookup_tables.cpp.obj] Error 1
+mingw32-make[1]: *** [CMakeFiles\Makefile2:179: CMakeFiles/test_lookup_tables.dir/all] Error 2
+mingw32-make: *** [Makefile:100: all] Error 2

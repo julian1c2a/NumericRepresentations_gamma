@@ -132,7 +132,7 @@ TEST_CASE("dig_t: Operadores Aritméticos", "[core][dig_t][math]") {
 TEST_CASE("dig_t: Álgebra y Primalidad", "[core][dig_t][algebra]") {
     
     SECTION("Base Prima (B=7) -> Es un Cuerpo") {
-        CHECK(dig_t<7>::isPrime());
+        STATIC_CHECK(dig_t<7>::isPrime());
         
         dig_t<7> x(3);
         CHECK(x.is_unit()); // Todo elemento != 0 es unidad
@@ -144,7 +144,7 @@ TEST_CASE("dig_t: Álgebra y Primalidad", "[core][dig_t][algebra]") {
     }
 
     SECTION("Base Compuesta (B=10)") {
-        CHECK_FALSE(dig_t<10>::isPrime());
+        STATIC_CHECK(!dig_t<10>::isPrime());
         
         dig_t<10> x(3); // Coprimo con 10 -> Unidad
         CHECK(x.is_unit());
@@ -218,12 +218,12 @@ TEST_CASE("dig_t: I/O y Strings", "[core][dig_t][io]") {
         dig_t<10> d(65); // 'A' en ASCII si fuera char
         
         std::stringstream ss;
-        ss << display(d); // Debería imprimir "5" (65%10), no 'A' ni 5 (raw)
+        ss << display<10>(d); // Debería imprimir "5" (65%10), no 'A' ni 5 (raw)
         CHECK(ss.str() == "5");
     }
 
     SECTION("Factory 'make_digit' con deducción de base") {
-        constexpr auto d = make_digit<"dig[25]B13">();
+        constexpr auto d = make_digit<fixed_string("dig[25]B13")>();
         
         // El tipo debe ser dig_t<13>
         STATIC_CHECK(std::is_same_v<decltype(d), const NumRepr::dig_t<13>>);
@@ -232,12 +232,12 @@ TEST_CASE("dig_t: I/O y Strings", "[core][dig_t][io]") {
         STATIC_CHECK(d.get() == 12);
         
         // Probamos con otra base
-        constexpr auto d2 = make_digit<"dig[10]B2">();
+        constexpr auto d2 = make_digit<fixed_string("dig[10]B2")>();
         STATIC_CHECK(std::is_same_v<decltype(d2), const NumRepr::dig_t<2>>);
         STATIC_CHECK(d2.get() == 0); // 10 % 2 = 0
 
         // Un caso más
-        constexpr auto d3 = make_digit<"dig[100]B99">();
+        constexpr auto d3 = make_digit<fixed_string("dig[100]B99")>();
         STATIC_CHECK(std::is_same_v<decltype(d3), const NumRepr::dig_t<99>>);
         STATIC_CHECK(d3.get() == 1); // 100 % 99 = 1
     }

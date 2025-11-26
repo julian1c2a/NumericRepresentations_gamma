@@ -191,6 +191,26 @@ constexpr inline sign_funct_e opposite_sign(sign_funct_e sign) noexcept {
                                           : sign_funct_e::vzero;
 }
 
+template <size_t N>
+struct fixed_string {
+    char data[N]{};
+
+    consteval fixed_string(const char (&str)[N]) {
+        for (size_t i = 0; i < N; ++i) {
+            data[i] = str[i];
+        }
+    }
+
+    consteval operator std::string_view() const {
+        // The size N includes the null terminator.
+        // string_view should not include it.
+        if (data[N-1] == '\0')
+            return {data, N - 1};
+        else
+            return {data, N};
+    }
+};
+
 namespace type_traits {
 
 template <typename IntT>

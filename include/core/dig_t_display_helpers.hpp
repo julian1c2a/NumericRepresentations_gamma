@@ -18,7 +18,7 @@ namespace NumRepr
     namespace display_helpers
     {
 
-        template <unsigned Base>
+        template <std::uint64_t Base>
         constexpr auto display(const dig_t<Base> &digit) noexcept
         {
             using uint_t = typename dig_t<Base>::uint_t;
@@ -33,13 +33,13 @@ namespace NumRepr
             }
         }
 
-        template <unsigned Base>
+        template <std::uint64_t Base>
         std::ostream &operator<<(std::ostream &os, const dig_t<Base> &digit)
         {
             return os << display(digit);
         }
 
-        template <unsigned Base>
+        template <std::uint64_t Base>
         constexpr const char *type_name() noexcept
         {
             using uint_t = typename dig_t<Base>::uint_t;

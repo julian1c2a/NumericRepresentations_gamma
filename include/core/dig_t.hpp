@@ -15,6 +15,7 @@
 #include <cstddef>
 
 #include "internal/basic_types.hpp"
+#include "internal/math/primes_ct.hpp"
 
 namespace NumRepr {
 
@@ -70,7 +71,7 @@ namespace NumRepr {
      *          mensaje claro gracias al static_assert anterior.
      */
     using uint_t = 
-        typename type_traits::TypeFromIntNumber_t<static_cast<uint64_t>(B)>;
+        typename type_traits::TypeFromIntNumber_t<static_cast<uint64_t>(B - 1)>;
 
   private:
     /// @brief Valor del dígito: único dato/estado de la clase
@@ -259,7 +260,7 @@ namespace NumRepr {
      * @see mult_inv() - calcula el inverso multiplicativo
      */
     consteval static bool isPrime() noexcept {
-      return AuxFunc::LUT::isPrime_ct(static_cast<std::size_t>(B));
+      return AuxFunc::LUT::isPrime_ct<B>();
     }
 
     // =========================================================================
@@ -478,7 +479,7 @@ namespace NumRepr {
      * ```
      */
     template <auto Arr>
-    [[nodiscard]] consteval static inline std::expected<dig_t, parse_error_t>
+    [[nodiscard]] consteval static std::expected<dig_t, parse_error_t>
     from_array_ct() noexcept;
 
     // =========================================================================
@@ -3207,7 +3208,7 @@ namespace NumRepr {
   template <std::uint64_t Base>
     requires(Base > 1)
   template <auto Arr>
-  inline std::expected<dig_t<Base>, parse_error_t>
+  consteval std::expected<dig_t<Base>, parse_error_t>
   dig_t<Base>::from_array_ct() noexcept {
     auto result = parse_impl_ct(Arr);
     
@@ -3267,7 +3268,7 @@ namespace NumRepr {
   template <std::uint64_t Base>
     requires(Base > 1)
   std::ostream &operator<<(std::ostream &os, dig_t<Base> arg) {
-    os << "d[" << static_cast<std::int64_t>(arg())
+    os << "d[" << static_cast<std::int64_t>(arg.get())
        << "]B" << static_cast<std::int64_t>(Base);
     return os;
   }
@@ -3326,19 +3327,11 @@ namespace NumRepr {
    * @note Esta función es `consteval`, garantizando que toda la operación ocurre en tiempo de compilación.
    * @note Un formato inválido resultará en un error de compilación.
    * @example
-   * constexpr auto d = make_digit<"dig[25]B13">(); // d es dig_t<13> con valor 12
+   * constexpr auto d = make_digit<fixed_string("dig[25]B13")>(); // d es dig_t<13> con valor 12
    */
-  template <const auto& Str>
+  template <fixed_string Str>
   consteval auto make_digit() {
-      constexpr std::string_view sv = []() consteval {
-        if constexpr (std::is_array_v<std::remove_cvref_t<decltype(Str)>>) {
-            // para char[], string_view se calcula hasta el \0
-            return std::string_view(Str); 
-        } else {
-            // para std::array
-            return std::string_view(Str.data(), Str.size());
-        }
-      }();
+      constexpr std::string_view sv = Str;
 
       constexpr auto info = detail::parse_make_digit_str(sv);
       

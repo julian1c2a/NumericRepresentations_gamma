@@ -63,6 +63,11 @@ add_executable(test_04_dig_t tests/test_04_dig_t.cpp)
 target_include_directories(test_04_dig_t PRIVATE include)
 target_link_libraries(test_04_dig_t PRIVATE Catch2::Catch2WithMain)
 
+# Test test_05_dig_t_constructors
+add_executable(test_05_dig_t_constructors tests/test_05_dig_t_constructors.cpp)
+target_include_directories(test_05_dig_t_constructors PRIVATE include)
+target_link_libraries(test_05_dig_t_constructors PRIVATE Catch2::Catch2WithMain)
+
 # ==========================================
 # REGISTRO CTEST
 # ==========================================
@@ -72,3 +77,4 @@ add_test(NAME test_01_math_tables COMMAND test_01_math_tables)
 add_test(NAME test_02_append COMMAND test_02_append)
 add_test(NAME test_03_core_internal COMMAND test_03_core_internal)
 add_test(NAME test_04_dig_t COMMAND test_04_dig_t)
+add_test(NAME test_05_dig_t_constructors COMMAND test_05_dig_t_constructors)

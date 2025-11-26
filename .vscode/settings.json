@@ -27,5 +27,7 @@
             "statusBarVisibility": "inherit",
             "inheritDefault": "visible"
         }
-    }
+    },
+    "codeQL.runningQueries.debug": true,
+    "codeQL.runningQueries.saveCache": true
 }

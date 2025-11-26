@@ -2,8 +2,8 @@
 #include <catch2/benchmark/catch_benchmark_all.hpp>
 #include <catch2/generators/catch_generators_range.hpp>
 #include "core/internal/math/math_utils.hpp"
-#include "core/internal/lookup_tables/primes_ct.hpp"
-#include "core/internal/lookup_tables/primes.hpp"
+#include "core/internal/math/primes_ct.hpp"
+#include "core/internal/math/primes.hpp"
 
 // --- Verificaciones en tiempo de compilación ---
 static_assert(NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct<2>(), "2 debe ser primo");
