@@ -222,15 +222,14 @@ namespace NumRepr {
      * @see operator()() para sintaxis alternativa (deprecated)
      */
 
-    template <std::integral TInt_type = uint_t>
-      requires(
-      !std::is_same_v<TInt_type, bool> &&
-      (
-        static_cast <uint64_t> (numeric_limits<TInt_type>::max()) >= 
-        static_cast <uint64_t> (B - 1)
-      ))
+    template <typename TInt_type = uint_t>
+      requires(std::is_integral_v<TInt_type> || std::is_same_v<TInt_type, bool>)
     constexpr TInt_type get() const noexcept { 
-      return static_cast<TInt_type>(m_d); 
+      if constexpr (std::is_same_v<TInt_type, bool>) {
+          return is_not_0();
+      } else {
+          return static_cast<TInt_type>(m_d); 
+      }
     }
     
     constexpr bool bool_get() const noexcept { 
