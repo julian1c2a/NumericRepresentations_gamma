@@ -9,5 +9,8 @@
     "geminicodeassist.updateChannel": "Default",
     "geminicodeassist.verboseLogging": true,
     "cmake.options.statusBarVisibility": "visible",
-    "diffEditor.codeLens": true
+    "diffEditor.codeLens": true,
+    "cmakeIntelliSence.cmakePath": "c:\\msys64\\ucrt64\\bin\\cmake.exe",
+    "cmakeIntelliSence.loggingLevel": "info",
+    "cmakeIntelliSence.trace.server": "verbose"
 }
