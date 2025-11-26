@@ -204,12 +204,7 @@ namespace NumRepr {
       return is_not_0(); 
     }
     template <std::integral TInt_type = uint_t>
-      requires(
-      !std::is_same_v<TInt_type, bool> &&
-      (
-        static_cast <uint64_t> (numeric_limits<TInt_type>::max()) >= 
-        static_cast <uint64_t> (B - 1)
-      ))
+      requires (!std::is_same_v<TInt_type, bool>)
     constexpr explicit operator TInt_type() const noexcept { 
       return static_cast<TInt_type>(m_d); 
     }
