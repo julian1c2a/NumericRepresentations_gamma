@@ -25,6 +25,7 @@ namespace NumRepr {
   using type_traits::sqrt_max;
   using type_traits::suitable_base;
   using type_traits::uint_type_for_radix_c;
+  using std::numeric_limits;
 
   /**
    * @brief Códigos de error para parsing de dígitos desde cadenas
@@ -178,66 +179,65 @@ namespace NumRepr {
      * @brief Conversión explícita a uint_t (tipo nativo del dígito)
      * @return Valor del dígito como uint_t
      * @note Conversión explícita - requiere static_cast<uint_t>(digit)
+     * @tparam TInt_type Tipo entero sin signo destino (por defecto uint_t)
+     * @requires  El tipo destino debe poder representar valores 
+     *            hasta B-1 inclusive
+     * @note El requires previene conversiones a tipos demasiado pequeños
+     *       que no podrían contener el valor del dígito.
+     * @example static_cast<uint16_t>(dig_t<1000>(255)) devuelve 255u
+     * @example static_cast<uint8_t>(dig_t<300>(255)) da error de compilación
+     * @example dig_t<5000> d(1234); uint32_t val = static_cast<uint32_t>(d);
+     * @example dig_t<std::numeric_limits<uint16_t>::max() + 1> d(65535);
+     *         uint32_t val = static_cast<uint32_t>(d); // Válido, 
+     *                                   // uint32_t puede contener hasta 65535
+     *         uint16_t val = static_cast<uint16_t>(d); // Inválido, 
+     *                                  // error de compilación
+     *                                   // uint16_t no puede contener 
+     *                                  // el dígito correspondiente a 65535
+     * @note  El acceso al tipo entero nativo es dig_t<Base>::uint_t
+     * @note  El acceso al tipo entero con signo superior es
+     *       dig_t<Base>::nextsz_int_t
+     * @note  El acceso al tipo entero sin signo superior es
+     *       dig_t<Base>::nextsz_uint_t
      */
-    constexpr explicit operator uint_t() const noexcept { return m_d; }
-
-    if constexpr (!std::is_same_v<nextsz_uint_t, uint_t>) {
-      constexpr explicit operator nextsz_uint_t() const noexcept {
-        return static_cast<nextsz_uint_t>(m_d);
-      }
+    constexpr explicit operator bool() const noexcept { 
+      return is_not_0(); 
     }
-
-    if constexpr (!std::is_same_v<size_t, uint_t> &&
-                  !std::is_same_v<size_t, nextsz_uint_t>) {
-      constexpr explicit operator size_t() const noexcept {
-        return static_cast<size_t>(m_d);
-      }
+    template <std::integral TInt_type = uint_t>
+      requires(
+      !std::is_same_v<T, bool> &&
+      (
+        static_cast <uint64_t> (numeric_limits<TInt_type>::max()) >= 
+        static_cast <uint64_t> (B - 1)
+      ))
+    constexpr explicit operator TInt_type() const noexcept { 
+      return static_cast<TInt_type>(m_d); 
     }
-
-    if constexpr (!std::is_same_v<uint32_t, uint_t> &&
-                  !std::is_same_v<uint32_t, nextsz_uint_t> &&
-                  !std::is_same_v<uint32_t, size_t>) {
-      constexpr explicit operator uint32_t() const noexcept {
-        return static_cast<uint32_t>(m_d);
-      }
-    }
-
-    if constexpr (!std::is_same_v<uint64_t, uint_t> &&
-                  !std::is_same_v<uint64_t, nextsz_uint_t> &&
-                  !std::is_same_v<uint64_t, size_t> &&
-                  !std::is_same_v<uint64_t, uint32_t>) {
-      constexpr explicit operator uint64_t() const noexcept {
-        return static_cast<uint64_t>(m_d);
-      }
-    }
-
-    if constexpr (!std::is_same_v<int64_t, uint_t> &&
-                  !std::is_same_v<int64_t, nextsz_uint_t> &&
-                  !std::is_same_v<int64_t, size_t> &&
-                  !std::is_same_v<int64_t, uint32_t> &&
-                  !std::is_same_v<int64_t, uint64_t>) {
-      constexpr explicit operator int64_t() const noexcept {
-        return static_cast<int64_t>(m_d);
-      }
-    }
-    
+   
     /**
      * @brief Obtiene el valor del dígito
      * @return Valor del dígito en el rango [0, B-1]
-     * @note FORMA PREFERIDA para acceder al valor. Usado ampliamente en el código.
+     * @note FORMA PREFERIDA para acceder al valor. 
+     *       Usado ampliamente en el código.
      * @see operator()() para sintaxis alternativa (deprecated)
      */
-    constexpr uint_t get() const noexcept { return m_d; }
-    
-    /**
-     * @brief Conversión explícita a nextsz_int_t (tipo superior con signo)
-     * @return Valor del dígito convertido a tipo con signo superior
-     * @note Útil para operaciones aritméticas que requieren signo
-     */
-    constexpr explicit operator nextsz_int_t() const noexcept { 
-        return static_cast<nextsz_int_t>(m_d); 
+
+    template <std::integral TInt_type = uint_t>
+      requires(
+      !std::is_same_v<T, bool> &&
+      (
+        static_cast <uint64_t> (numeric_limits<TInt_type>::max()) >= 
+        static_cast <uint64_t> (B - 1)
+      ))
+    constexpr TInt_type get() const noexcept { 
+      return static_cast<TInt_type>(m_d); 
     }
     
+    template <>
+    constexpr bool get<bool>() const noexcept { 
+      return is_not_0(); 
+    }
+
     /**
      * @brief Sintaxis funcional para obtener el valor del dígito
      * @return Valor del dígito en el rango [0, B-1]
