@@ -3059,16 +3059,29 @@ namespace NumRepr {
     static constexpr std::expected<uint_t, parse_error_t> 
     parse_impl_ct(const std::array<char, N>& arr) noexcept {
       constexpr std::size_t size = N;
-      auto prefix = parse_prefix_fsm(arr, size);
-      if (!prefix) return std::unexpected(prefix.error());
-      auto number = parse_number_fsm(
-        arr, size, prefix->next_pos, prefix->delimiter_close
-      );
+      
+      auto prefix { 
+        parse_prefix_fsm(arr, size); 
+      }
+      
+      if (!prefix) { 
+        return std::unexpected(prefix.error()); 
+      }
+
+      auto number { 
+        parse_number_fsm(
+          arr, size, prefix->next_pos, prefix->delimiter_close
+        ); 
+      }
+
       if (!number) { 
         return std::unexpected(number.error()); 
       }
+
+      auto base { 
+        parse_base_fsm(arr, size, number->next_pos, B);
+      };
       
-      auto base = parse_base_fsm(arr, size, number->next_pos, B);
       if (!base) { 
         return std::unexpected(base.error()); 
       }
