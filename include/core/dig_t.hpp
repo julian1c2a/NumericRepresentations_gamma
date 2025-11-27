@@ -403,16 +403,16 @@ namespace NumRepr {
         }
         return static_cast<uint_t>(result);
       } else {
-        if constexpr (maxbase<Int_t>() < maxbase<uint_t>()) {
+        if constexpr (sizeof(Int_t) < sizeof(uint_t)) {
           constexpr nextsz_uint_t uint_B{B};
           nextsz_uint_t cparg{arg};
           if (arg >= uint_B) { cparg %= uint_B; }
-			    return static_cast<uint_t>(cparg);
+          return static_cast<uint_t>(cparg);
         } else {
           constexpr Int_t uint_B{B};
           Int_t cparg{arg};
           if (arg >= uint_B) { cparg %= uint_B; }
-			    return static_cast<uint_t>(cparg);
+          return static_cast<uint_t>(cparg);
         }
       }
     }
@@ -505,7 +505,15 @@ namespace NumRepr {
      */
     template <auto Arr>
     [[nodiscard]] consteval static std::expected<dig_t, parse_error_t>
-    from_array_ct() noexcept;
+    from_array_ct() noexcept {
+      // Llamamos a la implementación corregida
+      auto result = parse_impl_ct(Arr);
+      if (result.has_value()) {
+        return dig_t(*result);
+      } else {
+        return std::unexpected(result.error());
+      }
+    }
 
     // =========================================================================
     // OPERADORES DE ASIGNACIÓN
@@ -3062,8 +3070,8 @@ namespace NumRepr {
       constexpr std::size_t size = N;
       
       auto prefix { 
-        parse_prefix_fsm(arr, size); 
-      }
+        parse_prefix_fsm(arr, size)
+      };
       
       if (!prefix) { 
         return std::unexpected(prefix.error()); 
@@ -3072,21 +3080,21 @@ namespace NumRepr {
       auto number { 
         parse_number_fsm(
           arr, size, prefix->next_pos, prefix->delimiter_close
-        ); 
-      }
+        ) 
+      };
 
       if (!number) { 
         return std::unexpected(number.error()); 
       }
 
       auto base { 
-        parse_base_fsm(arr, size, number->next_pos, B);
+        parse_base_fsm(arr, size, number->next_pos, B)
       };
 
       if (!base) { 
         return std::unexpected(base.error()); 
       }
-
+      
       uint_t numero_final { 
         static_cast<uint_t>(number->value % static_cast<nextsz_uint_t>(B)) 
       };
@@ -3258,14 +3266,14 @@ namespace NumRepr {
    * @see from_string() para versión runtime sin excepciones
    * @see from_cstr() para versión constexpr sin excepciones
    */
-  template <auto Arr>
-  consteval 
-  std::expected<dig_t<Base>, parse_error_t>
-  dig_t<Base>::from_array_ct() noexcept {
-    auto result = parse_impl_ct(Arr);
-    if (result.has_value()) return dig_t<Base>(*result);
-    else return std::unexpected(result.error());
-  }
+  // template <auto Arr>
+  // consteval 
+  // std::expected<dig_t<Base>, parse_error_t>
+  // dig_t<Base>::from_array_ct() noexcept {
+  //   auto result = parse_impl_ct(Arr);
+  //   if (result.has_value()) return dig_t<Base>(*result);
+  //   else return std::unexpected(result.error());
+  // }
 
   /// IMPLEMENTACIÓN DE LOS CONSTRUCTORES DESDE CADENA DE CARACTERES
   template <std::uint64_t Base>
@@ -3367,309 +3375,6 @@ namespace NumRepr {
   // FUNCIONES LIBRES - FACTORY FUNCTIONS
   // ===========================================================================
 
-  namespace detail {
-    struct ParseResult {
-        std::uint64_t value;
-        std::uint64_t base;
-    };
-
-    consteval ParseResult parse_make_digit_str(std::string_view sv) {
-        if (!sv.starts_with("dig[")) {
-            throw "make_digit format error: must start with 'dig['";
-        }
-        
-        constexpr auto end_of_prefix = 4; // length of "dig["
-        const auto close_bracket_pos = sv.find(']', end_of_prefix);
-        if (close_bracket_pos == std::string_view::npos) {
-            throw "make_digit format error: missing ']'";
-        }
-
-        const auto b_pos = sv.find('B', close_bracket_pos);
-        if (b_pos == std::string_view::npos) {
-            throw "make_digit format error: missing 'B' for base";
-        }
-
-        const std::string_view value_sv = sv.substr(end_of_prefix, close_bracket_pos - end_of_prefix);
-        const std::string_view base_sv = sv.substr(b_pos + 1);
-        
-        if (value_sv.empty()) {
-            throw "make_digit format error: value cannot be empty";
-        }
-        if (base_sv.empty()) {
-            throw "make_digit format error: base cannot be empty";
-        }
-
-        const auto value = type_traits::atoull(value_sv);
-        const auto base = type_traits::atoull(base_sv);
-
-        if (base <= 1) {
-            throw "make_digit error: base must be greater than 1";
-        }
-
-        return { .value = value, .base = base };
-    }
-  } // namespace detail
-
-  /**
-   * @brief Factory function para crear dig_t desde un string literal en tiempo de compilación, deduciendo la base.
-   * @tparam Str El string literal con el formato "dig[valor]Bbase".
-   * @return Un objeto dig_t<base> con el valor normalizado.
-   * @note Esta función es `consteval`, garantizando que toda la operación ocurre en tiempo de compilación.
-   * @note Un formato inválido resultará en un error de compilación.
-   * @example
-   * constexpr auto d = make_digit<fixed_string("dig[25]B13")>(); // d es dig_t<13> con valor 12
-   */
-  template <fixed_string Str>
-  consteval auto make_digit() {
-      constexpr std::string_view sv = Str;
-
-      constexpr auto info = detail::parse_make_digit_str(sv);
-      
-      return []<std::uint64_t Base, std::uint64_t Value>() {
-          static_assert(Base > 1, "Base must be > 1");
-          return dig_t<Base>(Value);
-      }.template operator()<info.base, info.value>();
-  }
-  
-  /**
-   * @defgroup make_digit Factory functions para creación conveniente de dig_t
-   * @{
-   * 
-   * @brief Familia de funciones libres para crear dígitos de forma ergonómica
-   * 
-   * @details Esta familia proporciona 4 sobrecargas de `make_digit()`:
-   * 
-   * **1. make_digit<Base, Arr>()** - Array compile-time
-   * ```cpp
-   * auto d = make_digit<10, std::array{'d','[','5',']','B','1','0'}>();
-   * // Retorna: std::expected<dig_t<10>, parse_error_t>
-   * ```
-   * 
-   * **2. make_digit<Base>(string)** - String runtime
-   * ```cpp
-   * std::string str = "d[5]B10";
-   * auto d = make_digit<10>(str);
-   * // Retorna: std::expected<dig_t<10>, parse_error_t>
-   * ```
-   * 
-   * **3. make_digit<Base>(const char*)** - C-string
-   * ```cpp
-   * auto d = make_digit<16>("d[7]B16");
-   * // Retorna: std::expected<dig_t<16>, parse_error_t>
-   * ```
-   * 
-   * **4. make_digit<Base>(entero)** - Valor directo
-   * ```cpp
-   * auto d = make_digit<10>(5);
-   * // Retorna: dig_t<10> (siempre éxito, sin expected)
-   * ```
-   * 
-   * @note Las versiones 1-3 retornan `std::expected` porque pueden fallar (parsing)
-   * @note La versión 4 retorna `dig_t` directamente porque siempre tiene éxito
-   * @note Todas normalizan valores automáticamente: `value % Base`
-   * @note Base debe especificarse explícitamente (no se puede deducir)
-   * 
-   * @see dig_t<Base>::from_string() - Método estático equivalente a versión 2
-   * @see dig_t<Base>::from_cstr() - Método estático equivalente a versión 3
-   * @see dig_t<Base>::from_array_ct<Arr>() - Método estático equivalente a versión 1
-   */
-
-  /**
-   * @brief Factory function para crear dig_t desde array con base especificada
-   * @ingroup make_digit
-   * @tparam Base Base del sistema numérico (debe coincidir con la del string)
-   * @tparam Arr Array de caracteres (deducido automáticamente)
-   * @return std::expected<dig_t<Base>, parse_error_t>
-   * 
-   * @details Versión que requiere especificar la base explícitamente.
-   *          Valida que la base del string coincida con Base template.
-   * 
-   * @note NOTA IMPORTANTE: No es posible crear una versión que deduzca la base
-   *       automáticamente sin especificarla, porque el tipo de retorno dig_t<Base>
-   *       depende de Base como parámetro template (no puede ser runtime).
-   * 
-   * @note Para casos donde la base es dinámica, se necesitaría usar std::variant
-   *       con todas las bases posibles, lo cual es poco práctico.
-   * 
-   * @note MSVC limitation: std::expected no puede evaluarse en constexpr con errores,
-   *       así que la función es inline (runtime) a pesar del array compile-time
-   * 
-   * @example Uso básico:
-   * ```cpp
-   * auto d = make_digit<10, std::array{'d','[','5',']','B','1','0'}>();
-   * assert(d.has_value());
-   * assert(d->get() == 5);
-   * ```
-   * 
-   * @example Con validación:
-   * ```cpp
-   * auto d = make_digit<16, std::array{'d','[','7',']','B','1','6'}>();
-   * if (d) {
-   *     std::cout << d->get() << std::endl; // 7
-   * }
-   * ```
-   */
-  template <std::uint64_t Base, auto Arr>
-    requires(Base > 1)
-  [[nodiscard]] inline auto make_digit() noexcept 
-    -> std::expected<dig_t<Base>, parse_error_t> {
-    return dig_t<Base>::template from_array_ct<Arr>();
-  }
-
-  /**
-   * @brief Factory function runtime para crear dig_t desde string con base especificada
-   * @ingroup make_digit
-   * @tparam Base Base del sistema numérico
-   * @param str String a parsear (formato: "d[N]BM" o "dig#N#BM")
-   * @return std::expected<dig_t<Base>, parse_error_t>
-   * 
-   * @details Versión runtime que funciona con strings dinámicos.
-   *          Útil cuando el string no se conoce en compile-time.
-   * 
-   * @note Para compile-time, usar make_digit<Base, Arr>() con std::array
-   * 
-   * @example Runtime:
-   * ```cpp
-   * std::string input = "d[5]B10";
-   * auto d = make_digit<10>(input);
-   * if (d) {
-   *     std::cout << d->get() << std::endl; // 5
-   * }
-   * ```
-   * 
-   * @example Runtime con input de usuario:
-   * ```cpp
-   * std::string user_input;
-   * std::cin >> user_input; // Usuario ingresa "d[42]B10"
-   * auto d = make_digit<10>(user_input);
-   * ```
-   */
-  template <std::uint64_t Base>
-    requires(Base > 1)
-  [[nodiscard]] inline std::expected<dig_t<Base>, parse_error_t> 
-  make_digit(const std::string& str) noexcept {
-    return dig_t<Base>::from_string(str);
-  }
-
-  /**
-   * @brief Factory function runtime para crear dig_t desde C-string
-   * @ingroup make_digit
-   * @tparam Base Base del sistema numérico
-   * @param str C-string a parsear (formato: "d[N]BM" o "dig#N#BM")
-   * @return std::expected<dig_t<Base>, parse_error_t>
-   * 
-   * @details Versión runtime/constexpr que funciona con C-strings.
-   * 
-   * @note constexpr: puede usarse en compile-time si str es constexpr
-   * 
-   * @example Compile-time:
-   * ```cpp
-   * constexpr auto d = make_digit<10>("d[5]B10");
-   * static_assert(d.has_value() && d->get() == 5);
-   * ```
-   * 
-   * @example Runtime:
-   * ```cpp
-   * const char* input = "d[7]B16";
-   * auto d = make_digit<16>(input);
-   * ```
-   */
-  template <std::uint64_t Base>
-    requires(Base > 1)
-  [[nodiscard]] constexpr std::expected<dig_t<Base>, parse_error_t> 
-  make_digit(const char* str) noexcept {
-    return dig_t<Base>::from_cstr(str);
-  }
-
-  /**
-   * @brief Factory function para crear dig_t desde valor entero con base especificada
-   * @ingroup make_digit
-   * @tparam Base Base del sistema numérico
-   * @tparam Int_t Tipo entero (deducido automáticamente)
-   * @param value Valor del dígito (se normalizará módulo Base)
-   * @return dig_t<Base> con valor normalizado
-   * 
-   * @details Crea un dígito directamente desde un valor entero.
-   *          El valor se normaliza automáticamente módulo Base.
-   * 
-   * @note Esta función siempre tiene éxito (no puede fallar)
-   * @note Base debe especificarse explícitamente como template parameter
-   * @note El valor se normaliza: value % Base
-   * 
-   * @example Uso básico:
-   * ```cpp
-   * auto d1 = make_digit<10>(5);        // dig_t<10> con valor 5
-   * auto d2 = make_digit<16>(15);       // dig_t<16> con valor 15 (0xF)
-   * auto d3 = make_digit<10>(42);       // dig_t<10> con valor 2 (42 % 10)
-   * ```
-   * 
-   * @example Con diferentes tipos enteros:
-   * ```cpp
-   * auto d1 = make_digit<256>(255u);           // unsigned
-   * auto d2 = make_digit<100>(static_cast<uint8_t>(99)); // uint8_t
-   * ```
-   */
-  template <std::uint64_t Base, type_traits::integral_c Int_t>
-    requires(Base > 1)
-  constexpr dig_t<Base> make_digit(Int_t value) noexcept {
-    return dig_t<Base>(value);
-  }
-
-  /** @} */ // end of make_digit group
-   
-  /**
-   * @defgroup simple math functions to extend cmath group
-   * @{
-   * 
-   * @brief `max`, `min` y otras
-   * 
-   * @details Esta familia proporciona sobrecargas de `std::max()` y `std::min()`:
-   * 
-   */
-
-  /**
-   * @brief función max para una cantidad variable de dígitos de la misma base
-   * @ingroup max(dig_t<Base>...)
-   * @tparam Base Base del sistema numérico (debe coincidir con la del string) 
-   * @note Para casos donde la base es dinámica, se necesitaría usar std::variant
-   *       con todas las bases posibles, lo cual es poco práctico.
-   */
-  template <std::uint64_t Base, typename... Args>
-    requires 
-      (
-        (Base > 1)
-        &&
-        (Base <= std::numeric_limits<std::uint32_t>::max())
-        && 
-        (std::is_same_v<Args,dig_t<Base>> && ...)
-      )
-  [[nodiscard]] constexpr dig_t<Base> max(dig_t<Base> first, Args... args) noexcept {
-    dig_t<Base> current_max = first;
-    ((current_max = (args > current_max ? args : current_max)), ...);
-    return current_max;
-  }
-
-  /**
-   * @brief función min para una cantidad variable de dígitos de la misma base
-   * @ingroup min(dig_t<Base>...)
-   * @tparam Base Base del sistema numérico (debe coincidir con la del string) 
-   * @note Para casos donde la base es dinámica, se necesitaría usar std::variant
-   *       con todas las bases posibles, lo cual es poco práctico.
-   */
-  template <std::uint64_t Base, typename... Args>
-    requires 
-      (
-        (Base > 1)
-        &&
-        (Base <= std::numeric_limits<std::uint32_t>::max())
-        && 
-        (std::is_same_v<Args,dig_t<Base>> && ...) // All arguments must be dig_t<Base>
-      )
-  [[nodiscard]] constexpr dig_t<Base> min(dig_t<Base> first, Args... args) noexcept {
-    dig_t<Base> current_min = first;
-    ((current_min = (args < current_min ? args : current_min)), ...);
-    return current_min;
-  }
   /** @} */ // end of  simple math functions to extend cmath group
   
 
