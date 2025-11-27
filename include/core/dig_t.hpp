@@ -3362,15 +3362,6 @@ namespace NumRepr {
     return dig_t<Base>(value);
   }
 
-  /// IMPLEMENTACIÓN DEL OPERADOR DE SALIDA
-  template <std::uint64_t Base>
-    requires(Base > 1)
-  std::ostream &operator<<(std::ostream &os, dig_t<Base> arg) {
-    os << "d[" << static_cast<std::int64_t>(arg.get())
-       << "]B" << static_cast<std::int64_t>(Base);
-    return os;
-  }
-
   // ===========================================================================
   // FUNCIONES LIBRES - FACTORY FUNCTIONS
   // ===========================================================================
