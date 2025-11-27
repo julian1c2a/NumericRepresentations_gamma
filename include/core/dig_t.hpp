@@ -3368,6 +3368,12 @@ namespace NumRepr {
 
   /** @} */ // end of  simple math functions to extend cmath group
   
+  template <std::uint64_t Base>
+    requires(Base > 1)
+  dig_t<Base>::dig_t(const std::string &str) noexcept {
+    auto result = from_string(str);
+    if (result) *this = *result; else m_d = 0;
+  }
 
 } // namespace NumRepr
 
