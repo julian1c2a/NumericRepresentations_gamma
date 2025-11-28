@@ -46,11 +46,11 @@ namespace NumRepr {
     unknown             ///< Error desconocido (no usado actualmente)
   };
 
-  template <std::uint64_t B>
+  template <uint64_t B>
     requires (B > 1)
   struct dig_t {
     // Validación explícita de la restricción de base máxima
-    static_assert(B-1 <= std::numeric_limits<std::uint32_t>::max(),
+    static_assert(B-1 <= numeric_limits<uint32_t>::max(),
                   "dig_t: Base B must be <= UINT32_MAX (4294967296). "
                   "This restriction ensures that digit multiplications (B-1)×(B-1) "
                   "fit within uint64_t without overflow.");

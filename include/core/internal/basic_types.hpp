@@ -66,7 +66,7 @@ enum class dig_format_e : unsigned char {
 /**
  * @brief Clasificación de tipos numéricos.
  * @details [PARCIALMENTE IMPLEMENTADO] Define la jerarquía de tipos numéricos.
- *          Actualmente usado solo en tests de demostración
+ * Actualmente usado solo en tests de demostración
  * (test_auxiliary_types.cpp).
  * @note natural=0: Números naturales (ya implementado: nat_reg_digs_t)
  * @note entero=1: Enteros con signo (ya implementado: int_reg_digs_t)
@@ -191,6 +191,10 @@ constexpr inline sign_funct_e opposite_sign(sign_funct_e sign) noexcept {
                                           : sign_funct_e::vzero;
 }
 
+/**
+ * @brief Wrapper estructural para cadenas fijas en tiempo de compilación (CNTTP).
+ * @details Permite pasar literales de cadena como parámetros de plantilla en C++20.
+ */
 template <size_t N>
 struct fixed_string {
     char data[N]{};
@@ -202,9 +206,9 @@ struct fixed_string {
     }
 
     consteval operator std::string_view() const {
-        // The size N includes the null terminator.
-        // string_view should not include it.
-        if (data[N-1] == '\0')
+        // El tamaño N incluye el terminador nulo.
+        // string_view no debería incluirlo si existe.
+        if (N > 0 && data[N-1] == '\0')
             return {data, N - 1};
         else
             return {data, N};
@@ -300,14 +304,14 @@ enum class atoull_err_t : int {
 /**
  * @brief Convierte string ASCII decimal a uint64_t CON validación completa.
  * @details Versión segura de atoull que detecta:
- *          - String vacío o nullptr
- *          - Caracteres no dígitos
- *          - Overflow (valor > ULLONG_MAX = 18446744073709551615)
+ * - String vacío o nullptr
+ * - Caracteres no dígitos
+ * - Overflow (valor > ULLONG_MAX = 18446744073709551615)
  *
  * @param text String C terminado en null.
  * @return std::expected con:
- *         - Éxito: valor convertido
- *         - Error: empty_str, no_digit, o overflow
+ * - Éxito: valor convertido
+ * - Error: empty_str, no_digit, o overflow
  *
  * @note Complejidad: O(n) donde n = strlen(text)
  * @note Verificación de overflow: i > (ULLONG_MAX - digit) / 10
@@ -386,13 +390,13 @@ atoull_checked(std::string_view sv) noexcept {
  * @brief Parsea dígitos decimales desde el inicio de un string y retorna valor
  * + cantidad consumida.
  * @details Lee dígitos consecutivos hasta encontrar no-dígito o fin de string.
- *          Útil para parseo de números embebidos en texto (ej: "123abc" → {123,
+ * Útil para parseo de números embebidos en texto (ej: "123abc" → {123,
  * 3}).
  *
  * @param text String C terminado en null.
  * @return std::expected con:
- *         - Éxito: pair{valor, cantidad_de_caracteres_consumidos}
- *         - Error: no_digit (si empieza con no-dígito) u overflow
+ * - Éxito: pair{valor, cantidad_de_caracteres_consumidos}
+ * - Error: no_digit (si empieza con no-dígito) u overflow
  *
  * @note Diferencia con atoull_checked: Este se detiene en el primer no-dígito
  * SIN error.
@@ -402,9 +406,9 @@ atoull_checked(std::string_view sv) noexcept {
  * @code
  * auto r1 = atoull_consume("123abc");
  * if (r1) {
- *   auto [val, consumed] = *r1;
- *   // val == 123, consumed == 3
- *   // Continuar parseando desde text + 3
+ * auto [val, consumed] = *r1;
+ * // val == 123, consumed == 3
+ * // Continuar parseando desde text + 3
  * }
  *
  * auto r2 = atoull_consume("999");
@@ -473,50 +477,22 @@ atoull_consume(std::string_view sv) noexcept {
 /**
  * @brief Convierte string literal a ullint_t en tiempo de compilación.
  *
- * @details Esta función consteval actúa como un "literal de usuario" para
- * convertir strings a ullint_t durante la compilación. Usa un array de
- * caracteres como parámetro de template non-type (C++20).
+ * @details Esta función consteval utiliza un parámetro de plantilla "Non-Type Class Template" (CNTTP)
+ * disponible en C++20 para aceptar literales de cadena directamente (e.g., atoull_ct<"123">()).
  *
- *          Implementa la misma lógica de overflow checking que
- * atoull_checked(): verifica i > (ULLONG_MAX - digit) / 10 antes de cada
- * multiplicación.
+ * Implementa la misma lógica de overflow checking que atoull_checked().
  *
- * @tparam STR Array de caracteres con el literal (automáticamente deducido)
+ * @tparam STR Objeto fixed_string construido desde el literal.
  *
- * @return ullint_t con el valor parseado
+ * @return ullint_t con el valor parseado.
  *
- * @throws Compilation error si:
- *         - String está vacío
- *         - Contiene caracteres no-dígito
- *         - Valor excede ULLONG_MAX
+ * @throws const char* Error de compilación si hay caracteres inválidos, overflow o string vacío.
  *
- * @note USAGE: RECOMMENDED - Para constantes numéricas grandes definidas como
- * strings
- * @note Límite: ULLONG_MAX = 18,446,744,073,709,551,615
- *
- * @code
- * constexpr auto max64 = atoull_ct<"18446744073709551615">(); // ULLONG_MAX
- * constexpr auto val = atoull_ct<"1234567890">();
- * // atoull_ct<"18446744073709551616">(); // ERROR: overflow en compilación
- * // atoull_ct<"12abc34">(); // ERROR: carácter inválido en compilación
- * @endcode
- *
- * @see atoull_checked() para versión runtime con std::expected
+ * @note USAGE: atoull_ct<"123456">()
  */
-/**
- * @brief Convierte string literal a ullint_t en tiempo de compilación.
- */
-template <const auto &STR> consteval ullint_t atoull_ct() {
-  // Detectamos si es un array crudo (char[]) o un objeto con .data() (std::array)
-  constexpr std::string_view sv = []() consteval {
-      if constexpr (std::is_array_v<std::remove_cvref_t<decltype(STR)>>) {
-          // Para char[], string_view calcula la longitud hasta \0
-          return std::string_view(STR); 
-      } else {
-          // Para std::array u otros, usamos data() y size()
-          return std::string_view(STR.data(), STR.size());
-      }
-  }();
+template <fixed_string STR> 
+consteval ullint_t atoull_ct() {
+  constexpr std::string_view sv = STR; // Conversión implícita usando el operador de fixed_string
 
   if (sv.empty()) {
     throw "atoull_ct: empty string";
@@ -525,10 +501,8 @@ template <const auto &STR> consteval ullint_t atoull_ct() {
   ullint_t i = 0;
   constexpr ullint_t maxv = std::numeric_limits<ullint_t>::max();
 
-  for (size_t idx = 0; idx < sv.size(); ++idx) {
-    char c = sv[idx];
-    // Saltamos el terminador nulo si se coló en la vista (común en std::array de chars)
-    if (c == '\0') continue;
+  for (char c : sv) {
+    if (c == '\0') continue; // Seguridad extra
 
     if (c < '0' || c > '9') {
       throw "atoull_ct: non-digit character found";
@@ -555,8 +529,8 @@ template <const auto &STR> consteval ullint_t atoull_ct() {
  * bits).
  *
  * @details Este concept identifica tipos unsigned que pueden usarse como radix
- *          en representaciones numéricas. Excluye tipos de 64 bits o mayores
- *          para mantener compatibilidad con sistemas que no tienen 128 bits
+ * en representaciones numéricas. Excluye tipos de 64 bits o mayores
+ * para mantener compatibilidad con sistemas que no tienen 128 bits
  * nativos.
  *
  * @tparam UINT_T Tipo a verificar
@@ -651,10 +625,10 @@ constexpr bool le_sz_v = lt_sz_v<T, S> || eq_sz_v<T, S>;
  * @brief Namespace interno para deducción de tipos unsigned → unsigned.
  *
  * @details Implementa metaprogramación para encontrar el tipo unsigned estándar
- *          equivalente a un tipo unsigned custom (ullint_t → uint64_t, etc.).
+ * equivalente a un tipo unsigned custom (ullint_t → uint64_t, etc.).
  *
- *          Usa una cascada de std::conditional_t para seleccionar el tipo más
- *          pequeño que puede representar el custom type sin pérdida.
+ * Usa una cascada de std::conditional_t para seleccionar el tipo más
+ * pequeño que puede representar el custom type sin pérdida.
  *
  * @note USAGE: INTERNAL IMPLEMENTATION DETAIL - No usar directamente
  * @note Acceso público via: nextsz_UInt_for_UInt_t<UInt_t>
@@ -693,12 +667,12 @@ template <> struct __nextsz_UInt_for_UInt_t<std::uint64_t> {
  * unsigned.
  *
  * @details Mapeo genérico multiplataforma basado en sizeof (siguiente tamaño):
- *          - sizeof < 2 bytes → std::uint16_t  (uint8_t  → uint16_t)
- *          - sizeof < 4 bytes → std::uint32_t  (uint16_t → uint32_t)
- *          - sizeof < 8 bytes → std::uint64_t  (uint32_t → uint64_t)
- *          - sizeof >= 8 bytes → error (no hay tipo mayor)
+ * - sizeof < 2 bytes → std::uint16_t  (uint8_t  → uint16_t)
+ * - sizeof < 4 bytes → std::uint32_t  (uint16_t → uint32_t)
+ * - sizeof < 8 bytes → std::uint64_t  (uint32_t → uint64_t)
+ * - sizeof >= 8 bytes → error (no hay tipo mayor)
  *
- *          Devuelve el tipo unsigned **del siguiente tamaño mayor**, no del
+ * Devuelve el tipo unsigned **del siguiente tamaño mayor**, no del
  * mismo. Útil para operaciones que necesitan más capacidad (multiplicaciones,
  * etc.).
  *
@@ -728,7 +702,7 @@ using nextsz_UInt_for_UInt_t =
  * @brief Namespace interno para deducción unsigned → signed.
  *
  * @details Encuentra el tipo signed correspondiente a un tipo unsigned dado.
- *          Ejemplo: ullint_t → sint64_t, uint_t → sint_t
+ * Ejemplo: ullint_t → sint64_t, uint_t → sint_t
  *
  * @note USAGE: INTERNAL IMPLEMENTATION DETAIL
  * @note Acceso público via: nextsz_SInt_for_UInt_t<UInt>
@@ -762,14 +736,14 @@ template <typename UInt> struct __nextsz_SInt_for_UInt_t {
  * @brief Deduce el tipo signed con capacidad suficiente para un tipo unsigned.
  *
  * @details Mapeo genérico multiplataforma basado en sizeof:
- *          - sizeof == 1 byte  → std::int16_t  (uint8_t  → int16_t)
- *          - sizeof == 2 bytes → std::int32_t  (uint16_t → int32_t)
- *          - sizeof == 4 bytes → std::int64_t  (uint32_t → int64_t)
- *          - sizeof == 8 bytes → sint64_t      (uint64_t → sint64_t custom)
+ * - sizeof == 1 byte  → std::int16_t  (uint8_t  → int16_t)
+ * - sizeof == 2 bytes → std::int32_t  (uint16_t → int32_t)
+ * - sizeof == 4 bytes → std::int64_t  (uint32_t → int64_t)
+ * - sizeof == 8 bytes → sint64_t      (uint64_t → sint64_t custom)
  *
- *          El tipo signed resultante es del **siguiente tamaño mayor** porque
- *          un signed del mismo tamaño no puede representar todos los valores
- *          del unsigned (el bit de signo reduce el rango positivo).
+ * El tipo signed resultante es del **siguiente tamaño mayor** porque
+ * un signed del mismo tamaño no puede representar todos los valores
+ * del unsigned (el bit de signo reduce el rango positivo).
  *
  * @tparam UInt_t Tipo unsigned (cualquier tamaño: 1, 2, 4, u 8 bytes)
  *
@@ -779,7 +753,7 @@ template <typename UInt> struct __nextsz_SInt_for_UInt_t {
  * @note Portabilidad: Basado en sizeof, funciona en todas las plataformas
  *
  * @warning El tipo signed resultante puede ser más grande que el unsigned
- *          de entrada para garantizar capacidad completa
+ * de entrada para garantizar capacidad completa
  *
  * @code
  * using S1 = nextsz_SInt_for_UInt_t<uint8_t>;   // std::int16_t (16 bits)
@@ -800,7 +774,7 @@ using nextsz_SInt_for_UInt_t =
  * @brief Namespace interno para deducción signed → unsigned.
  *
  * @details Encuentra el tipo unsigned correspondiente a un tipo signed.
- *          Mapeo directo: sint64_t → uint64_t, schint_t → uchint_t, etc.
+ * Mapeo directo: sint64_t → uint64_t, schint_t → uchint_t, etc.
  *
  * @note USAGE: INTERNAL IMPLEMENTATION DETAIL
  * @note Acceso público via: nextsz_UInt_for_SInt_t<SInt>
@@ -830,12 +804,12 @@ template <typename SInt> struct __nextsz_UInt_for_SInt_t {
  * @brief Deduce el tipo unsigned correspondiente a un tipo signed.
  *
  * @details Mapeo genérico multiplataforma basado en sizeof (mismo tamaño):
- *          - sizeof == 1 byte  → std::uint8_t   (int8_t  → uint8_t)
- *          - sizeof == 2 bytes → std::uint16_t  (int16_t → uint16_t)
- *          - sizeof == 4 bytes → std::uint32_t  (int32_t → uint32_t)
- *          - sizeof == 8 bytes → std::uint64_t  (int64_t → uint64_t)
+ * - sizeof == 1 byte  → std::uint8_t   (int8_t  → uint8_t)
+ * - sizeof == 2 bytes → std::uint16_t  (int16_t → uint16_t)
+ * - sizeof == 4 bytes → std::uint32_t  (int32_t → uint32_t)
+ * - sizeof == 8 bytes → std::uint64_t  (int64_t → uint64_t)
  *
- *          El unsigned resultante tiene **el mismo tamaño** que el signed de
+ * El unsigned resultante tiene **el mismo tamaño** que el signed de
  * entrada, permitiendo operaciones bitwise y conversiones directas.
  *
  * @tparam Int_t Tipo signed (cualquier tamaño: 1, 2, 4, u 8 bytes)
@@ -865,7 +839,7 @@ using nextsz_UInt_for_SInt_t =
  * @brief Namespace interno para deducción signed → signed estándar.
  *
  * @details Encuentra el tipo signed estándar equivalente a un signed custom.
- *          Similar a UInt_for_UInt pero para tipos con signo.
+ * Similar a UInt_for_UInt pero para tipos con signo.
  *
  * @note USAGE: INTERNAL IMPLEMENTATION DETAIL
  * @note Acceso público via: nextsz_SInt_for_SInt_t<SInt>
@@ -902,12 +876,12 @@ template <> struct __nextsz_SInt_for_SInt_t<std::int64_t> {
  * signed.
  *
  * @details Mapeo genérico multiplataforma basado en sizeof (siguiente tamaño):
- *          - sizeof < 2 bytes → std::int16_t  (int8_t  → int16_t)
- *          - sizeof < 4 bytes → std::int32_t  (int16_t → int32_t)
- *          - sizeof < 8 bytes → std::int64_t  (int32_t → int64_t)
- *          - sizeof >= 8 bytes → error (no hay tipo mayor)
+ * - sizeof < 2 bytes → std::int16_t  (int8_t  → int16_t)
+ * - sizeof < 4 bytes → std::int32_t  (int16_t → int32_t)
+ * - sizeof < 8 bytes → std::int64_t  (int32_t → int64_t)
+ * - sizeof >= 8 bytes → error (no hay tipo mayor)
  *
- *          Devuelve el tipo signed **del siguiente tamaño mayor**, no del
+ * Devuelve el tipo signed **del siguiente tamaño mayor**, no del
  * mismo. Funciona independientemente de la plataforma (Windows/Linux).
  *
  * @tparam SInt_t Tipo signed custom (hasta 4 bytes; 8 bytes no tiene siguiente)
@@ -937,16 +911,16 @@ using nextsz_SInt_for_SInt_t =
  *
  * @details Proporciona funciones consteval para obtener valores
  * característicos:
- *          - maxbase(): Valor máximo representable (UINT_T::max())
- *          - submaxbase(): maxbase() - 1
- *          - minbase(): Base mínima válida (2)
- *          - subminbase(): 3
- *          - monobase(): 1 (base monádica, no estándar)
- *          - nobase(): 0 (valor nulo)
- *          - maxdigit(): Dígito máximo (submaxbase)
- *          - submaxdigit(): maxdigit() - 1
- *          - digit_0(), digit_1(): Dígitos 0 y 1
- *          - base_2(): Base binaria (2)
+ * - maxbase(): Valor máximo representable (UINT_T::max())
+ * - submaxbase(): maxbase() - 1
+ * - minbase(): Base mínima válida (2)
+ * - subminbase(): 3
+ * - monobase(): 1 (base monádica, no estándar)
+ * - nobase(): 0 (valor nulo)
+ * - maxdigit(): Dígito máximo (submaxbase)
+ * - submaxdigit(): maxdigit() - 1
+ * - digit_0(), digit_1(): Dígitos 0 y 1
+ * - base_2(): Base binaria (2)
  *
  * @tparam UINT_T Tipo unsigned para el cual calcular valores
  *
@@ -1042,7 +1016,7 @@ template <typename UINT_T, UINT_T B> consteval bool base_leqt_max() {
  *
  * @code
  * template <typename UINT_T, UINT_T B>
- *   requires (suitable_base<UINT_T, B>())
+ * requires (suitable_base<UINT_T, B>())
  * void process() { ... }
  *
  * // Ejemplo de error:
@@ -1058,7 +1032,7 @@ template <typename UINT_T, UINT_T B> consteval bool suitable_base() {
  * @brief Calcula el punto medio del rango [0, maxbase].
  *
  * @details Retorna (maxbase + 1) / 2, útil para algoritmos de búsqueda binaria
- *          y división de rangos.
+ * y división de rangos.
  *
  * @tparam UINT_T Tipo unsigned
  *
@@ -1080,8 +1054,8 @@ template <typename UINT_T> consteval UINT_T middle_max() {
  * @brief Calcula floor(sqrt(maxbase<UINT_T>() + 1)) en tiempo de compilación.
  *
  * @details Usa método de Newton-Raphson con aritmética entera pura en consteval
- *          para encontrar sqrt(maxbase + 1). Útil para determinar límites en
- *          multiplicaciones que no causen overflow.
+ * para encontrar sqrt(maxbase + 1). Útil para determinar límites en
+ * multiplicaciones que no causen overflow.
  *
  * @tparam UINT_T Tipo unsigned
  *
@@ -1145,10 +1119,6 @@ using TypeFromIntNumber_t =
   typename UIntTypeForRadix<
     decltype(Radix), Radix
   >::UIntType;
-
-template <ullint_t Radix>
-using TypeFromIntNumber_t =
-    typename UIntTypeForRadix<decltype(Radix), Radix>::UIntType;
 
 namespace ugly_details_for_greater_suitable_type_deduction {
 
@@ -1338,7 +1308,7 @@ struct pack2array {
    * @code
    * std::array<int, 3> arr;
    * pack2array<int, int, int>::for_each(arr, 10, 20, 30);
-   * // arr ahora contiene {10, 20, 30}
+   * // arr = {10, 20, 30}
    * @endcode
    */
   static constexpr void for_each(array_type &iarray,
@@ -1353,8 +1323,8 @@ struct pack2array {
  * orden.
  *
  * @details Utilidad de alto nivel para asignar múltiples valores del mismo tipo
- *          a un contenedor (típicamente std::array) preservando el orden de los
- *          argumentos. Internamente usa pack2array para la conversión.
+ * a un contenedor (típicamente std::array) preservando el orden de los
+ * argumentos. Internamente usa pack2array para la conversión.
  *
  * @tparam Ts... Tipos de los elementos a asignar (todos deben ser iguales)
  * @param dest Contenedor destino (modificado por referencia)
