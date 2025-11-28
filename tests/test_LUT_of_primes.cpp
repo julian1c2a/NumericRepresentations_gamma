@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include "external/catch.hpp"
-#include "../include/core/internal/lookup_tables/LUT_of_primes.hpp"
+#include "../include/core/internal/math/tables/primes.hpp"
 
 using namespace NumRepr::AuxFunc::LUT;
 #include <vector>

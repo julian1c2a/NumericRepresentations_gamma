@@ -7,7 +7,7 @@
 
 ### Template Parameters
 - `B`: Base numérica (std::uint64_t, B > 1)
-- Constraint: `requires(B > 1)`
+- Constraint: `requires(B > 1)`, de antes viene el requerimiento `requires(B <= std::numeric_limits<std::uint32_t>::max())`
 
 ### Objetivo Principal
 Wrapper para tipos enteros sin signo que implementa:
@@ -20,8 +20,8 @@ Wrapper para tipos enteros sin signo que implementa:
 ### Tipos Fundamentales
 ```cpp
 using uint_t = TypeFromIntNumber_t<B>;        // Tipo base para el dígito
-using sig_uint_t = sig_UInt_for_UInt_t<uint_t>;  // Tipo con signo superior
-using sig_sint_t = sig_SInt_for_UInt_t<uint_t>;  // Tipo con signo para operaciones
+using nextsz_uint_t = nextsz_UInt_for_UInt_t<uint_t>;  // Tipo con signo superior
+using nextsz_sint_t = nextsz_SInt_for_UInt_t<uint_t>;  // Tipo con signo para operaciones
 ```
 
 ### Tipos de Contenedores
@@ -44,13 +44,11 @@ private:
 - Inicializa m_d = 0
 
 ### Conversiones Explícitas
-- `explicit operator uint_t()`: Extrae valor interno
-- `explicit operator sig_uint_t()`: Conversión con signo
-- `explicit operator sig_sint_t()`: Conversión con signo completo
+- `template<typename TInt_t = uint_t> explicit operator TInt_t()`: Extrae valor interno y lo convierte al tipo entero que se le indique.
 
 ### Accesores
-- `get() const`: Obtiene valor sin conversión explícita
-- `operator()()`: Operador función para acceso
+- `get<TInt_t>() const`: Obtiene valor sin conversión explícita, TInt_t será uint_t por defecto.
+- `operator()()`: Operador función para acceso [[DEPRECATED]]
 
 ## 4. Métodos de Manipulación
 

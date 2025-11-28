@@ -16,7 +16,7 @@ if constexpr (B < middle_max<uint_t>()) {
     if (m_d >= B) m_d -= B;
 } else {
     // Para bases grandes - usa tipo con signo superior
-    sig_uint_t tmp{m_d};
+    nextsz_uint_t tmp{m_d};
     tmp += arg.m_d;
     if (tmp >= B) tmp -= B;
     m_d = static_cast<uint_t>(tmp);
@@ -32,6 +32,7 @@ if constexpr (B < middle_max<uint_t>()) {
 - `operator*=(Int_t arg)`: Multiplicación con tipos integrales
 
 **Optimización por Tamaño de Base:**
+
 ```cpp
 if constexpr (B < sqrt_max<uint_t>()) {
     // Base pequeña - no hay riesgo de overflow
@@ -96,7 +97,7 @@ constexpr dig_t operator-() const noexcept {
    - `B >= sqrt_max<uint_t>()`: Prevención de overflow
 
 #### Normalización Automática
-- Función `normaliza<Int_t>()` convierte cualquier entero al rango [0, B-1]
+- Función `normalize<Int_t>()` convierte cualquier entero al rango [0, B-1]
 - Manejo de tipos con y sin signo
 - Reducción modular automática
 

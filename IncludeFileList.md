@@ -176,3 +176,15 @@ En el directorio `tests/external` tenemos lo siguientes archivos de *Catch2*:
     //NumRepr/tests/external/catch.hpp
     //NumRepr/tests/external/catch_amalgamated.hpp
     //NumRepr/tests/external/catch_amalgamated.cpp
+
+**DOCUMENTACIÓN /DOC**
+
+Se ha añadido el directorio `//NumRepr/doc`, dónde hay que ir documentando todo el proyecto a medida que lo vayamos testeando.
+
+    //NumRepr/doc/dig_t_analysis.md
+    //NumRepr/doc/dig_t_operadores_aritmeticos.md
+    //NumRepr/doc/dig_t_operadores_comparacion.md
+    //NumRepr/doc/dig_t_operadores_io.md
+
+Aquí falta mucho por documentar incluso en la propia `dig_t.hpp`. Pero, además, no se ha documentado todo lo que hay dentro de `//NumRepr/include/core/`, esto es, `//NumRepr/include/core/internal` (aquí hay 2 archivos a documentar: `basic_types.hpp` y `conversions.hpp`),  `//NumRepr/include/core/internal/append` (aquí tenemos sin documentar `int128_ops.hpp`, `integer.hpp` y `expected.hpp`),  `//NumRepr/include/core/internal/math` sin documentar `IntExpIntLog.hpp`, `IntRoot.hpp`, `primes.hpp` y `primes_ct.hpp`, y por último el subdirectorio `//NumRepr/include/core/internal/math/tables` con los headers ``EratosthenesSieve_table.hpp`, `EratosthenesSieve.hpp` (wrapper del anterior), `MaxExp4Base_table.hpp` y `PrimeList.hpp`.
+Se ha probado ya todo lo anterior.
