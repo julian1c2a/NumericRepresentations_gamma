@@ -7,7 +7,7 @@
 #include "append/integers.hpp"
 
 // --- Módulos Matemáticos ---
-#include "math/IntExpIntLog.hpp"
+#include "math/Int_ExpLog.hpp"
 #include "math/IntRoot.hpp"
 #include "conversions.hpp"
 #include "math/primes.hpp"      // isPrime (runtime)

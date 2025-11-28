@@ -3,7 +3,7 @@
 
 // CORRECCIÓN: Ruta relativa ajustada de ../../ a ../
 #include "../append/integers.hpp"
-#include "IntExpIntLog.hpp" // Necesario para bit_width y int_log2
+#include "Int_ExpLog.hpp" // Necesario para bit_width y int_log2
 
 #include <limits>
 #include <type_traits>

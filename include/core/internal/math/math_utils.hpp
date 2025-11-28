@@ -2,7 +2,7 @@
 #define NUMREPR_INCLUDE_CORE_INTERNAL_MATH_MATH_UTILS_HPP_INCLUDED
 
 #include "../append/integers.hpp"
-#include "IntExpIntLog.hpp" // Aquí reside ahora la lógica real
+#include "Int_ExpLog.hpp" // Aquí reside ahora la lógica real
 
 #include <cstdint>
 #include <limits>

@@ -5,7 +5,7 @@
 #include "append/integers.hpp"
 
 // CORRECCIÓN: Nombres de archivo correctos
-#include "math/IntExpIntLog.hpp"
+#include "math/Int_ExpLog.hpp"
 #include "math/IntRoot.hpp"
 
 #include <limits>

@@ -98,6 +98,11 @@ add_executable(test_11_basic_types tests/test_11_basic_types.cpp)
 target_include_directories(test_11_basic_types PRIVATE include)
 target_link_libraries(test_11_basic_types PRIVATE Catch2::Catch2WithMain)
 
+# Test test_12_Int_ExpLog
+add_executable(test_12_Int_ExpLog tests/test_12_Int_ExpLog.cpp)
+target_include_directories(test_12_Int_ExpLog PRIVATE include)
+target_link_libraries(test_12_Int_ExpLog PRIVATE Catch2::Catch2WithMain)
+
 # ==========================================
 # REGISTRO CTEST
 # ==========================================
@@ -114,3 +119,4 @@ add_test(NAME test_08_dig_t_operadores COMMAND test_08_dig_t_operadores)
 add_test(NAME test_09_dig_t_algebra COMMAND test_09_dig_t_algebra)
 add_test(NAME test_10_dig_t_io COMMAND test_10_dig_t_io)
 add_test(NAME test_11_basic_types COMMAND test_11_basic_types)
+add_test(NAME test_12_Int_ExpLog COMMAND test_12_Int_ExpLog)
