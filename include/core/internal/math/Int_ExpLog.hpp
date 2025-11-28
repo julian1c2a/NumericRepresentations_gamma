@@ -90,7 +90,11 @@ constexpr uint64_t int_log2_sf() noexcept {
  */
 template <uint64_t n> 
 constexpr uint64_t bit_width() noexcept {
-  return (n < 2u) ? 1 : int_log2_sf<n>() + 1;
+  if constexpr (n < 2u) { 
+    return 1; 
+  } else {
+    return int_log2_sf<n>() + 1; 
+  }
 }
 
 /**
