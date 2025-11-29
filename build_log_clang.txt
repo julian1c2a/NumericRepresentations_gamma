@@ -1,8 +1,8 @@
 ==========================================
  CONFIGURANDO Y CONSTRUYENDO: clang-release
 ==========================================
--- Configuring done (1.6s)
--- Generating done (0.8s)
+-- Configuring done (1.8s)
+-- Generating done (0.9s)
 -- Build files have been written to: D:/gdrive/numericrepresentations_gamma/build/build_targets/clang/release
 [ 96%] Built target Catch2
 [ 98%] Built target Catch2WithMain
@@ -46,4 +46,24 @@
 [ 96%] Built target Catch2
 [ 98%] Built target Catch2WithMain
 [100%] Built target test_14_primes
---- Construcción completada para clang-release ---
+[ 94%] Built target Catch2
+[ 97%] Built target Catch2WithMain
+[ 98%] Building CXX object CMakeFiles/test_15_conversions.dir/tests/test_15_conversions.cpp.obj
+In file included from D:\gdrive\numericrepresentations_gamma\tests\test_15_conversions.cpp:1:
+D:/gdrive/numericrepresentations_gamma/include/core/internal/conversions.hpp:40:22: error: constexpr variable 'max_before_mult' must be initialized by a constant expression
+   40 |   constexpr uint64_t max_before_mult = numeric_limits<uint64_t>::max() / base;
+      |                      ^                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\gdrive\numericrepresentations_gamma\tests\test_15_conversions.cpp:94:21: note: in instantiation of function template specialization 'NumRepr::AuxFunc::conversion_to_int_safe<0, 1, std::array<MockDig, 1>>' requested here
+   94 |         auto res0 = conversion_to_int_safe<0, 1>(digits);
+      |                     ^
+D:/gdrive/numericrepresentations_gamma/include/core/internal/conversions.hpp:40:72: note: division by zero
+   40 |   constexpr uint64_t max_before_mult = numeric_limits<uint64_t>::max() / base;
+      |                                                                        ^ ~~~~
+D:/gdrive/numericrepresentations_gamma/include/core/internal/conversions.hpp:40:72: warning: division by zero is undefined [-Wdivision-by-zero]
+   40 |   constexpr uint64_t max_before_mult = numeric_limits<uint64_t>::max() / base;
+      |                                                                        ^ ~~~~
+1 warning and 1 error generated.
+mingw32-make[3]: *** [CMakeFiles\test_15_conversions.dir\build.make:79: CMakeFiles/test_15_conversions.dir/tests/test_15_conversions.cpp.obj] Error 1
+mingw32-make[2]: *** [CMakeFiles\Makefile2:707: CMakeFiles/test_15_conversions.dir/all] Error 2
+mingw32-make[1]: *** [CMakeFiles\Makefile2:714: CMakeFiles/test_15_conversions.dir/rule] Error 2
+mingw32-make: *** [Makefile:341: test_15_conversions] Error 2

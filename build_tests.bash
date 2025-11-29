@@ -25,5 +25,6 @@ cmake --build --preset "$PRESET" --target test_11_basic_types || exit 1
 cmake --build --preset "$PRESET" --target test_12_Int_ExpLog || exit 1
 cmake --build --preset "$PRESET" --target test_13_IntRoot || exit 1
 cmake --build --preset "$PRESET" --target test_14_primes || exit 1
+cmake --build --preset "$PRESET" --target test_15_conversions || exit 1
 
 echo "--- Construcción completada para $PRESET ---"

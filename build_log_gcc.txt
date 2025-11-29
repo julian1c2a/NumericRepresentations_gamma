@@ -1,8 +1,8 @@
 ==========================================
  CONFIGURANDO Y CONSTRUYENDO: gcc-release
 ==========================================
--- Configuring done (1.8s)
--- Generating done (0.8s)
+-- Configuring done (1.7s)
+-- Generating done (0.9s)
 -- Build files have been written to: D:/gdrive/numericrepresentations_gamma/build/build_targets/gcc/release
 [ 96%] Built target Catch2
 [ 98%] Built target Catch2WithMain
@@ -46,4 +46,18 @@
 [ 96%] Built target Catch2
 [ 98%] Built target Catch2WithMain
 [100%] Built target test_14_primes
---- Construcción completada para gcc-release ---
+[ 94%] Built target Catch2
+[ 97%] Built target Catch2WithMain
+[ 98%] Building CXX object CMakeFiles/test_15_conversions.dir/tests/test_15_conversions.cpp.obj
+In file included from D:\gdrive\numericrepresentations_gamma\tests\test_15_conversions.cpp:1:
+D:/gdrive/numericrepresentations_gamma/include/core/internal/conversions.hpp: In instantiation of 'constexpr std::expected<long long unsigned int, NumRepr::AuxFunc::ConversionError> NumRepr::AuxFunc::conversion_to_int_safe(const A&) [with auto B = 0; auto L = 1; A = std::array<MockDig, 1>]':
+D:\gdrive\numericrepresentations_gamma\tests\test_15_conversions.cpp:94:49:   required from here
+   94 |         auto res0 = conversion_to_int_safe<0, 1>(digits);
+      |                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~
+D:/gdrive/numericrepresentations_gamma/include/core/internal/conversions.hpp:40:22: error: division by zero is not a constant expression
+   40 |   constexpr uint64_t max_before_mult = numeric_limits<uint64_t>::max() / base;
+      |                      ^~~~~~~~~~~~~~~
+mingw32-make[3]: *** [CMakeFiles\test_15_conversions.dir\build.make:79: CMakeFiles/test_15_conversions.dir/tests/test_15_conversions.cpp.obj] Error 1
+mingw32-make[2]: *** [CMakeFiles\Makefile2:707: CMakeFiles/test_15_conversions.dir/all] Error 2
+mingw32-make[1]: *** [CMakeFiles\Makefile2:714: CMakeFiles/test_15_conversions.dir/rule] Error 2
+mingw32-make: *** [Makefile:341: test_15_conversions] Error 2
