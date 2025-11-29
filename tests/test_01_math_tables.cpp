@@ -1,7 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
 
 // Incluimos los headers a probar
-#include "core/internal/math/IntExpIntLog.hpp"
+#include "core/internal/math/Int_ExpLog.hpp"
 #include "core/internal/math/tables/PrimeList.hpp"
 #include "core/internal/math/tables/EratosthenesSieve.hpp"
 
