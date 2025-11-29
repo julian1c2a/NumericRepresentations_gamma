@@ -7,9 +7,25 @@
 #include <array>
 #include <string_view>
 #include <limits>
+#include <iostream>
 
 using namespace NumRepr;
 using namespace NumRepr::AuxFunc;
+
+// =============================================================================
+// IDENTIFICACIÓN DE LA SUITE
+// =============================================================================
+// Truco: Este constructor estático corre antes que el main de Catch2
+struct SuiteInfoPrinter {
+    SuiteInfoPrinter() {
+        std::cout << "\n=============================================================\n"
+                  << " EJECUTANDO SUITE: test_03_core_internal\n"
+                  << "=============================================================" 
+                  << std::endl;
+    }
+};
+static SuiteInfoPrinter _info_printer;
+
 
 // =============================================================================
 // 1. BASIC TYPES: String Parsing (atoull family)

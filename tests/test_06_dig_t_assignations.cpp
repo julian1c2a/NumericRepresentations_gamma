@@ -1,5 +1,22 @@
 // test_06_dig_t_assignations.cpp
 #define CATCH_CONFIG_MAIN
+
+#include <iostream>
+
+// =============================================================================
+// IDENTIFICACIÓN DE LA SUITE
+// =============================================================================
+// Truco: Este constructor estático corre antes que el main de Catch2
+struct SuiteInfoPrinter {
+    SuiteInfoPrinter() {
+        std::cout << "\n=============================================================\n"
+                  << " EJECUTANDO SUITE: test_06_dig_t_assignations\n"
+                  << "=============================================================" 
+                  << std::endl;
+    }
+};
+static SuiteInfoPrinter _info_printer;
+
 #include "external/catch_amalgamated.hpp"
 #include "core/dig_t.hpp"
 

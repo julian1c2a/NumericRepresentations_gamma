@@ -1,7 +1,24 @@
-#include <catch2/catch_test_macros.hpp>
 #include "core/internal/math/primes.hpp"
 #include "core/internal/math/primes_ct.hpp"
+
+#include <catch2/catch_test_macros.hpp>
+
 #include <cstdint>
+#include <iostream>
+
+// =============================================================================
+// IDENTIFICACIÓN DE LA SUITE
+// =============================================================================
+// Truco: Este constructor estático corre antes que el main de Catch2
+struct SuiteInfoPrinter {
+    SuiteInfoPrinter() {
+        std::cout << "\n=============================================================\n"
+                  << " EJECUTANDO SUITE: test_14_primes\n"
+                  << "=============================================================" 
+                  << std::endl;
+    }
+};
+static SuiteInfoPrinter _info_printer;
 
 using namespace NumRepr::AuxFunc::LUT;
 

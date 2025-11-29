@@ -9,6 +9,21 @@
 #include <catch2/matchers/catch_matchers.hpp>
 #include <string>
 #include <type_traits>
+#include <iostream>
+
+// =============================================================================
+// IDENTIFICACIÓN DE LA SUITE
+// =============================================================================
+// Truco: Este constructor estático corre antes que el main de Catch2
+struct SuiteInfoPrinter {
+    SuiteInfoPrinter() {
+        std::cout << "\n=============================================================\n"
+                  << " EJECUTANDO SUITE: test_11_basic_types\n"
+                  << "=============================================================" 
+                  << std::endl;
+    }
+};
+static SuiteInfoPrinter _info_printer;
 
 // Incluimos el archivo bajo prueba
 #include "core/internal/basic_types.hpp"

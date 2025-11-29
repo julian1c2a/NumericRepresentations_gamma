@@ -4,6 +4,22 @@
  */
 
 #include <catch2/catch_test_macros.hpp>
+#include <iostream>
+
+// =============================================================================
+// IDENTIFICACIÓN DE LA SUITE
+// =============================================================================
+// Truco: Este constructor estático corre antes que el main de Catch2
+struct SuiteInfoPrinter {
+    SuiteInfoPrinter() {
+        std::cout << "\n=============================================================\n"
+                  << " EJECUTANDO SUITE: test_12_Int_ExpLog\n"
+                  << "=============================================================" 
+                  << std::endl;
+    }
+};
+static SuiteInfoPrinter _info_printer;
+
 #include "core/internal/math/Int_ExpLog.hpp"
 
 using namespace NumRepr::AuxFunc;

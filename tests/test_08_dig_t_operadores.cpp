@@ -1,8 +1,25 @@
 
 #include <catch2/catch_test_macros.hpp>
+#include <iostream>
+
 #include "core/dig_t.hpp"
 
 using namespace NumRepr;
+
+// =============================================================================
+// IDENTIFICACIÓN DE LA SUITE
+// =============================================================================
+// Truco: Este constructor estático corre antes que el main de Catch2
+struct SuiteInfoPrinter {
+    SuiteInfoPrinter() {
+        std::cout << "\n=============================================================\n"
+                  << " EJECUTANDO SUITE: test_08_dig_t_operadores\n"
+                  << "=============================================================" 
+                  << std::endl;
+    }
+};
+static SuiteInfoPrinter _info_printer;
+
 
 // =============================================================================
 // 1. ARITMÉTICA BINARIA (+, -, *, /, %)

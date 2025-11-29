@@ -1,5 +1,21 @@
 #include <catch2/catch_test_macros.hpp>
 #include <type_traits>
+#include <iostream>
+
+// =============================================================================
+// IDENTIFICACIÓN DE LA SUITE
+// =============================================================================
+// Truco: Este constructor estático corre antes que el main de Catch2
+struct SuiteInfoPrinter {
+    SuiteInfoPrinter() {
+        std::cout << "\n=============================================================\n"
+                  << " EJECUTANDO SUITE: test_05_dig_t_constructors\n"
+                  << "=============================================================" 
+                  << std::endl;
+    }
+};
+static SuiteInfoPrinter _info_printer;
+
 #include "core/dig_t.hpp"
 
 using namespace NumRepr;

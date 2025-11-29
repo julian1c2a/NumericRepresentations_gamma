@@ -7,6 +7,7 @@
 
 #include <limits>
 #include <type_traits>
+#include <iostream>
 
 // Usamos namespaces principales
 using namespace NumRepr::AuxFunc;
@@ -15,6 +16,21 @@ using namespace NumRepr::AuxFunc::LUT;
 // Alias para evitar ambigüedades entre funciones runtime y compile-time
 // La función runtime está en Safety
 using NumRepr::AuxFunc::Safety::max_exponent_for_base; 
+
+// =============================================================================
+// IDENTIFICACIÓN DE LA SUITE
+// =============================================================================
+// Truco: Este constructor estático corre antes que el main de Catch2
+struct SuiteInfoPrinter {
+    SuiteInfoPrinter() {
+        std::cout << "\n=============================================================\n"
+                  << " EJECUTANDO SUITE: test_01_math_tables\n"
+                  << "=============================================================" 
+                  << std::endl;
+    }
+};
+static SuiteInfoPrinter _info_printer;
+
 
 // =============================================================================
 // 1. PRUEBAS DE TABLA DE EXPONENTES MÁXIMOS
