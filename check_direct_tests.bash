@@ -46,3 +46,4 @@ run_test test_11_basic_types
 run_test test_12_Int_ExpLog
 run_test test_13_IntRoot
 run_test test_14_primes
+run_test test_15_conversions

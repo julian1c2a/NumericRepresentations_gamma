@@ -25,3 +25,4 @@ ctest --preset "$PRESET" -R test_11_basic_types
 ctest --preset "$PRESET" -R test_12_Int_ExpLog
 ctest --preset "$PRESET" -R test_13_IntRoot
 ctest --preset "$PRESET" -R test_14_primes
+ctest --preset "$PRESET" -R test_15_conversions
