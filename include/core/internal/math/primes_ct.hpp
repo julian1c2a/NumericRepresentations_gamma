@@ -100,30 +100,17 @@ namespace NumRepr
 					return decompose_ct<(n_minus_1 >> 1), s + 1>();
 				}
 			}
-
-			// Recursivo constexpr para probar divisibilidad por primos pequeños
-			template <uint64_t n, size_t I = 0>
-			consteval bool divides_by_small_prime_ct() {
-				constexpr size_t primes_lt_65537_size{
-					primes_lt_65537.size()
-				};
-				constexpr uint128_t n_uint128{n};
-				constexpr uint128_t prime_I {
-					uint128_t(primes_lt_65537[I])
-				};
-				constexpr uint128_t prime_I_squared {
-					prime_I * prime_I
-				};
-				if constexpr (I >= primes_lt_65537.size()) {
-					return false;
-				} else if constexpr (prime_I_squared > n_uint128) {
-					return false;
-				} else if constexpr (n % primes_lt_65537[I] == 0) {
-					return true;
-				} else {
-					return divides_by_small_prime_ct<n, I + 1>();
-				}
-			}
+			
+			// Recursivo consteval para probar divisibilidad por primos pequeños
+			consteval bool divides_by_small_prime_ct(uint64_t n) {
+        		for (const auto& p : primes_lt_65537) {
+            	// Optimización: Si p*p > n, ya no necesitamos comprobar más
+            	// Cast a 128 bit para evitar overflow en p*p
+            		if (static_cast<unsigned __int128>(p) * p > n) { return false; }
+            		if (n % p == 0) { return true; }
+        		}
+        		return false;
+    		}
 
 			// mulmod_ct constexpr seguro para evitar overflow
 			// Implementación recursiva de mulmod_ct_impl
