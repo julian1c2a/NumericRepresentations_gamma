@@ -8,38 +8,37 @@
 #include <limits>
 #include <type_traits>
 
-// Usamos namespaces para acortar
+// Usamos namespaces principales
 using namespace NumRepr::AuxFunc;
 using namespace NumRepr::AuxFunc::LUT;
-using namespace NumRepr::AuxFunc::LUT::Safety;
 
+// Alias para evitar ambigüedades entre funciones runtime y compile-time
+// La función runtime está en Safety
+using NumRepr::AuxFunc::Safety::max_exponent_for_base; 
 
 // =============================================================================
 // 1. PRUEBAS DE TABLA DE EXPONENTES MÁXIMOS
 // =============================================================================
 
 TEST_CASE("Tabla MaxExp4Base: Verificaciones en Compile-Time", "[tables][math][ct]") {
-    // Verificamos puntos clave de la tabla estática mediante static_assert
+    // Accedemos explícitamente al namespace 'ct' para las versiones template consteval
     
     // Base 2: 2^63 cabe en uint64, 2^64 no. Max exp = 63.
-    static_assert(max_exponent_for_base_ct<2>() == 63, "Error en base 2 CT");
+    static_assert(NumRepr::AuxFunc::ct::max_exponent_for_base<2>() == 63, "Error en base 2 CT");
     
     // Base 3: 3^40 cabe, 3^41 no. Max exp = 40.
-    static_assert(max_exponent_for_base_ct<3>() == 40, "Error en base 3 CT");
+    static_assert(NumRepr::AuxFunc::ct::max_exponent_for_base<3>() == 40, "Error en base 3 CT");
     
     // Base 10: 10^19 cabe, 10^20 no.
-    static_assert(max_exponent_for_base_ct<10>() == 19, "Error en base 10 CT");
+    static_assert(NumRepr::AuxFunc::ct::max_exponent_for_base<10>() == 19, "Error en base 10 CT");
     
     // Límites superiores
     // Base 2^32 (4294967296): Al cuadrado es 2^64 (overflow). Max exp = 1.
-    static_assert(max_exponent_for_base_ct<4294967296ULL>() == 1, "Error en base 2^32 CT");
-    
-    // Comprobamos que la recursión compile-time funciona
-    REQUIRE(true); // Si compila, pasa.
+    static_assert(NumRepr::AuxFunc::ct::max_exponent_for_base<4294967296ULL>() == 1, "Error en base 2^32 CT");
 }
 
 TEST_CASE("Tabla MaxExp4Base: Verificaciones en Runtime", "[tables][math][runtime]") {
-    // Verificamos que la búsqueda binaria/lineal inversa funcione igual que la CT
+    // Verificamos que la versión runtime (Safety::max_exponent_for_base) funcione
     
     CHECK(max_exponent_for_base(2) == 63);
     CHECK(max_exponent_for_base(3) == 40);
@@ -48,7 +47,7 @@ TEST_CASE("Tabla MaxExp4Base: Verificaciones en Runtime", "[tables][math][runtim
     // Caso borde: Base muy grande
     CHECK(max_exponent_for_base(std::numeric_limits<uint64_t>::max()) == 1);
     
-    // Caso borde: Base 0 y 1 (definidos como infinito ~0ull en la tabla)
+    // Caso borde: Base 0 y 1 (definidos como infinito ~0ull para seguridad inversa)
     CHECK(max_exponent_for_base(0) == ~0ull);
     CHECK(max_exponent_for_base(1) == ~0ull);
 }
@@ -59,7 +58,7 @@ TEST_CASE("Tabla MaxExp4Base: Verificaciones en Runtime", "[tables][math][runtim
 
 TEST_CASE("IntExpIntLog: Potencias Seguras (int_pow)", "[math][pow]") {
     
-    SECTION("Cálculos correctos dentro del rango") {
+    SECTION("Cálculos correctos dentro del rango (Runtime)") {
         CHECK(int_pow(2, 10) == 1024);
         CHECK(int_pow(10, 5) == 100000);
         CHECK(int_pow(3, 3) == 27);
@@ -68,7 +67,7 @@ TEST_CASE("IntExpIntLog: Potencias Seguras (int_pow)", "[math][pow]") {
         CHECK(int_pow(0, 0) == 1); // 0^0 = 1 por convención común
     }
 
-    SECTION("Detección de Overflow usando la tabla") {
+    SECTION("Detección de Overflow usando la tabla (Runtime)") {
         // 2^64 debe fallar (retornar 0)
         // max_exponent_for_base(2) es 63. Pedimos 64.
         CHECK(int_pow(2, 64) == 0);
@@ -78,11 +77,12 @@ TEST_CASE("IntExpIntLog: Potencias Seguras (int_pow)", "[math][pow]") {
     }
     
     SECTION("Compile-time int_pow") {
-        constexpr uint64_t val = int_pow_ct<2, 10>();
-        static_assert(val == 1024, "int_pow_ct falló");
+        // Usamos NumRepr::AuxFunc::ct::int_pow
+        constexpr uint64_t val = NumRepr::AuxFunc::ct::int_pow<2, 10>();
+        static_assert(val == 1024, "ct::int_pow<2,10> falló");
         
-        // Esta línea no debería compilar si descomentas (gracias al concept 'requires'):
-        // constexpr uint64_t overflow = int_pow_ct<2, 64>(); 
+        // La versión CT fallaría al compilar si hay overflow gracias a 'requires'
+        // constexpr uint64_t overflow = NumRepr::AuxFunc::ct::int_pow<2, 64>(); 
     }
 }
 
@@ -125,8 +125,7 @@ TEST_CASE("Tablas de Primos: Consistencia", "[tables][primes]") {
         // Generamos la criba en tiempo de ejecución para comparar
         auto runtime_sieve = make_prime_bitset();
         
-        // Obtenemos la tabla pre-calculada (string literal en header)
-        // Nota: is_prime_lt_65537_lut es constexpr bitset
+        // is_prime_lt_65537_lut es constexpr bitset importado de EratosthenesSieve.hpp
         
         // 1. Verificar que la criba Runtime coincide con la lista de primos
         for (auto p : primes_lt_65537) {
