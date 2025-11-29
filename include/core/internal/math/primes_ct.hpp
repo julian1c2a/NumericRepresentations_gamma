@@ -128,8 +128,7 @@ namespace NumRepr
 			// mulmod_ct constexpr seguro para evitar overflow
 			// Implementación recursiva de mulmod_ct_impl
 			template <uint64_t a, uint64_t b, uint64_t mod, uint64_t result = 0>
-			constexpr uint64_t mulmod_ct_impl()
-			{
+			constexpr uint64_t mulmod_ct_impl() {
 				constexpr uint64_t new_a { (a << 1) % mod };
 				constexpr uint64_t new_b { b >> 1 };
 				constexpr uint64_t new_result { 
@@ -143,8 +142,7 @@ namespace NumRepr
 			}
 
 			template <uint64_t a, uint64_t b, uint64_t mod>
-			constexpr uint64_t mulmod_ct()
-			{
+			constexpr uint64_t mulmod_ct() {
 				return mulmod_ct_impl<a % mod, b, mod, 0>();
 			}
 
@@ -153,8 +151,7 @@ namespace NumRepr
 						uint64_t exp, 
 						uint64_t mod, 
 						uint64_t result = 1
-			>
-			consteval uint64_t binpower_ct() {
+			> consteval uint64_t binpower_ct() {
 				if constexpr (exp == 0) {
 					return result;
 				}	else	{
@@ -190,13 +187,12 @@ namespace NumRepr
 
 			// check_composite_ct_impl: recursivo para Miller-Rabin
 			template <uint64_t x, uint64_t n, int s, int r = 1>
-			constexpr bool check_composite_ct_impl()
-			{
-				if constexpr (r >= s)
+			constexpr bool check_composite_ct_impl() {
+				if constexpr (r >= s) {
 					return true;
-				else if constexpr (binpower_ct<x, (1ULL << r), n>() == n - 1)
+				} else if constexpr (binpower_ct<x, (1ULL << r), n>() == n - 1) {
 					return false;
-				else
+				} else {
 					return check_composite_ct_impl<x, n, s, r + 1>();
 			}
 
@@ -212,8 +208,7 @@ namespace NumRepr
 
 			// Recursivo constexpr para Miller-Rabin con testigos fijos
 			template <uint64_t n, uint64_t d, int s, size_t W = 0>
-			constexpr bool miller_rabin_ct()
-			{
+			constexpr bool miller_rabin_ct() {
                 // SIMPLIFICACIÓN: Usamos .size() directamente gracias a std::array
 				constexpr size_t total_witnesses { miller_rabin_witnesses.size() };
                 
