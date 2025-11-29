@@ -15,6 +15,25 @@ if(WIN32 AND CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     "<CMAKE_CXX_COMPILER> <FLAGS> <CMAKE_CXX_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>")
 endif()
 
+# --- CONFIGURACIÓN DE FLAGS ESPECÍFICOS ---
+
+if(MSVC)
+  # Flags propuestos en constexpr_flags_investigation.md + /wd4146
+  add_compile_options(
+    /permissive- 
+    /bigobj 
+    /constexpr:depth8192 
+    /constexpr:steps50000000 
+    /wd4146 # Silencia "unary minus operator applied to unsigned type" (común en metaprog)
+  )
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  # Aumentamos límites para Clang (equivalentes a los de MSVC)
+  add_compile_options(
+    -fconstexpr-depth=8192
+    -fconstexpr-steps=50000000
+  )
+endif()
+
 # --- SALIDAS ---
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
@@ -43,17 +62,17 @@ add_executable(test_lookup_tables tests/test_lookup_tables.cpp)
 target_include_directories(test_lookup_tables PRIVATE include)
 target_link_libraries(test_lookup_tables PRIVATE Catch2::Catch2WithMain)
 
-# Test test_01_math_tables (ya ha pasado con éxito)
+# Test test_01_math_tables
 add_executable(test_01_math_tables tests/test_01_math_tables.cpp)
 target_include_directories(test_01_math_tables PRIVATE include)
 target_link_libraries(test_01_math_tables PRIVATE Catch2::Catch2WithMain)
 
-# Test test_02_append (ya ha pasado con éxito)
+# Test test_02_append
 add_executable(test_02_append tests/test_02_append.cpp)
 target_include_directories(test_02_append PRIVATE include)
 target_link_libraries(test_02_append PRIVATE Catch2::Catch2WithMain)
 
-# Test test_03_core_internal (ya ha pasado con éxito)
+# Test test_03_core_internal
 add_executable(test_03_core_internal tests/test_03_core_internal.cpp)
 target_include_directories(test_03_core_internal PRIVATE include)
 target_link_libraries(test_03_core_internal PRIVATE Catch2::Catch2WithMain)

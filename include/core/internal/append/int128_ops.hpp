@@ -360,7 +360,10 @@ namespace NumRepr {
         constexpr sint128_t operator/(const sint128_t& rhs) const noexcept {
             const bool neg_lhs {high < 0};
             const bool neg_rhs {rhs.high < 0};
-            const bool neg_res {neg_lhs ^ neg_rhs};
+            // CORRECCIÓN MSVC: Usar != en lugar de ^ para booleanos en inicialización con {}
+            // ^ promueve a int, != mantiene bool y evita error de estrechamiento.
+            const bool neg_res {neg_lhs != neg_rhs}; 
+            
             uint128_t u_lhs {
                 neg_lhs ? 
                 (-*this).as_unsigned() : 
