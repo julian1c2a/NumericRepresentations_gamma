@@ -48,10 +48,10 @@ namespace NumRepr {
 
     // --- Utilidades del Espacio de Nombres ---
     using ::std::array; // Disponible como NumRepr::array
-    using ::std::integral;
-    using ::std::is_signed_v;
+    using ::std::integral; // Concepto C++20
+    using ::std::is_signed_v; // Trait para tipos con signo en type_traits
     using ::std::strong_ordering;
-    using ::std::unsigned_integral;
+    using ::std::unsigned_integral; // Concepto C++20
 
     //==========================================================================
     // 1. DETECCIÓN DE SOPORTE NATIVO
