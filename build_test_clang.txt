@@ -1,0 +1,49 @@
+==========================================
+ CONFIGURANDO Y CONSTRUYENDO: clang-release
+==========================================
+-- Configuring done (2.0s)
+-- Generating done (1.4s)
+-- Build files have been written to: D:/gdrive/numericrepresentations_gamma/build/build_targets/clang/release
+[ 96%] Built target Catch2
+[ 98%] Built target Catch2WithMain
+[ 98%] Building CXX object CMakeFiles/test_01_math_tables.dir/tests/test_01_math_tables.cpp.obj
+In file included from D:\gdrive\numericrepresentations_gamma\tests\test_01_math_tables.cpp:6:
+In file included from D:/gdrive/numericrepresentations_gamma/include/core/internal/math/tables/EratosthenesSieve.hpp:4:
+D:/gdrive/numericrepresentations_gamma/include/core/internal/math/tables/EratosthenesSieve_table.hpp:34:30: error: constexpr variable 'is_prime_lt_65537_lut' must be initialized by a constant expression
+   34 | constexpr std::bitset<65536> is_prime_lt_65537_lut = generate_prime_lut_ct();
+      |                              ^                       ~~~~~~~~~~~~~~~~~~~~~~~
+C:/msys64/clang64/include/c++/v1/bitset:697:5: note: constexpr evaluation hit maximum step limit; possible infinite loop?
+  697 |     _LIBCPP_ASSERT_VALID_ELEMENT_ACCESS(__p < _Size, "bitset::operator[] index out of bounds");
+      |     ^
+C:/msys64/clang64/include/c++/v1/__assert:103:71: note: expanded from macro '_LIBCPP_ASSERT_VALID_ELEMENT_ACCESS'
+  103 | #  define _LIBCPP_ASSERT_VALID_ELEMENT_ACCESS(expression, message)    ((void)0)
+      |                                                                       ^
+D:/gdrive/numericrepresentations_gamma/include/core/internal/math/tables/EratosthenesSieve_table.hpp:26:17: note: in call to 'bs.operator[](55588)'
+   26 |                 bs[j] = 0;
+      |                 ^~~~~
+D:/gdrive/numericrepresentations_gamma/include/core/internal/math/tables/EratosthenesSieve_table.hpp:34:54: note: in call to 'generate_prime_lut_ct()'
+   34 | constexpr std::bitset<65536> is_prime_lt_65537_lut = generate_prime_lut_ct();
+      |                                                      ^~~~~~~~~~~~~~~~~~~~~~~
+D:/gdrive/numericrepresentations_gamma/include/core/internal/math/tables/EratosthenesSieve_table.hpp:34:54: error: call to consteval function 'NumRepr::AuxFunc::LUT::generate_prime_lut_ct' is not a constant expression
+   34 | constexpr std::bitset<65536> is_prime_lt_65537_lut = generate_prime_lut_ct();
+      |                                                      ^
+C:/msys64/clang64/include/c++/v1/bitset:697:5: note: constexpr evaluation hit maximum step limit; possible infinite loop?
+  697 |     _LIBCPP_ASSERT_VALID_ELEMENT_ACCESS(__p < _Size, "bitset::operator[] index out of bounds");
+      |     ^
+C:/msys64/clang64/include/c++/v1/__assert:103:71: note: expanded from macro '_LIBCPP_ASSERT_VALID_ELEMENT_ACCESS'
+  103 | #  define _LIBCPP_ASSERT_VALID_ELEMENT_ACCESS(expression, message)    ((void)0)
+      |                                                                       ^
+D:/gdrive/numericrepresentations_gamma/include/core/internal/math/tables/EratosthenesSieve_table.hpp:26:17: note: in call to 'bs.operator[](55588)'
+   26 |                 bs[j] = 0;
+      |                 ^~~~~
+D:/gdrive/numericrepresentations_gamma/include/core/internal/math/tables/EratosthenesSieve_table.hpp:34:54: note: in call to 'generate_prime_lut_ct()'
+   34 | constexpr std::bitset<65536> is_prime_lt_65537_lut = generate_prime_lut_ct();
+      |                                                      ^~~~~~~~~~~~~~~~~~~~~~~
+D:\gdrive\numericrepresentations_gamma\tests\test_01_math_tables.cpp:148:19: warning: result of comparison of constant 65536 with expression of type 'value_type' (aka 'unsigned short') is always true [-Wtautological-constant-out-of-range-compare]
+  148 |             if (p < 65536) {
+      |                 ~ ^ ~~~~~
+1 warning and 2 errors generated.
+mingw32-make[3]: *** [CMakeFiles\test_01_math_tables.dir\build.make:79: CMakeFiles/test_01_math_tables.dir/tests/test_01_math_tables.cpp.obj] Error 1
+mingw32-make[2]: *** [CMakeFiles\Makefile2:245: CMakeFiles/test_01_math_tables.dir/all] Error 2
+mingw32-make[1]: *** [CMakeFiles\Makefile2:252: CMakeFiles/test_01_math_tables.dir/rule] Error 2
+mingw32-make: *** [Makefile:159: test_01_math_tables] Error 2

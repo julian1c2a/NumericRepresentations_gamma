@@ -1,0 +1,49 @@
+==========================================
+ CONFIGURANDO Y CONSTRUYENDO: gcc-release
+==========================================
+-- Configuring done (1.6s)
+-- Generating done (0.9s)
+-- Build files have been written to: D:/gdrive/numericrepresentations_gamma/build/build_targets/gcc/release
+[ 96%] Built target Catch2
+[ 98%] Built target Catch2WithMain
+[100%] Built target test_01_math_tables
+[ 96%] Built target Catch2
+[ 98%] Built target Catch2WithMain
+[100%] Built target test_02_append
+[ 94%] Built target Catch2
+[ 97%] Built target Catch2WithMain
+[100%] Built target test_03_core_internal
+[ 96%] Built target Catch2
+[ 98%] Built target Catch2WithMain
+[100%] Built target test_04_dig_t
+[ 94%] Built target Catch2
+[ 97%] Built target Catch2WithMain
+[100%] Built target test_05_dig_t_constructors
+[ 96%] Built target Catch2
+[ 98%] Built target Catch2WithMain
+[100%] Built target test_06_dig_t_assignations
+[ 96%] Built target Catch2
+[ 98%] Built target Catch2WithMain
+[100%] Built target test_07_dig_t_conversions
+[ 94%] Built target Catch2
+[ 97%] Built target Catch2WithMain
+[100%] Built target test_08_dig_t_operadores
+[ 96%] Built target Catch2
+[ 98%] Built target Catch2WithMain
+[100%] Built target test_09_dig_t_algebra
+[ 94%] Built target Catch2
+[ 97%] Built target Catch2WithMain
+[100%] Built target test_10_dig_t_io
+[ 96%] Built target Catch2
+[ 98%] Built target Catch2WithMain
+[100%] Built target test_11_basic_types
+[ 96%] Built target Catch2
+[ 98%] Built target Catch2WithMain
+[100%] Built target test_12_Int_ExpLog
+[ 94%] Built target Catch2
+[ 97%] Built target Catch2WithMain
+[100%] Built target test_13_IntRoot
+[ 96%] Built target Catch2
+[ 98%] Built target Catch2WithMain
+[100%] Built target test_14_primes
+--- Construcción completada para gcc-release ---
