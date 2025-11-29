@@ -21,12 +21,11 @@ namespace LUT {
     using std::uint64_t;
 
     // =============================================================================
-    // UTILIDADES CONSTEXPR ITERATIVAS (Sin recursión de plantillas)
+    // UTILIDADES CONSTEXPR ITERATIVAS
     // =============================================================================
 
     // Búsqueda binaria iterativa en tiempo de compilación
     constexpr bool binary_search_constexpr(uint64_t value) {
-        // Usamos std::lower_bound que es constexpr en C++20/23
         auto it = std::lower_bound(primes_lt_65537.begin(), primes_lt_65537.end(), static_cast<uint16_t>(value));
         return (it != primes_lt_65537.end() && *it == value);
     }
@@ -40,12 +39,14 @@ namespace LUT {
 
     // Multiplicación modular segura (128 bits) iterativa
     constexpr uint64_t mulmod_ct(uint64_t a, uint64_t b, uint64_t mod) {
-        // En C++23 y compiladores modernos, __uint128_t funciona en constexpr
-        return static_cast<uint64_t>((static_cast<unsigned __int128>(a) * b) % mod);
+        // CORRECCIÓN MSVC: No usamos 'unsigned __int128' directamente.
+        // Usamos NumRepr::uint128_t que maneja la emulación en MSVC y nativo en GCC/Clang.
+        // Como uint128_t tiene operadores constexpr, esto funciona en compile-time.
+        NumRepr::uint128_t res_128 = static_cast<NumRepr::uint128_t>(a) * static_cast<NumRepr::uint128_t>(b);
+        return static_cast<uint64_t>(res_128 % static_cast<NumRepr::uint128_t>(mod));
     }
 
     // Exponenciación modular binaria iterativa
-    // CORRIGE EL BUG DE LA VERSIÓN RECURSIVA: La base se actualiza siempre.
     constexpr uint64_t binpower_ct(uint64_t base, uint64_t exp, uint64_t mod) {
         uint64_t res = 1;
         base %= mod;
@@ -76,9 +77,8 @@ namespace LUT {
     // Comprobación de divisibilidad por primos pequeños iterativa
     constexpr bool divides_by_small_prime_ct(uint64_t n) {
         for (const auto& p : primes_lt_65537) {
-            // Optimización: Si p*p > n, ya no necesitamos comprobar más
-            // Cast a 128 bit para evitar overflow en p*p
-            if (static_cast<unsigned __int128>(p) * p > n) return false;
+            // CORRECCIÓN MSVC: Usamos NumRepr::uint128_t para el chequeo de overflow
+            if (static_cast<NumRepr::uint128_t>(p) * p > n) return false;
             if (n % p == 0) return true;
         }
         return false;
