@@ -103,8 +103,7 @@ namespace NumRepr
 
 			// Recursivo constexpr para probar divisibilidad por primos pequeños
 			template <uint64_t n, size_t I = 0>
-			consteval bool divides_by_small_prime_ct()
-			{
+			consteval bool divides_by_small_prime_ct() {
 				constexpr size_t primes_lt_65537_size{
 					primes_lt_65537.size()
 				};
@@ -123,6 +122,7 @@ namespace NumRepr
 					return true;
 				} else {
 					return divides_by_small_prime_ct<n, I + 1>();
+				}
 			}
 
 			// mulmod_ct constexpr seguro para evitar overflow
@@ -194,6 +194,7 @@ namespace NumRepr
 					return false;
 				} else {
 					return check_composite_ct_impl<x, n, s, r + 1>();
+				}
 			}
 
 			// check_composite para Miller-Rabin
