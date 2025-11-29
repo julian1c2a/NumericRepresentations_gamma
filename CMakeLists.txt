@@ -108,6 +108,11 @@ add_executable(test_13_IntRoot tests/test_13_IntRoot.cpp)
 target_include_directories(test_13_IntRoot PRIVATE include)
 target_link_libraries(test_13_IntRoot PRIVATE Catch2::Catch2WithMain)
 
+# Test test_14_primes
+add_executable(test_14_primes tests/test_14_primes.cpp)
+target_include_directories(test_14_primes PRIVATE include)
+target_link_libraries(test_14_primes PRIVATE Catch2::Catch2WithMain)
+
 # ==========================================
 # REGISTRO CTEST
 # ==========================================
@@ -126,3 +131,4 @@ add_test(NAME test_10_dig_t_io COMMAND test_10_dig_t_io)
 add_test(NAME test_11_basic_types COMMAND test_11_basic_types)
 add_test(NAME test_12_Int_ExpLog COMMAND test_12_Int_ExpLog)
 add_test(NAME test_13_IntRoot COMMAND test_13_IntRoot)
+add_test(NAME test_14_primes COMMAND test_14_primes)
