@@ -237,7 +237,7 @@ namespace NumRepr
 					return false;
 				} else if constexpr (n < 65537) {
 					return is_prime_lt_65537_ct<n>();
-				} else if constexpr (divides_by_small_prime_ct<n>()) {
+				} else if constexpr (divides_by_small_prime_ct(n)) {
 					return false;
 				} else {
 					constexpr auto decomp { decompose_ct<n - 1>() };
