@@ -86,7 +86,8 @@ De estas cabeceras `C++ hpp` necesito pruebas (integradas en `Catch2` + `CTest`)
 
 Estoy teniendo la mala idea de renombrar `IntExpIntLog.hpp` a `Int_ExpLog.hpp`, y de seguir ahondando en la refactorización, haciendo como en las cabeceras `primes`, dividiendo las que merezcan la pena entre sufijos `""` (para las funciones en tiempo de ejecución) y `"_ct"` (para las de tiempo de compilación). ¿?
 
-    //NumRepr/include/core/internal/math/IntExpIntLog.hpp
+    //NumRepr/include/core/internal/math/IntExpIntLog.hpp [[ERASED]] [[REFACTORIZED]] `date: 28/11/2025`
+	//NumRepr/include/core/internal/math/Int_ExpLog.hpp [[RENAMED FROM IntExpIntLog.hpp]] `date: 28/11/2025`
     //NumRepr/include/core/internal/math/IntRoot.hpp
     //NumRepr/include/core/internal/math/math_utils.hpp [[DEPRECATED]][[EMPTY]]
     //NumRepr/include/core/internal/math/primes.hpp
@@ -167,6 +168,11 @@ Ya se han construido y pasado exitosamente test_01_math_tables y test_02_append 
     //NumRepr/tests/test_08_dig_t_operadores.cpp
     //NumRepr/tests/test_09_dig_t_algebra.cpp
     //NumRepr/tests/test_10_dig_t_io.cpp
+
+A fecha `date: 29/11/2025` y hora `hour: 18:00` se han añadido con éxito tanto en construcción (`cmake --build ...`) como en el paso de pruebas (`ctest --preset ...`)
+	
+	//NumRepr/tests/test_11_basic_types.cpp
+	//NumRepr/tests/test_12_Int_ExpLog.cpp
 
 
 **CATCH2 (INTEGRACIÓN)**
