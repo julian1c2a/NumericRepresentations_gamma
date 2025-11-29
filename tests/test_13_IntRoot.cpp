@@ -1,12 +1,27 @@
-#include <catch2/catch_test_macros.hpp>
 #include "core/internal/math/IntRoot.hpp"
+
+#include <catch2/catch_test_macros.hpp>
+
 #include <cstdint>
 #include <limits>
+#include <iostream>
 
 // Detectar soporte para __uint128_t
 #if defined(__SIZEOF_INT128__)
     #define HAS_INT128
 #endif
+
+// =============================================================================
+// IDENTIFICACIÓN DE LA SUITE
+struct SuiteInfoPrinter {
+    SuiteInfoPrinter() {
+        std::cout << "\n=============================================================\n"
+                  << " EJECUTANDO SUITE: test_13_IntRoot\n"
+                  << "=============================================================" 
+                  << std::endl;
+    }
+};
+static SuiteInfoPrinter _info_printer;
 
 using namespace NumRepr::AuxFunc;
 
