@@ -191,6 +191,9 @@ constexpr inline sign_funct_e opposite_sign(sign_funct_e sign) noexcept {
                                           : sign_funct_e::vzero;
 }
 
+// --- CAMBIO 1: Guía de deducción explícita para ayudar a MSVC ---
+template <size_t N> fixed_string(const char (&)[N]) -> fixed_string<N>;
+
 /**
  * @brief Wrapper estructural para cadenas fijas en tiempo de compilación (CNTTP).
  * @details Permite pasar literales de cadena como parámetros de plantilla en C++20.
@@ -490,19 +493,21 @@ atoull_consume(std::string_view sv) noexcept {
  *
  * @note USAGE: atoull_ct<"123456">()
  */
-template <fixed_string STR> 
+t/**
+ * @brief Convierte string literal a ullint_t en tiempo de compilación.
+ * @details Versión optimizada para MSVC.
+ */
+template <NumRepr::fixed_string STR> 
 consteval ullint_t atoull_ct() {
-  constexpr std::string_view sv = STR; // Conversión implícita usando el operador de fixed_string
-
-  if (sv.empty()) {
-    throw "atoull_ct: empty string";
-  }
-
+  // --- CAMBIO 2: Iterar directamente sobre STR.data para evitar std::string_view en consteval ---
+  
   ullint_t i = 0;
   constexpr ullint_t maxv = std::numeric_limits<ullint_t>::max();
+  bool any_digit = false;
 
-  for (char c : sv) {
-    if (c == '\0') continue; // Seguridad extra
+  // Accedemos al array crudo directamente. MSVC prefiere esto en consteval.
+  for (char c : STR.data) {
+    if (c == '\0') break; // Terminador nulo
 
     if (c < '0' || c > '9') {
       throw "atoull_ct: non-digit character found";
@@ -515,6 +520,11 @@ consteval ullint_t atoull_ct() {
     }
 
     i = i * 10 + digit;
+    any_digit = true;
+  }
+
+  if (!any_digit) {
+    throw "atoull_ct: empty string";
   }
 
   return i;
