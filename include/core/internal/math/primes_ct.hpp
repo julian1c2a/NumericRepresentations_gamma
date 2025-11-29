@@ -29,44 +29,43 @@ namespace NumRepr
 			template <  uint64_t value, 
 						size_t left = 0, 
 						size_t right = primes_lt_65537.size()
-			> struct binary_search_constexpr_impl
-			{
-				static constexpr size_t mid = left + (right - left) / 2;
-				static constexpr uint16_t mid_value = primes_lt_65537[mid];
+			> struct binary_search_constexpr_impl {
+				static constexpr size_t mid { left + (right - left) / 2 };
+				static constexpr uint16_t mid_value { primes_lt_65537[mid] };
 				static constexpr bool result { 
 					(mid_value == value)
 						? true
-						: (mid_value < value)  ?
-						  ( binary_search_constexpr_impl<
-							  value, 
-							  mid + 1, 
-							  right
-							>::result) : 
-						  ( binary_search_constexpr_impl<
-								value, 
-								left, 
-								mid
-							>::result)  
-				};
-			};
+						:   (	mid_value < value	)		?
+						    ( binary_search_constexpr_impl<
+									value, 
+									mid + 1, 
+									right
+								>::result
+							)								: 
+						  	( binary_search_constexpr_impl<
+									value, 
+									left, 
+									mid
+								>::result
+							)  
+				}; // end constexpr result
+			}; // end struct binary_search_constexpr_impl
 			template <uint64_t value, size_t pos>
-			struct binary_search_constexpr_impl<value, pos, pos>
-			{
+			struct binary_search_constexpr_impl<value, pos, pos> {
 				static constexpr bool result = false;
 			};
 			template <uint64_t value>
-			constexpr bool binary_search_constexpr()
-			{
+			consteval bool binary_search_constexpr() {
 				return binary_search_constexpr_impl<value>::result;
 			}
 
 			// --- Primalidad para n < 65537 ---
 			// Compile-time (template, para static_assert)
 			template <uint64_t value>
-			constexpr bool is_prime_lt_65537_ct()
-			{
-				if constexpr (value < 2 || value >= 65536)
+			constexpr bool is_prime_lt_65537_ct() {
+				if constexpr (value < 2 || value >= 65536) {
 					return false;
+				}
 				return is_prime_lt_65537_lut[value];
 			}
 
@@ -77,7 +76,7 @@ namespace NumRepr
 			// --- Miller-Rabin determinista constexpr para n < 2^64 ---
 			// Testigos fijos recomendados para n < 2^64.
             // Usamos std::array para mayor seguridad y métodos constexpr.
-			static constexpr array<uint64_t, 25> miller_rabin_witnesses{{
+			static constexpr array<uint64_t, 25> miller_rabin_witnesses {{
 				2, 3, 5, 7, 11, 13, 17,
 				19, 23, 29, 31, 37, 41, 43,
 				47, 53, 59, 61, 67, 71, 73,
@@ -93,17 +92,18 @@ namespace NumRepr
 
 			// Descomponer n-1 = d*2^s
 			template <uint64_t n_minus_1, int s = 0>
-			constexpr DecompResult decompose_ct()
+			consteval DecompResult decompose_ct()
 			{
-				if constexpr (n_minus_1 & 1)
+				if constexpr (n_minus_1 & 1) {
 					return DecompResult{n_minus_1, s};
-				else
+				} else {
 					return decompose_ct<(n_minus_1 >> 1), s + 1>();
+				}
 			}
 
 			// Recursivo constexpr para probar divisibilidad por primos pequeños
 			template <uint64_t n, size_t I = 0>
-			constexpr bool divides_by_small_prime_ct()
+			consteval bool divides_by_small_prime_ct()
 			{
 				constexpr size_t primes_lt_65537_size{
 					primes_lt_65537.size()
@@ -115,13 +115,13 @@ namespace NumRepr
 				constexpr uint128_t prime_I_squared {
 					prime_I * prime_I
 				};
-				if constexpr (I >= primes_lt_65537.size())
+				if constexpr (I >= primes_lt_65537.size()) {
 					return false;
-				else if constexpr (prime_I_squared > n_uint128)
+				} else if constexpr (prime_I_squared > n_uint128) {
 					return false;
-				else if constexpr (n % primes_lt_65537[I] == 0)
+				} else if constexpr (n % primes_lt_65537[I] == 0) {
 					return true;
-				else
+				} else {
 					return divides_by_small_prime_ct<n, I + 1>();
 			}
 
@@ -130,14 +130,16 @@ namespace NumRepr
 			template <uint64_t a, uint64_t b, uint64_t mod, uint64_t result = 0>
 			constexpr uint64_t mulmod_ct_impl()
 			{
-				constexpr uint64_t new_a = (a << 1) % mod;
-				constexpr uint64_t new_b = b >> 1;
+				constexpr uint64_t new_a { (a << 1) % mod };
+				constexpr uint64_t new_b { b >> 1 };
 				constexpr uint64_t new_result { 
 					(result + ((b & 1) ? a : 0)) % mod
 				};
-				return((b == 0) ? 
-						result : 
-						mulmod_ct_impl<new_a, new_b, mod, new_result>());
+				if constexpr (b == 0) {
+					return result;
+				} else {
+					return	mulmod_ct_impl<new_a, new_b, mod, new_result>();
+				}
 			}
 
 			template <uint64_t a, uint64_t b, uint64_t mod>
@@ -152,39 +154,36 @@ namespace NumRepr
 						uint64_t mod, 
 						uint64_t result = 1
 			>
-			constexpr uint64_t binpower_ct()
-			{
-				if constexpr (exp == 0)
-				{
+			consteval uint64_t binpower_ct() {
+				if constexpr (exp == 0) {
 					return result;
-				}
-				else
-				{
-					if constexpr (exp & 1)
-					{
-						return binpower_ct<
-									base, 
-									(exp >> 1), 
-									mod, 
-									mulmod_ct<
-										result, 
-										base % mod, 
-										mod
-									>()
-								>();
-					}
-					else
-					{
-						return binpower_ct<
-									mulmod_ct<
-										base % mod, 
-										base % mod, 
-										mod
-									>(), 
-									(exp >> 1), 
-									mod, 
-									result
-								>();
+				}	else	{
+					if constexpr (exp & 1)	{
+						return (
+							binpower_ct<
+								base, 
+								(exp >> 1), 
+								mod, 
+								mulmod_ct<
+									result, 
+									base % mod, 
+									mod
+								>()
+							>()
+						);
+					}	else	{
+						return (
+							binpower_ct<
+								mulmod_ct<
+									base % mod, 
+									base % mod, 
+									mod
+								>(), 
+								(exp >> 1), 
+								mod, 
+								result
+							>()
+						);
 					}
 				}
 			}
@@ -216,23 +215,17 @@ namespace NumRepr
 			constexpr bool miller_rabin_ct()
 			{
                 // SIMPLIFICACIÓN: Usamos .size() directamente gracias a std::array
-				constexpr size_t total_witnesses = miller_rabin_witnesses.size();
+				constexpr size_t total_witnesses { miller_rabin_witnesses.size() };
                 
 				// CAMBIO CRÍTICO: Validar límite ANTES de instanciar check_composite_ct
                 // Esto previene la recursión infinita y el acceso fuera de límites
-				if constexpr (W >= total_witnesses)
-				{
+				if constexpr (W >= total_witnesses)	{
 					return true;
-				}
-				else
-				{
+				} else {
 					// Ahora es seguro acceder a miller_rabin_witnesses[W]
-					if constexpr (miller_rabin_witnesses[W] >= n)
-					{
+					if constexpr (miller_rabin_witnesses[W] >= n)	{
 						return true;
-					}
-					else
-					{
+					} else	{
 						// Instanciar check_composite SOLO si estamos en rango y es necesario
 						constexpr bool composite {
 							check_composite_ct<
@@ -243,10 +236,11 @@ namespace NumRepr
 							>()
 						};
 
-						if constexpr (composite)
+						if constexpr (composite) {
 							return false;
-						else
+						} else {
 							return miller_rabin_ct<n, d, s, W + 1>();
+						}
 					}
 				}
 			}
@@ -255,14 +249,16 @@ namespace NumRepr
 			template <uint64_t n>
 			constexpr bool isPrime_ct()
 			{
-				if constexpr (n < 2)
+				if constexpr (n < 2) {
 					return false;
-				if constexpr (n < 65537)
-					return is_prime_lt_65537_lut[n];
-				if constexpr (divides_by_small_prime_ct<n>())
+				} else if constexpr (n < 65537) {
+					return is_prime_lt_65537_ct<n>();
+				} else if constexpr (divides_by_small_prime_ct<n>()) {
 					return false;
-				constexpr auto decomp = decompose_ct<n - 1>();
-				return miller_rabin_ct<n, decomp.d, decomp.s>();
+				} else {
+					constexpr auto decomp { decompose_ct<n - 1>() };
+					return miller_rabin_ct<n, decomp.d, decomp.s>();
+				}
 			}
 		}
 	}

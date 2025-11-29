@@ -41,19 +41,19 @@ namespace Safety {
  */
 constexpr inline uint64_t max_exponent_for_base(uint64_t base) noexcept {
     // Acceso a la tabla definida en MaxExp4Base_table.hpp
-    const auto& table = NumRepr::AuxFunc::LUT::base_maxexp_table;
+    const auto& table { NumRepr::AuxFunc::LUT::base_maxexp_table };
 
     // Búsqueda lineal inversa (asumiendo orden ascendente de bases en la tabla
     // o rangos definidos). Si base >= entrada.base, entonces ese es su límite.
     for (size_t i = table.size(); i > 0; --i) {
-        const auto& entry = table[i - 1];
+        const auto& entry {table[i - 1] };
         if (base >= entry.first) {
             return entry.second;
         }
     }
     // Fallback: Si la base es enorme, el exponente seguro es 1 o 0.
     // Si la base es 0 o 1, el exponente es "infinito" (aquí usamos max).
-    if (base <= 1) return ~0ull; 
+    if (base <= 1) { return ~0ull; }
     return 1; 
 }
 
@@ -69,7 +69,7 @@ namespace ct {
  * @return floor(log2(n))
  */
 template <uint64_t n> 
-constexpr uint64_t int_log2() noexcept {
+consteval uint64_t int_log2() noexcept {
   if constexpr (n < 2u) return 0;
   else return 1 + int_log2<(n >> 1)>();
 }
@@ -81,8 +81,11 @@ constexpr uint64_t int_log2() noexcept {
 template <uint64_t n> 
 constexpr uint64_t int_log2_sf() noexcept {
   static_assert(n > 0, "NumRepr::ct::int_log2_sf: log_b(0) es indefinido");
-  if constexpr (n < 2u) return 0;
-  else return 1 + int_log2_sf<(n >> 1)>();
+  if constexpr (n < 2u) { 
+    return 0; 
+  } else { 
+    return (1 + int_log2_sf<(n >> 1)>()); 
+  }
 }
 
 /**
