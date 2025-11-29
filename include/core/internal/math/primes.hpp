@@ -100,6 +100,7 @@ namespace NumRepr {
           }
           return true;
         } // end for witnesses
+        return false; // Debería ser unreachable
       } // end function isPrime
     } // namespace LUT
   } // namespace AuxFunc
