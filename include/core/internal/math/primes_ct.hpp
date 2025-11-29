@@ -200,9 +200,10 @@ namespace NumRepr
 			template <uint64_t n, uint64_t a, uint64_t d, int s>
 			constexpr bool check_composite_ct()
 			{
-				constexpr uint64_t x = binpower_ct<a, d, n>();
-				if (x == 1 || x == n - 1)
+				constexpr uint64_t x { binpower_ct<a, d, n>() };
+				if (x == 1 || x == n - 1) {
 					return false;
+				}
 				return check_composite_ct_impl<x, n, s>();
 			}
 
