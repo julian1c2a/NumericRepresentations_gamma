@@ -1,7 +1,7 @@
 ==========================================
  CONFIGURANDO Y CONSTRUYENDO: msvc-release
 ==========================================
--- Configuring done (1.1s)
+-- Configuring done (1.0s)
 -- Generating done (0.1s)
 -- Build files have been written to: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release
 ninja: no work to do.
@@ -9,19 +9,27 @@ ninja: no work to do.
 [1/2] Building CXX object CMakeFiles\test_03_core_internal.dir\tests\test_03_core_internal.cpp.obj
 FAILED: [code=2] CMakeFiles/test_03_core_internal.dir/tests/test_03_core_internal.cpp.obj 
 "D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\cl.exe"  /nologo /TP  -ID:\gdrive\numericrepresentations_gamma\include -ID:\gdrive\numericrepresentations_gamma\build\build_targets\msvc\release\_deps\catch2-src\src\catch2\.. -ID:\gdrive\numericrepresentations_gamma\build\build_targets\msvc\release\_deps\catch2-build\generated-includes /DWIN32 /D_WINDOWS /W3 /GR /EHsc  /I "D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\winrt" /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++latest -MD /permissive- /bigobj /constexpr:depth8192 /constexpr:steps50000000 /wd4146 /showIncludes /FoCMakeFiles\test_03_core_internal.dir\tests\test_03_core_internal.cpp.obj /FdCMakeFiles\test_03_core_internal.dir\ /FS -c D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(85): error C2672: 'NumRepr::type_traits::atoull_ct': no se encontr¢ una funci¢n sobrecargada que coincida
-D:\gdrive\numericrepresentations_gamma\include\core/internal/basic_types.hpp(494): note: puede ser 'NumRepr::ullint_t NumRepr::type_traits::atoull_ct(void)'
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(85): note: la expresi¢n no se evalu¢ como una constante
-D:\gdrive\numericrepresentations_gamma\include\core/internal/basic_types.hpp(204): note: se encontr¢ una (sub)expresi¢n no constante
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(85): error C2737: 'val': se debe inicializar el objeto constexpr
+D:\gdrive\numericrepresentations_gamma\include\core/internal/basic_types.hpp(195): error C7568: falta la lista de argumentos despuÇs de la plantilla de funci¢n supuesta "fixed_string"
+D:\gdrive\numericrepresentations_gamma\include\core/internal/basic_types.hpp(195): error C3551: si se usa un tipo de valor devuelto final, el tipo de valor devuelto inicial ser† el especificador de tipo £nico "auto" (no "int")
+D:\gdrive\numericrepresentations_gamma\include\core/internal/basic_types.hpp(195): error C4430: falta el especificador de tipo; se presupone int. Nota: C++ no admite default-int
+D:\gdrive\numericrepresentations_gamma\include\core/internal/basic_types.hpp(202): error C2904: 'fixed_string': el nombre ya ha sido utilizado para una plantilla en el †mbito actual
+D:\gdrive\numericrepresentations_gamma\include\core/internal/basic_types.hpp(195): note: vea la declaraci¢n de 'NumRepr::fixed_string'
+D:\gdrive\numericrepresentations_gamma\include\core/internal/basic_types.hpp(500): error C2143: error de sintaxis: falta ';' delante de '<L_GRAMMAR_template_head_l>'
+D:\gdrive\numericrepresentations_gamma\include\core/internal/basic_types.hpp(496): error C4430: falta el especificador de tipo; se presupone int. Nota: C++ no admite default-int
+D:\gdrive\numericrepresentations_gamma\include\core/internal/basic_types.hpp(501): error C3856: "type_traits": el s°mbolo no es plantilla de clase
+D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(85): error C7596: "NumRepr::type_traits::atoull_ct": no se puede obtener la direcci¢n de una funci¢n inmediata fuera de una invocaci¢n inmediata
+D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(85): error C2440: 'inicializando': no se puede realizar la conversi¢n de 'NumRepr::ullint_t (__cdecl *)(void)' a 'const uint64_t'
+D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(85): note: El contexto no permite que se anule la ambigÅedad de la funci¢n sobrecargada
+D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(85): error C2131: la expresi¢n no se evalu¢ como una constante
+D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(85): note: se encontr¢ una (sub)expresi¢n no constante
 D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(86): error C2131: la expresi¢n no se evalu¢ como una constante
 D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(86): note: error causado por la lectura de un s°mbolo sin inicializar
 D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(86): note: consulte el uso de 'val'
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(89): error C2672: 'NumRepr::type_traits::atoull_ct': no se encontr¢ una funci¢n sobrecargada que coincida
-D:\gdrive\numericrepresentations_gamma\include\core/internal/basic_types.hpp(494): note: puede ser 'NumRepr::ullint_t NumRepr::type_traits::atoull_ct(void)'
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(89): note: la expresi¢n no se evalu¢ como una constante
-D:\gdrive\numericrepresentations_gamma\include\core/internal/basic_types.hpp(204): note: se encontr¢ una (sub)expresi¢n no constante
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(89): error C2737: 'val_0': se debe inicializar el objeto constexpr
+D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(89): error C7596: "NumRepr::type_traits::atoull_ct": no se puede obtener la direcci¢n de una funci¢n inmediata fuera de una invocaci¢n inmediata
+D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(89): error C2440: 'inicializando': no se puede realizar la conversi¢n de 'NumRepr::ullint_t (__cdecl *)(void)' a 'const uint64_t'
+D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(89): note: El contexto no permite que se anule la ambigÅedad de la funci¢n sobrecargada
+D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(89): error C2131: la expresi¢n no se evalu¢ como una constante
+D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(89): note: se encontr¢ una (sub)expresi¢n no constante
 D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(90): error C2131: la expresi¢n no se evalu¢ como una constante
 D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(90): note: error causado por la lectura de un s°mbolo sin inicializar
 D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(90): note: consulte el uso de 'val_0'

@@ -191,9 +191,6 @@ constexpr inline sign_funct_e opposite_sign(sign_funct_e sign) noexcept {
                                           : sign_funct_e::vzero;
 }
 
-// --- CAMBIO 1: Guía de deducción explícita para ayudar a MSVC ---
-template <size_t N> fixed_string(const char (&)[N]) -> fixed_string<N>;
-
 /**
  * @brief Wrapper estructural para cadenas fijas en tiempo de compilación (CNTTP).
  * @details Permite pasar literales de cadena como parámetros de plantilla en C++20.
@@ -493,7 +490,7 @@ atoull_consume(std::string_view sv) noexcept {
  *
  * @note USAGE: atoull_ct<"123456">()
  */
-t/**
+/**
  * @brief Convierte string literal a ullint_t en tiempo de compilación.
  * @details Versión optimizada para MSVC.
  */
@@ -529,6 +526,9 @@ consteval ullint_t atoull_ct() {
 
   return i;
 }
+
+// --- CAMBIO 1: Guía de deducción explícita para ayudar a MSVC ---
+template <size_t N> fixed_string(const char (&)[N]) -> fixed_string<N>;
 
 //================================================
 // TYPE TRAITS: Concepts and Type Deduction
