@@ -100,7 +100,8 @@ namespace NumRepr {
           }
           return true;
         } // end for witnesses
-        return false; // Debería ser unreachable
+        return true; // Debería ser unreachable, pero probablemente primo
+                     // Test determinista para n < 2^64
       } // end function isPrime
     } // namespace LUT
   } // namespace AuxFunc
