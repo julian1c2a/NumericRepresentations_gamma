@@ -147,7 +147,7 @@ struct fixed_string {
     
     // FIX MSVC: Usamos std::array en lugar de array crudo.
     // MSVC gestiona mucho mejor la inicialización y el acceso constante a std::array.
-    const std::array<char, N> data{}; 
+    std::array<char, N> data{}; 
 
     constexpr fixed_string() = default;
 
