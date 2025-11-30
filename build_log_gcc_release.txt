@@ -1,0 +1,22 @@
+==========================================
+ CONFIGURANDO Y CONSTRUYENDO: gcc-release
+==========================================
+-- Configuring done (0.1s)
+-- Generating done (0.6s)
+-- Build files have been written to: D:/gdrive/numericrepresentations_gamma/build/build_targets/gcc/release
+[100%] Built target test_01_math_tables
+[100%] Built target test_02_append
+[100%] Built target test_03_core_internal
+[100%] Built target test_04_dig_t
+[100%] Built target test_05_dig_t_constructors
+[100%] Built target test_06_dig_t_assignations
+[100%] Built target test_07_dig_t_conversions
+[100%] Built target test_08_dig_t_operadores
+[100%] Built target test_09_dig_t_algebra
+[100%] Built target test_10_dig_t_io
+[100%] Built target test_11_basic_types
+[100%] Built target test_12_Int_ExpLog
+[100%] Built target test_13_IntRoot
+[100%] Built target test_14_primes
+[100%] Built target test_15_conversions
+--- Construcción completada para gcc-release ---
