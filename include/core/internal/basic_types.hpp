@@ -132,32 +132,30 @@ constexpr inline sign_funct_e opposite_sign(sign_funct_e sign) noexcept {
  * @details Permite pasar literales de cadena como parámetros de plantilla en C++20.
  * IMPORTANTE: Implementación optimizada para MSVC usando std::index_sequence.
  */
+// -----------------------------------------------------------------------------
+// FIXED STRING (CNTTP)
+// -----------------------------------------------------------------------------
+
+/**
+ * @brief Wrapper estructural para cadenas fijas en tiempo de compilación.
+ * @details Usa std::array internamente para máxima compatibilidad con MSVC en
+ * contextos constexpr/consteval.
+ */
 template <size_t N>
 struct fixed_string {
     static constexpr size_t size = N; 
     
-    // Almacenamiento público inmutable
-    const char data[N]; 
+    // FIX MSVC: Usamos std::array en lugar de array crudo.
+    // MSVC gestiona mucho mejor la inicialización y el acceso constante a std::array.
+    const std::array<char, N> data{}; 
 
-    // Constructor por defecto
-    constexpr fixed_string() : data{} {}
+    constexpr fixed_string() = default;
 
-    // Constructor privado helper: Inicializa el array en la lista de inicialización.
-    // Esto es crucial para MSVC: evita la asignación en el cuerpo del constructor.
-    template <size_t... I>
-    constexpr fixed_string(const char (&str)[N], std::index_sequence<I...>)
-        : data{str[I]...} {}
-
-    // Constructor principal: Delega al helper generando la secuencia de índices
-    constexpr fixed_string(const char (&str)[N]) 
-        : fixed_string(str, std::make_index_sequence<N>{}) {}
-
-    // Conversión a string_view (consteval para forzar uso en tiempo de compilación si se pide)
-    consteval operator std::string_view() const {
-        if (N > 0 && data[N-1] == '\0')
-            return {data, N - 1};
-        else
-            return {data, N};
+    // Constructor que copia desde literal
+    constexpr fixed_string(const char (&str)[N]) {
+        for (size_t i = 0; i < N; ++i) {
+            data[i] = str[i];
+        }
     }
 };
 
