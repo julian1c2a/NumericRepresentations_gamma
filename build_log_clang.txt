@@ -1,8 +1,8 @@
 ==========================================
  CONFIGURANDO Y CONSTRUYENDO: clang-release
 ==========================================
--- Configuring done (1.6s)
--- Generating done (1.5s)
+-- Configuring done (1.7s)
+-- Generating done (0.8s)
 -- Build files have been written to: D:/gdrive/numericrepresentations_gamma/build/build_targets/clang/release
 [ 96%] Built target Catch2
 [ 98%] Built target Catch2WithMain
@@ -12,30 +12,48 @@
 [100%] Built target test_02_append
 [ 94%] Built target Catch2
 [ 97%] Built target Catch2WithMain
+[ 98%] Building CXX object CMakeFiles/test_03_core_internal.dir/tests/test_03_core_internal.cpp.obj
+[100%] Linking CXX executable test_03_core_internal.exe
 [100%] Built target test_03_core_internal
 [ 96%] Built target Catch2
 [ 98%] Built target Catch2WithMain
+[ 98%] Building CXX object CMakeFiles/test_04_dig_t.dir/tests/test_04_dig_t.cpp.obj
+[100%] Linking CXX executable test_04_dig_t.exe
 [100%] Built target test_04_dig_t
 [ 94%] Built target Catch2
 [ 97%] Built target Catch2WithMain
+[ 98%] Building CXX object CMakeFiles/test_05_dig_t_constructors.dir/tests/test_05_dig_t_constructors.cpp.obj
+[100%] Linking CXX executable test_05_dig_t_constructors.exe
 [100%] Built target test_05_dig_t_constructors
 [ 96%] Built target Catch2
 [ 98%] Built target Catch2WithMain
+[ 98%] Building CXX object CMakeFiles/test_06_dig_t_assignations.dir/tests/test_06_dig_t_assignations.cpp.obj
+[100%] Linking CXX executable test_06_dig_t_assignations.exe
 [100%] Built target test_06_dig_t_assignations
 [ 96%] Built target Catch2
 [ 98%] Built target Catch2WithMain
+[100%] Building CXX object CMakeFiles/test_07_dig_t_conversions.dir/tests/test_07_dig_t_conversions.cpp.obj
+[100%] Linking CXX executable test_07_dig_t_conversions.exe
 [100%] Built target test_07_dig_t_conversions
 [ 94%] Built target Catch2
 [ 97%] Built target Catch2WithMain
+[ 98%] Building CXX object CMakeFiles/test_08_dig_t_operadores.dir/tests/test_08_dig_t_operadores.cpp.obj
+[100%] Linking CXX executable test_08_dig_t_operadores.exe
 [100%] Built target test_08_dig_t_operadores
 [ 96%] Built target Catch2
 [ 98%] Built target Catch2WithMain
+[100%] Building CXX object CMakeFiles/test_09_dig_t_algebra.dir/tests/test_09_dig_t_algebra.cpp.obj
+[100%] Linking CXX executable test_09_dig_t_algebra.exe
 [100%] Built target test_09_dig_t_algebra
 [ 94%] Built target Catch2
 [ 97%] Built target Catch2WithMain
+[ 98%] Building CXX object CMakeFiles/test_10_dig_t_io.dir/tests/test_10_dig_t_io.cpp.obj
+[100%] Linking CXX executable test_10_dig_t_io.exe
 [100%] Built target test_10_dig_t_io
 [ 96%] Built target Catch2
 [ 98%] Built target Catch2WithMain
+[ 98%] Building CXX object CMakeFiles/test_11_basic_types.dir/tests/test_11_basic_types.cpp.obj
+[100%] Linking CXX executable test_11_basic_types.exe
 [100%] Built target test_11_basic_types
 [ 96%] Built target Catch2
 [ 98%] Built target Catch2WithMain

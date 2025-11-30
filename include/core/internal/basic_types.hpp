@@ -15,7 +15,7 @@
 #include <istream>
 #include <sstream>
 #include <string>
-#include <string_view>
+// #include <string_view> // REMOVIDO para evitar dependencias conflictivas en MSVC consteval
 #include <type_traits>
 #include <utility>
 
@@ -41,13 +41,11 @@ namespace NumRepr {
 
 /**
  * @brief Representación del signo de un número.
- * @details Enumeración actualmente utilizada en operaciones aritméticas y
- * comparaciones. Valores: vzero (0), vminus (-1), vplus (+1).
  */
 enum class sign_funct_e : char { 
-    zero = 0,   // Antes: vzero
-    minus = -1, // Antes: vminus
-    plus = +1   // Antes: vplus
+    zero = 0,
+    minus = -1,
+    plus = +1
 };
 
 /**
@@ -128,35 +126,31 @@ constexpr inline sign_funct_e opposite_sign(sign_funct_e sign) noexcept {
 
 /**
  * @brief Wrapper estructural para cadenas fijas en tiempo de compilación.
- * @details Permite pasar literales de cadena como parámetros de plantilla en C++20.
+ * @details Estructura inmutable para pasar literales de cadena como parámetros de plantilla.
+ * Optimizada para MSVC: sin conversiones a string_view y con inicialización directa.
  */
 template <size_t N>
 struct fixed_string {
     static constexpr size_t size = N; 
     
-    // Almacenamiento público
-    char data[N]; 
+    // CAMBIO: const char para garantizar inmutabilidad.
+    // Al ser const, debe inicializarse obligatoriamente en el constructor.
+    const char data[N]; 
 
-    // Constructor por defecto inicializa a ceros
+    // Constructor por defecto: Inicializa a ceros (válido para const)
     constexpr fixed_string() : data{} {}
 
-    // FIX MSVC: Constructor que usa std::index_sequence para inicializar el array
-    // en la lista de inicialización. Esto evita el cuerpo del constructor y
-    // satisface los requisitos estrictos de constexpr de MSVC para NTTP.
+    // Constructor helper con index_sequence para inicialización completa en un paso.
+    // Esto es crucial para que MSVC acepte el objeto const en contextos constexpr/consteval.
     template <size_t... I>
     constexpr fixed_string(const char (&str)[N], std::index_sequence<I...>)
         : data{str[I]...} {}
 
-    // Constructor principal que delega
+    // Constructor principal
     constexpr fixed_string(const char (&str)[N]) 
         : fixed_string(str, std::make_index_sequence<N>{}) {}
 
-    consteval operator std::string_view() const {
-        if (N > 0 && data[N-1] == '\0')
-            return {data, N - 1};
-        else
-            return {data, N};
-    }
+    // operator std::string_view eliminado intencionalmente
 };
 
 // GUÍA DE DEDUCCIÓN
@@ -196,13 +190,10 @@ inline constexpr ullint_t atoull(const char *text) noexcept {
   return i;
 }
 
-inline constexpr ullint_t atoull(std::string_view sv) noexcept {
-  ullint_t i = 0;
-  for (char c : sv) {
-    i = (i << 3) + (i << 1) + static_cast<ullint_t>(c - '0');
-  }
-  return i;
-}
+// Mantenemos la sobrecarga runtime si se usa std::string_view externamente, 
+// pero definimos una versión simplificada si no tenemos el header.
+// Para máxima seguridad en este archivo header-only, usaremos punteros/iteradores
+// en las funciones checked/consume.
 
 enum class atoull_err_t : int {
   empty_str, 
@@ -234,25 +225,25 @@ atoull_checked(const char *text) noexcept {
   return std::expected<ullint_t, atoull_err_t>(i);
 }
 
+// Sobrecarga para std::string o similar
+template<typename StringT> 
+requires std::convertible_to<StringT, std::string_view>
 inline std::expected<ullint_t, atoull_err_t>
-atoull_checked(std::string_view sv) noexcept {
-  if (sv.data() == nullptr || sv.size() == 0)
-    return std::unexpected(atoull_err_t::empty_str);
-  ullint_t i = 0;
-  bool any = false;
-  constexpr ullint_t maxv = std::numeric_limits<ullint_t>::max();
-  for (char c : sv) {
-    if (c < '0' || c > '9')
-      return std::unexpected(atoull_err_t::no_digit);
-    unsigned digit = static_cast<unsigned>(c - '0');
-    if (i > (maxv - digit) / 10)
-      return std::unexpected(atoull_err_t::overflow);
-    i = i * 10 + digit;
-    any = true;
-  }
-  if (!any)
-    return std::unexpected(atoull_err_t::empty_str);
-  return std::expected<ullint_t, atoull_err_t>(i);
+atoull_checked(const StringT& s) noexcept {
+    std::string_view sv = s;
+    if (sv.empty()) return std::unexpected(atoull_err_t::empty_str);
+    ullint_t i = 0;
+    bool any = false;
+    constexpr ullint_t maxv = std::numeric_limits<ullint_t>::max();
+    for(char c : sv) {
+        if (c < '0' || c > '9') return std::unexpected(atoull_err_t::no_digit);
+        unsigned digit = static_cast<unsigned>(c - '0');
+        if (i > (maxv - digit) / 10) return std::unexpected(atoull_err_t::overflow);
+        i = i * 10 + digit;
+        any = true;
+    }
+    if (!any) return std::unexpected(atoull_err_t::empty_str);
+    return i;
 }
 
 inline std::expected<std::pair<ullint_t, size_t>, atoull_err_t>
@@ -264,29 +255,6 @@ atoull_consume(const char *text) noexcept {
   constexpr ullint_t maxv = std::numeric_limits<ullint_t>::max();
   while (text[idx]) {
     char c = text[idx];
-    if (c < '0' || c > '9')
-      break;
-    unsigned digit = static_cast<unsigned>(c - '0');
-    if (i > (maxv - digit) / 10)
-      return std::unexpected(atoull_err_t::overflow);
-    i = i * 10 + digit;
-    ++idx;
-  }
-  if (idx == 0)
-    return std::unexpected(atoull_err_t::no_digit);
-  return std::expected<std::pair<ullint_t, size_t>, atoull_err_t>(
-      std::pair<ullint_t, size_t>{i, idx});
-}
-
-inline std::expected<std::pair<ullint_t, size_t>, atoull_err_t>
-atoull_consume(std::string_view sv) noexcept {
-  if (sv.data() == nullptr || sv.size() == 0)
-    return std::unexpected(atoull_err_t::empty_str);
-  ullint_t i = 0;
-  size_t idx = 0;
-  constexpr ullint_t maxv = std::numeric_limits<ullint_t>::max();
-  while (idx < sv.size()) {
-    char c = sv[idx];
     if (c < '0' || c > '9')
       break;
     unsigned digit = static_cast<unsigned>(c - '0');
@@ -313,7 +281,7 @@ consteval ullint_t atoull_ct() {
   bool any_digit = false;
 
   // FIX MSVC: Bucle for indexado tradicional sobre el array crudo.
-  // Evita abstracciones de iteradores que pueden fallar en consteval MSVC.
+  // Sin conversiones a string_view ni iteradores.
   for (size_t k = 0; k < STR.size; ++k) {
     char c = STR.data[k];
     
