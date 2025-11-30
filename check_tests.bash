@@ -3,6 +3,12 @@
 # Leemos el preset del primer argumento, o usamos 'gcc-release' por defecto
 PRESET=${1:-gcc-release}
 
+# Si el último argumento es 'print', redirigimos toda la salida al log correspondiente
+if [ "$2" == "print" ]; then
+    LOG_FILE="check_log_${PRESET//-/_}.txt"
+    exec > "$LOG_FILE" 2>&1
+fi
+
 echo "=========================================="
 echo " EJECUTANDO CTEST CON PRESET: $PRESET"
 echo "=========================================="

@@ -3,6 +3,12 @@
 # Leemos el preset del primer argumento, o usamos 'gcc-release' por defecto
 PRESET=${1:-gcc-release}
 
+# Si el último argumento es 'print', redirigimos toda la salida al log correspondiente
+if [ "$2" == "print" ]; then
+    LOG_FILE="check_direct_log_${PRESET//-/_}.txt"
+    exec > "$LOG_FILE" 2>&1
+fi
+
 # Deducimos la ruta basándonos en el nombre del preset (formato: compilador-modo)
 # Ejemplo: gcc-release -> COMPILER=gcc, MODE=release
 COMPILER=$(echo "$PRESET" | cut -d'-' -f1)
