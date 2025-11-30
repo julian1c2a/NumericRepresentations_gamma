@@ -550,9 +550,6 @@ consteval ullint_t atoull_ct() {
   return i;
 }
 
-// --- CAMBIO 1: Guía de deducción explícida para ayudar a MSVC ---
-template <size_t N> fixed_string(const char (&)[N]) -> fixed_string<N>;
-
 //================================================
 // TYPE TRAITS: Concepts and Type Deduction
 //================================================
