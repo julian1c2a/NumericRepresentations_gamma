@@ -222,9 +222,8 @@ struct fixed_string {
 };
 
 // CORRECCIÓN: La guía de deducción va AQUÍ, justo después de la struct y dentro del namespace
-// GUÍA DE DEDUCCIÓN DE TIPOS
+// GUÍA DE EXPLÍCITA DE DEDUCCIÓN DE TIPOS
 template <size_t N> fixed_string(const char (&)[N]) -> fixed_string<N>;
-
 
 namespace type_traits {
 
@@ -242,6 +241,7 @@ concept char_type_c =
     std::is_same_v<CharT, char> || std::is_same_v<CharT, signed char> ||
     std::is_same_v<CharT, unsigned char> || std::is_same_v<CharT, wchar_t>;
 
+// GUÍA DE DEDUCCIÓN EXPLÍCITA DE TIPOS PARA nullchar
 template <char_type_c CharT> constexpr inline CharT nullchar{CharT('\0')};
 
 /**
