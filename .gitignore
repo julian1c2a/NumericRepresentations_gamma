@@ -64,12 +64,12 @@ build_deps*/*
 ./build_deps*
 ./build_deps*/
 ./build_deps*/*
-lib_install*
-lib_install*/
-lib_install*/*
-./lib_install*
-./lib_install*/
-./lib_install*/*
+libs_install*
+libs_install*/
+libs_install*/*
+./libs_install*
+./libs_install*/
+./libs_install*/*
 
 # Benchmark Results
 BenchmarkDotNet.Artifacts/
