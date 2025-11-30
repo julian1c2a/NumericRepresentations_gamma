@@ -41,13 +41,14 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 enable_testing()
 
-include(FetchContent)
-FetchContent_Declare(
-  Catch2
-  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-  GIT_TAG        v3.11.0
-)
-FetchContent_MakeAvailable(Catch2)
+#  include(FetchContent)
+#  FetchContent_Declare(
+#    Catch2
+#    GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+#    GIT_TAG        v3.11.0
+#  )
+#  FetchContent_MakeAvailable(Catch2)
+find_package(Catch2 3 REQUIRED)
 
 # ==========================================
 # TARGETS

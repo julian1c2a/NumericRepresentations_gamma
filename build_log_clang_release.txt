@@ -1,0 +1,132 @@
+==========================================
+ CONFIGURANDO Y CONSTRUYENDO: clang-release
+==========================================
+-- The C compiler identification is Clang 21.1.5
+-- The CXX compiler identification is Clang 21.1.5
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: C:/msys64/clang64/bin/clang.exe - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/msys64/clang64/bin/clang++.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (2.2s)
+-- Generating done (0.7s)
+-- Build files have been written to: D:/gdrive/numericrepresentations_gamma/build/build_targets/clang/release
+[ 50%] Building CXX object CMakeFiles/test_01_math_tables.dir/tests/test_01_math_tables.cpp.obj
+D:\gdrive\numericrepresentations_gamma\tests\test_01_math_tables.cpp:148:19: warning: result of comparison of constant 65536 with expression of type 'value_type' (aka 'unsigned short') is always true [-Wtautological-constant-out-of-range-compare]
+  148 |             if (p < 65536) {
+      |                 ~ ^ ~~~~~
+1 warning generated.
+[100%] Linking CXX executable test_01_math_tables.exe
+ld.lld: error: undefined symbol: Catch::ReusableStringStream::str() const
+>>> referenced by CMakeFiles/test_01_math_tables.dir/tests/test_01_math_tables.cpp.obj:(CATCH2_INTERNAL_TEST_11())
+>>> referenced by CMakeFiles/test_01_math_tables.dir/tests/test_01_math_tables.cpp.obj:(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> Catch::Detail::stringify<unsigned short>(unsigned short const&))
+>>> referenced by CMakeFiles/test_01_math_tables.dir/tests/test_01_math_tables.cpp.obj:(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> Catch::Detail::stringify<std::__1::__bit_reference<std::__1::__bitset<1024ull, 65536ull>, true>>(std::__1::__bit_reference<std::__1::__bitset<1024ull, 65536ull>, true> const&))
+
+ld.lld: error: undefined symbol: Catch::AssertionHandler::handleMessage(Catch::ResultWas::OfType, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>&&)
+>>> referenced by CMakeFiles/test_01_math_tables.dir/tests/test_01_math_tables.cpp.obj:(CATCH2_INTERNAL_TEST_11())
+
+ld.lld: error: undefined symbol: Catch::StringMaker<unsigned long long, void>::convert(unsigned long long)
+>>> referenced by CMakeFiles/test_01_math_tables.dir/tests/test_01_math_tables.cpp.obj:(Catch::BinaryExpr<unsigned long long, int>::streamReconstructedExpression(std::__1::basic_ostream<char, std::__1::char_traits<char>>&) const)
+>>> referenced by CMakeFiles/test_01_math_tables.dir/tests/test_01_math_tables.cpp.obj:(Catch::BinaryExpr<unsigned long long, unsigned long long>::streamReconstructedExpression(std::__1::basic_ostream<char, std::__1::char_traits<char>>&) const)
+>>> referenced by CMakeFiles/test_01_math_tables.dir/tests/test_01_math_tables.cpp.obj:(Catch::BinaryExpr<unsigned long long, unsigned long long>::streamReconstructedExpression(std::__1::basic_ostream<char, std::__1::char_traits<char>>&) const)
+
+ld.lld: error: undefined symbol: Catch::StringMaker<int, void>::convert(int)
+>>> referenced by CMakeFiles/test_01_math_tables.dir/tests/test_01_math_tables.cpp.obj:(Catch::BinaryExpr<unsigned long long, int>::streamReconstructedExpression(std::__1::basic_ostream<char, std::__1::char_traits<char>>&) const)
+>>> referenced by CMakeFiles/test_01_math_tables.dir/tests/test_01_math_tables.cpp.obj:(Catch::BinaryExpr<unsigned short, int>::streamReconstructedExpression(std::__1::basic_ostream<char, std::__1::char_traits<char>>&) const)
+
+ld.lld: error: undefined symbol: Catch::formatReconstructedExpression(std::__1::basic_ostream<char, std::__1::char_traits<char>>&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&, Catch::StringRef, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>> const&)
+>>> referenced by CMakeFiles/test_01_math_tables.dir/tests/test_01_math_tables.cpp.obj:(Catch::BinaryExpr<unsigned long long, int>::streamReconstructedExpression(std::__1::basic_ostream<char, std::__1::char_traits<char>>&) const)
+>>> referenced by CMakeFiles/test_01_math_tables.dir/tests/test_01_math_tables.cpp.obj:(Catch::BinaryExpr<unsigned long long, unsigned long long>::streamReconstructedExpression(std::__1::basic_ostream<char, std::__1::char_traits<char>>&) const)
+>>> referenced by CMakeFiles/test_01_math_tables.dir/tests/test_01_math_tables.cpp.obj:(Catch::BinaryExpr<unsigned short, int>::streamReconstructedExpression(std::__1::basic_ostream<char, std::__1::char_traits<char>>&) const)
+>>> referenced 2 more times
+
+ld.lld: error: undefined symbol: Catch::Detail::makeExceptionHappenedString()
+>>> referenced by CMakeFiles/test_01_math_tables.dir/tests/test_01_math_tables.cpp.obj:(Catch::BinaryExpr<unsigned long long, int>::streamReconstructedExpression(std::__1::basic_ostream<char, std::__1::char_traits<char>>&) const)
+>>> referenced by CMakeFiles/test_01_math_tables.dir/tests/test_01_math_tables.cpp.obj:(Catch::BinaryExpr<unsigned long long, int>::streamReconstructedExpression(std::__1::basic_ostream<char, std::__1::char_traits<char>>&) const)
+>>> referenced by CMakeFiles/test_01_math_tables.dir/tests/test_01_math_tables.cpp.obj:(Catch::BinaryExpr<unsigned long long, unsigned long long>::streamReconstructedExpression(std::__1::basic_ostream<char, std::__1::char_traits<char>>&) const)
+>>> referenced 4 more times
+
+ld.lld: error: undefined symbol: std::__cxx11::basic_ostringstream<char, std::char_traits<char>, std::allocator<char>>::basic_ostringstream()
+>>> referenced by libCatch2.a(catch_reusable_string_stream.cpp.obj):(Catch::ReusableStringStream::ReusableStringStream())
+>>> referenced by libCatch2.a(catch_reusable_string_stream.cpp.obj):(Catch::ReusableStringStream::~ReusableStringStream())
+>>> referenced by libCatch2.a(catch_reusable_string_stream.cpp.obj):(Catch::StringStreams::add[abi:cxx11]())
+
+ld.lld: error: undefined symbol: std::__throw_length_error(char const*)
+>>> referenced by libCatch2.a(catch_reusable_string_stream.cpp.obj):(Catch::ReusableStringStream::~ReusableStringStream())
+>>> referenced by libCatch2.a(catch_reusable_string_stream.cpp.obj):(Catch::StringStreams::add[abi:cxx11]())
+>>> referenced by libCatch2.a(catch_stringref.cpp.obj):(Catch::operator+[abi:cxx11](Catch::StringRef, Catch::StringRef))
+>>> referenced 204 more times
+
+ld.lld: error: undefined symbol: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>::_M_replace(unsigned long long, unsigned long long, char const*, unsigned long long)
+>>> referenced by libCatch2.a(catch_reusable_string_stream.cpp.obj):(Catch::ReusableStringStream::~ReusableStringStream())
+>>> referenced by libCatch2.a(catch_reusable_string_stream.cpp.obj):(Catch::ReusableStringStream::str[abi:cxx11]() const)
+>>> referenced by libCatch2.a(catch_reusable_string_stream.cpp.obj):(Catch::ReusableStringStream::str(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>> const&))
+>>> referenced 15 more times
+
+ld.lld: error: undefined symbol: std::__cxx11::basic_stringbuf<char, std::char_traits<char>, std::allocator<char>>::_M_sync(char*, unsigned long long, unsigned long long)
+>>> referenced by libCatch2.a(catch_reusable_string_stream.cpp.obj):(Catch::ReusableStringStream::~ReusableStringStream())
+>>> referenced by libCatch2.a(catch_reusable_string_stream.cpp.obj):(Catch::ReusableStringStream::str(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>> const&))
+
+ld.lld: error: undefined symbol: std::basic_ios<char, std::char_traits<char>>::clear(std::_Ios_Iostate)
+>>> referenced by libCatch2.a(catch_reusable_string_stream.cpp.obj):(Catch::ReusableStringStream::~ReusableStringStream())
+>>> referenced by libCatch2.a(catch_session.cpp.obj):(Catch::ReusableStringStream& Catch::ReusableStringStream::operator<<<char const*>(char const* const&))
+>>> referenced by libCatch2.a(catch_config.cpp.obj)
+>>> referenced 3 more times
+
+ld.lld: error: undefined symbol: std::basic_ios<char, std::char_traits<char>>::copyfmt(std::basic_ios<char, std::char_traits<char>> const&)
+>>> referenced by libCatch2.a(catch_reusable_string_stream.cpp.obj):(Catch::ReusableStringStream::~ReusableStringStream())
+
+ld.lld: error: undefined symbol: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>::_M_assign(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>> const&)
+>>> referenced by libCatch2.a(catch_reusable_string_stream.cpp.obj):(Catch::ReusableStringStream::str[abi:cxx11]() const)
+>>> referenced by libCatch2.a(catch_session.cpp.obj):(Catch::Session::useConfigData(Catch::ConfigData const&))
+>>> referenced by libCatch2.a(catch_session.cpp.obj):(Catch::Session::useConfigData(Catch::ConfigData const&))
+>>> referenced 71 more times
+
+ld.lld: error: undefined symbol: std::locale::~locale()
+>>> referenced by libCatch2.a(catch_reusable_string_stream.cpp.obj):(Catch::Singleton<Catch::StringStreams, Catch::StringStreams, Catch::StringStreams>::~Singleton())
+>>> referenced by libCatch2.a(catch_reusable_string_stream.cpp.obj):(Catch::Singleton<Catch::StringStreams, Catch::StringStreams, Catch::StringStreams>::~Singleton())
+>>> referenced by libCatch2.a(catch_matchers_string.cpp.obj):(Catch::Matchers::RegexMatcher::match(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>> const&) const)
+>>> referenced 79 more times
+
+ld.lld: error: undefined symbol: std::ios_base::~ios_base()
+>>> referenced by libCatch2.a(catch_reusable_string_stream.cpp.obj):(Catch::Singleton<Catch::StringStreams, Catch::StringStreams, Catch::StringStreams>::~Singleton())
+>>> referenced by libCatch2.a(catch_reusable_string_stream.cpp.obj):(Catch::Singleton<Catch::StringStreams, Catch::StringStreams, Catch::StringStreams>::~Singleton())
+>>> referenced by libCatch2.a(catch_matchers_string.cpp.obj):(std::__cxx11::regex_traits<char>::value(char, int) const)
+>>> referenced 63 more times
+
+ld.lld: error: undefined symbol: VTT for std::__cxx11::basic_ostringstream<char, std::char_traits<char>, std::allocator<char>>
+>>> referenced by libCatch2.a(catch_reusable_string_stream.cpp.obj):(.refptr._ZTTNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEE)
+
+ld.lld: error: undefined symbol: vtable for std::__cxx11::basic_stringbuf<char, std::char_traits<char>, std::allocator<char>>
+>>> referenced by libCatch2.a(catch_reusable_string_stream.cpp.obj):(.refptr._ZTVNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEEE)
+>>> referenced by libCatch2.a(catch_matchers_string.cpp.obj)
+>>> referenced by libCatch2.a(catch_commandline.cpp.obj)
+
+ld.lld: error: undefined symbol: vtable for std::basic_streambuf<char, std::char_traits<char>>
+>>> referenced by libCatch2.a(catch_reusable_string_stream.cpp.obj):(.refptr._ZTVSt15basic_streambufIcSt11char_traitsIcEE)
+>>> referenced by libCatch2.a(catch_matchers_string.cpp.obj)
+>>> referenced by libCatch2.a(catch_istream.cpp.obj)
+
+ld.lld: error: undefined symbol: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>::_M_create(unsigned long long&, unsigned long long)
+>>> referenced by libCatch2.a(catch_section.cpp.obj):(Catch::Section::Section(Catch::SourceLineInfo const&, Catch::StringRef, char const*))
+>>> referenced by libCatch2.a(catch_session.cpp.obj):(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>::basic_string<std::allocator<char>>(char const*, std::allocator<char> const&))
+>>> referenced by libCatch2.a(catch_session.cpp.obj):(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>>>::operator=(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>>> const&))
+>>> referenced 188 more times
+
+ld.lld: error: undefined symbol: std::__throw_logic_error(char const*)
+>>> referenced by libCatch2.a(catch_section.cpp.obj):(Catch::Section::Section(Catch::SourceLineInfo const&, Catch::StringRef, char const*))
+>>> referenced by libCatch2.a(catch_session.cpp.obj):(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>::basic_string<std::allocator<char>>(char const*, std::allocator<char> const&))
+>>> referenced by libCatch2.a(catch_test_case_info.cpp.obj):(Catch::TestCaseInfo::TestCaseInfo(Catch::StringRef, Catch::NameAndTags const&, Catch::SourceLineInfo const&))
+>>> referenced 19 more times
+
+ld.lld: error: too many errors emitted, stopping now (use --error-limit=0 to see all errors)
+clang++: error: linker command failed with exit code 1 (use -v to see invocation)
+mingw32-make[3]: *** [CMakeFiles\test_01_math_tables.dir\build.make:104: test_01_math_tables.exe] Error 1
+mingw32-make[2]: *** [CMakeFiles\Makefile2:198: CMakeFiles/test_01_math_tables.dir/all] Error 2
+mingw32-make[1]: *** [CMakeFiles\Makefile2:205: CMakeFiles/test_01_math_tables.dir/rule] Error 2
+mingw32-make: *** [Makefile:159: test_01_math_tables] Error 2
