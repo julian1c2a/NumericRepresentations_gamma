@@ -15,7 +15,7 @@
 #include <istream>
 #include <sstream>
 #include <string>
-#include <string_view> // Necesario para la sobrecarga de atoull
+#include <string_view> // Necesario para la sobrecarga de atoull runtime
 #include <type_traits>
 #include <utility>
 
@@ -115,12 +115,9 @@ constexpr inline bool is_zero(sign_funct_e sign) noexcept {
 }
 
 constexpr inline sign_funct_e opposite_sign(sign_funct_e sign) noexcept {
-  return
-    (sign == sign_funct_e::plus)    
-      ? sign_funct_e::minus
-      : (sign == sign_funct_e::minus) 
-        ? sign_funct_e::plus
-        : sign_funct_e::zero;
+  return (sign == sign_funct_e::plus)    ? sign_funct_e::minus
+         : (sign == sign_funct_e::minus) ? sign_funct_e::plus
+                                          : sign_funct_e::zero;
 }
 
 // -----------------------------------------------------------------------------
@@ -130,36 +127,41 @@ constexpr inline sign_funct_e opposite_sign(sign_funct_e sign) noexcept {
 /**
  * @brief Wrapper estructural para cadenas fijas en tiempo de compilación.
  * @details Permite pasar literales de cadena como parámetros de plantilla en C++20.
- * IMPORTANTE: Implementación optimizada para MSVC usando std::index_sequence.
- */
-// -----------------------------------------------------------------------------
-// FIXED STRING (CNTTP)
-// -----------------------------------------------------------------------------
-
-/**
- * @brief Wrapper estructural para cadenas fijas en tiempo de compilación.
- * @details Usa std::array internamente para máxima compatibilidad con MSVC en
- * contextos constexpr/consteval.
+ * IMPORTANTE: Implementación optimizada para MSVC usando std::index_sequence
+ * para inicialización directa del array const.
  */
 template <size_t N>
 struct fixed_string {
     static constexpr size_t size = N; 
     
-    // FIX MSVC: Usamos std::array en lugar de array crudo.
-    // MSVC gestiona mucho mejor la inicialización y el acceso constante a std::array.
-    std::array<char, N> data{}; 
+    // Almacenamiento público inmutable. 
+    // Al ser const, MSVC exige inicialización total en el constructor.
+    const char data[N]; 
 
-    constexpr fixed_string() = default;
+    // Constructor por defecto
+    constexpr fixed_string() : data{} {}
 
-    // Constructor que copia desde literal
-    constexpr fixed_string(const char (&str)[N]) {
-        for (size_t i = 0; i < N; ++i) {
-            data[i] = str[i];
-        }
+    // Constructor privado helper: Inicializa el array en la lista de inicialización.
+    // Esto es crucial para MSVC: evita la asignación en el cuerpo del constructor
+    // y satisface el requisito de inicializar miembros const.
+    template <size_t... I>
+    constexpr fixed_string(const char (&str)[N], std::index_sequence<I...>)
+        : data{str[I]...} {}
+
+    // Constructor principal: Delega al helper generando la secuencia de índices
+    constexpr fixed_string(const char (&str)[N]) 
+        : fixed_string(str, std::make_index_sequence<N>{}) {}
+
+    // Conversión a string_view
+    consteval operator std::string_view() const {
+        if (N > 0 && data[N-1] == '\0')
+            return {data, N - 1};
+        else
+            return {data, N};
     }
 };
 
-// GUÍA DE DEDUCCIÓN
+// GUÍA DE DEDUCCIÓN (Correctamente posicionada tras la struct)
 template <size_t N> fixed_string(const char (&)[N]) -> fixed_string<N>;
 
 // -----------------------------------------------------------------------------

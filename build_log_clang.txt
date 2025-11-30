@@ -1,8 +1,8 @@
 ==========================================
  CONFIGURANDO Y CONSTRUYENDO: clang-release
 ==========================================
--- Configuring done (1.7s)
--- Generating done (0.8s)
+-- Configuring done (1.6s)
+-- Generating done (0.7s)
 -- Build files have been written to: D:/gdrive/numericrepresentations_gamma/build/build_targets/clang/release
 [ 96%] Built target Catch2
 [ 98%] Built target Catch2WithMain
@@ -12,59 +12,87 @@
 [100%] Built target test_02_append
 [ 94%] Built target Catch2
 [ 97%] Built target Catch2WithMain
-[ 98%] Building CXX object CMakeFiles/test_03_core_internal.dir/tests/test_03_core_internal.cpp.obj
-[100%] Linking CXX executable test_03_core_internal.exe
 [100%] Built target test_03_core_internal
 [ 96%] Built target Catch2
 [ 98%] Built target Catch2WithMain
 [ 98%] Building CXX object CMakeFiles/test_04_dig_t.dir/tests/test_04_dig_t.cpp.obj
-[100%] Linking CXX executable test_04_dig_t.exe
-[100%] Built target test_04_dig_t
-[ 94%] Built target Catch2
-[ 97%] Built target Catch2WithMain
-[ 98%] Building CXX object CMakeFiles/test_05_dig_t_constructors.dir/tests/test_05_dig_t_constructors.cpp.obj
-[100%] Linking CXX executable test_05_dig_t_constructors.exe
-[100%] Built target test_05_dig_t_constructors
-[ 96%] Built target Catch2
-[ 98%] Built target Catch2WithMain
-[ 98%] Building CXX object CMakeFiles/test_06_dig_t_assignations.dir/tests/test_06_dig_t_assignations.cpp.obj
-[100%] Linking CXX executable test_06_dig_t_assignations.exe
-[100%] Built target test_06_dig_t_assignations
-[ 96%] Built target Catch2
-[ 98%] Built target Catch2WithMain
-[100%] Building CXX object CMakeFiles/test_07_dig_t_conversions.dir/tests/test_07_dig_t_conversions.cpp.obj
-[100%] Linking CXX executable test_07_dig_t_conversions.exe
-[100%] Built target test_07_dig_t_conversions
-[ 94%] Built target Catch2
-[ 97%] Built target Catch2WithMain
-[ 98%] Building CXX object CMakeFiles/test_08_dig_t_operadores.dir/tests/test_08_dig_t_operadores.cpp.obj
-[100%] Linking CXX executable test_08_dig_t_operadores.exe
-[100%] Built target test_08_dig_t_operadores
-[ 96%] Built target Catch2
-[ 98%] Built target Catch2WithMain
-[100%] Building CXX object CMakeFiles/test_09_dig_t_algebra.dir/tests/test_09_dig_t_algebra.cpp.obj
-[100%] Linking CXX executable test_09_dig_t_algebra.exe
-[100%] Built target test_09_dig_t_algebra
-[ 94%] Built target Catch2
-[ 97%] Built target Catch2WithMain
-[ 98%] Building CXX object CMakeFiles/test_10_dig_t_io.dir/tests/test_10_dig_t_io.cpp.obj
-[100%] Linking CXX executable test_10_dig_t_io.exe
-[100%] Built target test_10_dig_t_io
-[ 96%] Built target Catch2
-[ 98%] Built target Catch2WithMain
-[ 98%] Building CXX object CMakeFiles/test_11_basic_types.dir/tests/test_11_basic_types.cpp.obj
-[100%] Linking CXX executable test_11_basic_types.exe
-[100%] Built target test_11_basic_types
-[ 96%] Built target Catch2
-[ 98%] Built target Catch2WithMain
-[100%] Built target test_12_Int_ExpLog
-[ 94%] Built target Catch2
-[ 97%] Built target Catch2WithMain
-[100%] Built target test_13_IntRoot
-[ 96%] Built target Catch2
-[ 98%] Built target Catch2WithMain
-[100%] Built target test_14_primes
-[ 94%] Built target Catch2
-[ 97%] Built target Catch2WithMain
-[100%] Built target test_15_conversions
---- Construcción completada para clang-release ---
+In file included from D:\gdrive\numericrepresentations_gamma\tests\test_04_dig_t.cpp:5:
+D:/gdrive/numericrepresentations_gamma/include/core/dig_t.hpp:3330:34: error: no viable conversion from 'const fixed_string<11>' (aka 'const NumRepr::fixed_string<11>') to 'const std::string_view' (aka 'const basic_string_view<char>')
+ 3330 |       constexpr std::string_view sv = Str;
+      |                                  ^    ~~~
+D:\gdrive\numericrepresentations_gamma\tests\test_04_dig_t.cpp:241:28: note: in instantiation of function template specialization 'NumRepr::make_digit<fixed_string<11>{{"dig[25]B13"}}>' requested here
+  241 |         constexpr auto d = make_digit<fixed_string("dig[25]B13")>();
+      |                            ^
+C:/msys64/clang64/include/c++/v1/string_view:316:25: note: candidate constructor not viable: no known conversion from 'const fixed_string<11>' (aka 'const NumRepr::fixed_string<11>') to 'const string_view &' for 1st argument
+  316 |   _LIBCPP_HIDE_FROM_ABI basic_string_view(const basic_string_view&) _NOEXCEPT = default;
+      |                         ^                 ~~~~~~~~~~~~~~~~~~~~~~~~
+C:/msys64/clang64/include/c++/v1/string_view:355:43: note: candidate constructor not viable: no known conversion from 'const fixed_string<11>' (aka 'const NumRepr::fixed_string<11>') to 'const char *' for 1st argument
+  355 |   _LIBCPP_CONSTEXPR _LIBCPP_HIDE_FROM_ABI basic_string_view(const _CharT* __s)
+      |                                           ^                 ~~~~~~~~~~~~~~~~~
+C:/msys64/clang64/include/c++/v1/string_view:359:3: note: candidate constructor not viable: no known conversion from 'const fixed_string<11>' (aka 'const NumRepr::fixed_string<11>') to 'nullptr_t' (aka 'std::nullptr_t') for 1st argument
+  359 |   basic_string_view(nullptr_t) = delete;
+      |   ^                 ~~~~~~~~~
+C:/msys64/clang64/include/c++/v1/string_view:351:44: note: explicit constructor is not a candidate
+  351 |   constexpr explicit _LIBCPP_HIDE_FROM_ABI basic_string_view(_Range&& __r)
+      |                                            ^
+D:\gdrive\numericrepresentations_gamma\tests\test_04_dig_t.cpp:244:9: error: expected expression
+  244 |         STATIC_CHECK(std::is_same_v<decltype(d), const NumRepr::dig_t<13>>);
+      |         ^
+D:/gdrive/numericrepresentations_gamma/build/build_targets/clang/release/_deps/catch2-src/src/catch2/../catch2/catch_test_macros.hpp:173:67: note: expanded from macro 'STATIC_CHECK'
+  173 |     #define STATIC_CHECK( ... )       static_assert(   __VA_ARGS__,  #__VA_ARGS__ ); SUCCEED( #__VA_ARGS__ )
+      |                                                                   ^
+In file included from D:\gdrive\numericrepresentations_gamma\tests\test_04_dig_t.cpp:5:
+D:/gdrive/numericrepresentations_gamma/include/core/dig_t.hpp:3330:34: error: no viable conversion from 'const fixed_string<10>' (aka 'const NumRepr::fixed_string<10>') to 'const std::string_view' (aka 'const basic_string_view<char>')
+ 3330 |       constexpr std::string_view sv = Str;
+      |                                  ^    ~~~
+D:\gdrive\numericrepresentations_gamma\tests\test_04_dig_t.cpp:250:29: note: in instantiation of function template specialization 'NumRepr::make_digit<fixed_string<10>{{"dig[10]B2"}}>' requested here
+  250 |         constexpr auto d2 = make_digit<fixed_string("dig[10]B2")>();
+      |                             ^
+C:/msys64/clang64/include/c++/v1/string_view:316:25: note: candidate constructor not viable: no known conversion from 'const fixed_string<10>' (aka 'const NumRepr::fixed_string<10>') to 'const string_view &' for 1st argument
+  316 |   _LIBCPP_HIDE_FROM_ABI basic_string_view(const basic_string_view&) _NOEXCEPT = default;
+      |                         ^                 ~~~~~~~~~~~~~~~~~~~~~~~~
+C:/msys64/clang64/include/c++/v1/string_view:355:43: note: candidate constructor not viable: no known conversion from 'const fixed_string<10>' (aka 'const NumRepr::fixed_string<10>') to 'const char *' for 1st argument
+  355 |   _LIBCPP_CONSTEXPR _LIBCPP_HIDE_FROM_ABI basic_string_view(const _CharT* __s)
+      |                                           ^                 ~~~~~~~~~~~~~~~~~
+C:/msys64/clang64/include/c++/v1/string_view:359:3: note: candidate constructor not viable: no known conversion from 'const fixed_string<10>' (aka 'const NumRepr::fixed_string<10>') to 'nullptr_t' (aka 'std::nullptr_t') for 1st argument
+  359 |   basic_string_view(nullptr_t) = delete;
+      |   ^                 ~~~~~~~~~
+C:/msys64/clang64/include/c++/v1/string_view:351:44: note: explicit constructor is not a candidate
+  351 |   constexpr explicit _LIBCPP_HIDE_FROM_ABI basic_string_view(_Range&& __r)
+      |                                            ^
+D:\gdrive\numericrepresentations_gamma\tests\test_04_dig_t.cpp:251:9: error: expected expression
+  251 |         STATIC_CHECK(std::is_same_v<decltype(d2), const NumRepr::dig_t<2>>);
+      |         ^
+D:/gdrive/numericrepresentations_gamma/build/build_targets/clang/release/_deps/catch2-src/src/catch2/../catch2/catch_test_macros.hpp:173:67: note: expanded from macro 'STATIC_CHECK'
+  173 |     #define STATIC_CHECK( ... )       static_assert(   __VA_ARGS__,  #__VA_ARGS__ ); SUCCEED( #__VA_ARGS__ )
+      |                                                                   ^
+In file included from D:\gdrive\numericrepresentations_gamma\tests\test_04_dig_t.cpp:5:
+D:/gdrive/numericrepresentations_gamma/include/core/dig_t.hpp:3330:34: error: no viable conversion from 'const fixed_string<12>' (aka 'const NumRepr::fixed_string<12>') to 'const std::string_view' (aka 'const basic_string_view<char>')
+ 3330 |       constexpr std::string_view sv = Str;
+      |                                  ^    ~~~
+D:\gdrive\numericrepresentations_gamma\tests\test_04_dig_t.cpp:255:29: note: in instantiation of function template specialization 'NumRepr::make_digit<fixed_string<12>{{"dig[100]B99"}}>' requested here
+  255 |         constexpr auto d3 = make_digit<fixed_string("dig[100]B99")>();
+      |                             ^
+C:/msys64/clang64/include/c++/v1/string_view:316:25: note: candidate constructor not viable: no known conversion from 'const fixed_string<12>' (aka 'const NumRepr::fixed_string<12>') to 'const string_view &' for 1st argument
+  316 |   _LIBCPP_HIDE_FROM_ABI basic_string_view(const basic_string_view&) _NOEXCEPT = default;
+      |                         ^                 ~~~~~~~~~~~~~~~~~~~~~~~~
+C:/msys64/clang64/include/c++/v1/string_view:355:43: note: candidate constructor not viable: no known conversion from 'const fixed_string<12>' (aka 'const NumRepr::fixed_string<12>') to 'const char *' for 1st argument
+  355 |   _LIBCPP_CONSTEXPR _LIBCPP_HIDE_FROM_ABI basic_string_view(const _CharT* __s)
+      |                                           ^                 ~~~~~~~~~~~~~~~~~
+C:/msys64/clang64/include/c++/v1/string_view:359:3: note: candidate constructor not viable: no known conversion from 'const fixed_string<12>' (aka 'const NumRepr::fixed_string<12>') to 'nullptr_t' (aka 'std::nullptr_t') for 1st argument
+  359 |   basic_string_view(nullptr_t) = delete;
+      |   ^                 ~~~~~~~~~
+C:/msys64/clang64/include/c++/v1/string_view:351:44: note: explicit constructor is not a candidate
+  351 |   constexpr explicit _LIBCPP_HIDE_FROM_ABI basic_string_view(_Range&& __r)
+      |                                            ^
+D:\gdrive\numericrepresentations_gamma\tests\test_04_dig_t.cpp:256:9: error: expected expression
+  256 |         STATIC_CHECK(std::is_same_v<decltype(d3), const NumRepr::dig_t<99>>);
+      |         ^
+D:/gdrive/numericrepresentations_gamma/build/build_targets/clang/release/_deps/catch2-src/src/catch2/../catch2/catch_test_macros.hpp:173:67: note: expanded from macro 'STATIC_CHECK'
+  173 |     #define STATIC_CHECK( ... )       static_assert(   __VA_ARGS__,  #__VA_ARGS__ ); SUCCEED( #__VA_ARGS__ )
+      |                                                                   ^
+6 errors generated.
+mingw32-make[3]: *** [CMakeFiles\test_04_dig_t.dir\build.make:79: CMakeFiles/test_04_dig_t.dir/tests/test_04_dig_t.cpp.obj] Error 1
+mingw32-make[2]: *** [CMakeFiles\Makefile2:344: CMakeFiles/test_04_dig_t.dir/all] Error 2
+mingw32-make[1]: *** [CMakeFiles\Makefile2:351: CMakeFiles/test_04_dig_t.dir/rule] Error 2
+mingw32-make: *** [Makefile:198: test_04_dig_t] Error 2
