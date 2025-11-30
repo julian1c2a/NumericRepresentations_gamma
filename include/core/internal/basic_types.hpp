@@ -134,17 +134,22 @@ template <size_t N>
 struct fixed_string {
     static constexpr size_t size = N; 
     
-    // FIX MSVC: Restaurada inicialización {} para evitar error C2131/C2737 (objeto no inicializado).
-    // Combinado con el fix en atoull_ct (no usar string_view), esto satisface a MSVC.
-    char data[N]{}; 
+    // Almacenamiento público
+    char data[N]; 
 
-    constexpr fixed_string() = default;
+    // Constructor por defecto inicializa a ceros
+    constexpr fixed_string() : data{} {}
 
-    constexpr fixed_string(const char (&str)[N]) {
-        for (size_t i = 0; i < N; ++i) {
-            data[i] = str[i];
-        }
-    }
+    // FIX MSVC: Constructor que usa std::index_sequence para inicializar el array
+    // en la lista de inicialización. Esto evita el cuerpo del constructor y
+    // satisface los requisitos estrictos de constexpr de MSVC para NTTP.
+    template <size_t... I>
+    constexpr fixed_string(const char (&str)[N], std::index_sequence<I...>)
+        : data{str[I]...} {}
+
+    // Constructor principal que delega
+    constexpr fixed_string(const char (&str)[N]) 
+        : fixed_string(str, std::make_index_sequence<N>{}) {}
 
     consteval operator std::string_view() const {
         if (N > 0 && data[N-1] == '\0')

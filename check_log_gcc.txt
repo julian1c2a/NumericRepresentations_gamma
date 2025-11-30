@@ -7,7 +7,7 @@ Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/gcc/rele
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   0.20 sec
+Total Test time (real) =   0.05 sec
 Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/gcc/release
     Start 4: test_02_append
 1/1 Test #4: test_02_append ...................   Passed    0.01 sec
@@ -17,67 +17,67 @@ Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/gcc/rele
 Total Test time (real) =   0.02 sec
 Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/gcc/release
     Start 5: test_03_core_internal
-1/1 Test #5: test_03_core_internal ............   Passed    0.01 sec
+1/1 Test #5: test_03_core_internal ............   Passed    0.14 sec
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   0.02 sec
+Total Test time (real) =   0.16 sec
 Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/gcc/release
     Start 6: test_04_dig_t
-1/1 Test #6: test_04_dig_t ....................   Passed    0.01 sec
+1/1 Test #6: test_04_dig_t ....................   Passed    0.13 sec
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   0.02 sec
+Total Test time (real) =   0.14 sec
 Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/gcc/release
     Start 7: test_05_dig_t_constructors
-1/1 Test #7: test_05_dig_t_constructors .......   Passed    0.01 sec
+1/1 Test #7: test_05_dig_t_constructors .......   Passed    0.11 sec
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   0.02 sec
+Total Test time (real) =   0.12 sec
 Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/gcc/release
     Start 8: test_06_dig_t_assignations
-1/1 Test #8: test_06_dig_t_assignations .......   Passed    0.01 sec
+1/1 Test #8: test_06_dig_t_assignations .......   Passed    0.12 sec
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   0.02 sec
+Total Test time (real) =   0.12 sec
 Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/gcc/release
     Start 9: test_07_dig_t_conversions
-1/1 Test #9: test_07_dig_t_conversions ........   Passed    0.01 sec
+1/1 Test #9: test_07_dig_t_conversions ........   Passed    0.11 sec
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   0.02 sec
+Total Test time (real) =   0.12 sec
 Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/gcc/release
     Start 10: test_08_dig_t_operadores
-1/1 Test #10: test_08_dig_t_operadores .........   Passed    0.01 sec
+1/1 Test #10: test_08_dig_t_operadores .........   Passed    0.11 sec
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   0.02 sec
+Total Test time (real) =   0.12 sec
 Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/gcc/release
     Start 11: test_09_dig_t_algebra
-1/1 Test #11: test_09_dig_t_algebra ............   Passed    0.01 sec
+1/1 Test #11: test_09_dig_t_algebra ............   Passed    0.11 sec
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   0.02 sec
+Total Test time (real) =   0.12 sec
 Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/gcc/release
     Start 12: test_10_dig_t_io
-1/1 Test #12: test_10_dig_t_io .................   Passed    0.01 sec
+1/1 Test #12: test_10_dig_t_io .................   Passed    0.11 sec
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   0.02 sec
+Total Test time (real) =   0.12 sec
 Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/gcc/release
     Start 13: test_11_basic_types
-1/1 Test #13: test_11_basic_types ..............   Passed    0.01 sec
+1/1 Test #13: test_11_basic_types ..............   Passed    0.12 sec
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   0.02 sec
+Total Test time (real) =   0.13 sec
 Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/gcc/release
     Start 14: test_12_Int_ExpLog
 1/1 Test #14: test_12_Int_ExpLog ...............   Passed    0.01 sec

@@ -1,12 +1,12 @@
 ==========================================
- EJECUTANDO TESTS DIRECTOS DESDE: ./build/build_targets/gcc/release
+ EJECUTANDO TESTS DIRECTOS DESDE: ./build/build_targets/clang/release
 ==========================================
 >>> Ejecutando test_01_math_tables...
 
 =============================================================
  EJECUTANDO SUITE: test_01_math_tables
 =============================================================
-Randomness seeded to: 4168831593
+Randomness seeded to: 3537673381
 ===============================================================================
 All tests passed (6673 assertions in 5 test cases)
 
@@ -15,7 +15,7 @@ All tests passed (6673 assertions in 5 test cases)
 =============================================================
  EJECUTANDO SUITE: test_02_append
 =============================================================
-Randomness seeded to: 1524851202
+Randomness seeded to: 566187314
 ===============================================================================
 All tests passed (28 assertions in 3 test cases)
 
@@ -24,7 +24,7 @@ All tests passed (28 assertions in 3 test cases)
 =============================================================
  EJECUTANDO SUITE: test_03_core_internal
 =============================================================
-Randomness seeded to: 1323869013
+Randomness seeded to: 1571885711
 ===============================================================================
 All tests passed (52 assertions in 7 test cases)
 
@@ -33,7 +33,7 @@ All tests passed (52 assertions in 7 test cases)
 =============================================================
  EJECUTANDO SUITE: test_04_dig_t
 =============================================================
-Randomness seeded to: 365248558
+Randomness seeded to: 2064985338
 ===============================================================================
 All tests passed (62 assertions in 6 test cases)
 
@@ -42,7 +42,7 @@ All tests passed (62 assertions in 6 test cases)
 =============================================================
  EJECUTANDO SUITE: test_05_dig_t_constructors
 =============================================================
-Randomness seeded to: 1051613341
+Randomness seeded to: 3111752647
 ===============================================================================
 All tests passed (29 assertions in 1 test case)
 
@@ -51,7 +51,7 @@ All tests passed (29 assertions in 1 test case)
 =============================================================
  EJECUTANDO SUITE: test_06_dig_t_assignations
 =============================================================
-Randomness seeded to: 2634649014
+Randomness seeded to: 1457791964
 ===============================================================================
 All tests passed (41 assertions in 1 test case)
 
@@ -60,7 +60,7 @@ All tests passed (41 assertions in 1 test case)
 =============================================================
  EJECUTANDO SUITE: test_07_dig_t_conversions
 =============================================================
-Randomness seeded to: 1861389273
+Randomness seeded to: 934240533
 ===============================================================================
 All tests passed (30 assertions in 3 test cases)
 
@@ -69,7 +69,7 @@ All tests passed (30 assertions in 3 test cases)
 =============================================================
  EJECUTANDO SUITE: test_08_dig_t_operadores
 =============================================================
-Randomness seeded to: 3160436135
+Randomness seeded to: 3626164776
 ===============================================================================
 All tests passed (53 assertions in 5 test cases)
 
@@ -78,7 +78,7 @@ All tests passed (53 assertions in 5 test cases)
 =============================================================
  EJECUTANDO SUITE: test_09_dig_t_algebra
 =============================================================
-Randomness seeded to: 1321782988
+Randomness seeded to: 3610392991
 ===============================================================================
 All tests passed (65 assertions in 4 test cases)
 
@@ -87,7 +87,7 @@ All tests passed (65 assertions in 4 test cases)
 =============================================================
  EJECUTANDO SUITE: test_10_dig_t_io
 =============================================================
-Randomness seeded to: 3616176355
+Randomness seeded to: 3040606082
 ===============================================================================
 All tests passed (37 assertions in 5 test cases)
 
@@ -96,7 +96,7 @@ All tests passed (37 assertions in 5 test cases)
 =============================================================
  EJECUTANDO SUITE: test_11_basic_types
 =============================================================
-Randomness seeded to: 833201046
+Randomness seeded to: 503591102
 ===============================================================================
 All tests passed (37 assertions in 5 test cases)
 
@@ -105,7 +105,7 @@ All tests passed (37 assertions in 5 test cases)
 =============================================================
  EJECUTANDO SUITE: test_12_Int_ExpLog
 =============================================================
-Randomness seeded to: 3276895475
+Randomness seeded to: 1203653472
 ===============================================================================
 All tests passed (42 assertions in 4 test cases)
 
@@ -114,7 +114,7 @@ All tests passed (42 assertions in 4 test cases)
 =============================================================
  EJECUTANDO SUITE: test_13_IntRoot
 =============================================================
-Randomness seeded to: 3134694397
+Randomness seeded to: 4135726348
 ===============================================================================
 All tests passed (72 assertions in 5 test cases)
 
@@ -123,7 +123,7 @@ All tests passed (72 assertions in 5 test cases)
 =============================================================
  EJECUTANDO SUITE: test_14_primes
 =============================================================
-Randomness seeded to: 3724287748
+Randomness seeded to: 1168591834
 ===============================================================================
 All tests passed (50 assertions in 3 test cases)
 
@@ -132,7 +132,7 @@ All tests passed (50 assertions in 3 test cases)
 =============================================================
  EJECUTANDO SUITE: test_15_conversions
 =============================================================
-Randomness seeded to: 3859187842
+Randomness seeded to: 916781761
 ===============================================================================
 All tests passed (18 assertions in 3 test cases)
 
