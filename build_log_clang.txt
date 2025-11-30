@@ -2,7 +2,7 @@
  CONFIGURANDO Y CONSTRUYENDO: clang-release
 ==========================================
 -- Configuring done (1.6s)
--- Generating done (0.9s)
+-- Generating done (0.7s)
 -- Build files have been written to: D:/gdrive/numericrepresentations_gamma/build/build_targets/clang/release
 [ 96%] Built target Catch2
 [ 98%] Built target Catch2WithMain
@@ -14,31 +14,13 @@
 [ 97%] Built target Catch2WithMain
 [ 98%] Building CXX object CMakeFiles/test_03_core_internal.dir/tests/test_03_core_internal.cpp.obj
 In file included from D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp:3:
-D:/gdrive/numericrepresentations_gamma/include/core/internal/basic_types.hpp:195:56: error: no template named 'fixed_string'
-  195 | template <size_t N> fixed_string(const char (&)[N]) -> fixed_string<N>;
-      |                                                        ^
-D:/gdrive/numericrepresentations_gamma/include/core/internal/basic_types.hpp:195:21: error: a type specifier is required for all declarations
-  195 | template <size_t N> fixed_string(const char (&)[N]) -> fixed_string<N>;
+D:/gdrive/numericrepresentations_gamma/include/core/internal/basic_types.hpp:531:21: error: deduction guide must be declared in the same scope as template 'NumRepr::fixed_string'
+  531 | template <size_t N> fixed_string(const char (&)[N]) -> fixed_string<N>;
       |                     ^
-D:/gdrive/numericrepresentations_gamma/include/core/internal/basic_types.hpp:202:8: error: redefinition of 'fixed_string' as different kind of symbol
-  202 | struct fixed_string {
+D:/gdrive/numericrepresentations_gamma/include/core/internal/basic_types.hpp:199:8: note: template is declared here
+  199 | struct fixed_string {
       |        ^
-D:/gdrive/numericrepresentations_gamma/include/core/internal/basic_types.hpp:195:21: note: previous definition is here
-  195 | template <size_t N> fixed_string(const char (&)[N]) -> fixed_string<N>;
-      |                     ^
-D:/gdrive/numericrepresentations_gamma/include/core/internal/basic_types.hpp:496:1: error: unknown type name 't'
-  496 | t/**
-      | ^
-D:/gdrive/numericrepresentations_gamma/include/core/internal/basic_types.hpp:500:1: error: expected unqualified-id
-  500 | template <NumRepr::fixed_string STR> 
-      | ^
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp:85:30: error: use of undeclared identifier 'atoull_ct'
-   85 |     constexpr uint64_t val = atoull_ct<NUM_STR>();
-      |                              ^~~~~~~~~
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp:89:32: error: use of undeclared identifier 'atoull_ct'
-   89 |     constexpr uint64_t val_0 = atoull_ct<ZERO_STR>();
-      |                                ^~~~~~~~~
-7 errors generated.
+1 error generated.
 mingw32-make[3]: *** [CMakeFiles\test_03_core_internal.dir\build.make:79: CMakeFiles/test_03_core_internal.dir/tests/test_03_core_internal.cpp.obj] Error 1
 mingw32-make[2]: *** [CMakeFiles\Makefile2:311: CMakeFiles/test_03_core_internal.dir/all] Error 2
 mingw32-make[1]: *** [CMakeFiles\Makefile2:318: CMakeFiles/test_03_core_internal.dir/rule] Error 2

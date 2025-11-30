@@ -2,7 +2,7 @@
  CONFIGURANDO Y CONSTRUYENDO: gcc-release
 ==========================================
 -- Configuring done (1.7s)
--- Generating done (0.9s)
+-- Generating done (0.7s)
 -- Build files have been written to: D:/gdrive/numericrepresentations_gamma/build/build_targets/gcc/release
 [ 96%] Built target Catch2
 [ 98%] Built target Catch2WithMain
@@ -12,52 +12,15 @@
 [100%] Built target test_02_append
 [ 94%] Built target Catch2
 [ 97%] Built target Catch2WithMain
-[100%] Built target test_03_core_internal
-[ 96%] Built target Catch2
-[ 98%] Built target Catch2WithMain
-[100%] Built target test_04_dig_t
-[ 94%] Built target Catch2
-[ 97%] Built target Catch2WithMain
-[100%] Built target test_05_dig_t_constructors
-[ 96%] Built target Catch2
-[ 98%] Built target Catch2WithMain
-[100%] Built target test_06_dig_t_assignations
-[ 96%] Built target Catch2
-[ 98%] Built target Catch2WithMain
-[100%] Built target test_07_dig_t_conversions
-[ 94%] Built target Catch2
-[ 97%] Built target Catch2WithMain
-[100%] Built target test_08_dig_t_operadores
-[ 96%] Built target Catch2
-[ 98%] Built target Catch2WithMain
-[100%] Built target test_09_dig_t_algebra
-[ 94%] Built target Catch2
-[ 97%] Built target Catch2WithMain
-[100%] Built target test_10_dig_t_io
-[ 96%] Built target Catch2
-[ 98%] Built target Catch2WithMain
-[100%] Built target test_11_basic_types
-[ 96%] Built target Catch2
-[ 98%] Built target Catch2WithMain
-[100%] Built target test_12_Int_ExpLog
-[ 94%] Built target Catch2
-[ 97%] Built target Catch2WithMain
-[100%] Built target test_13_IntRoot
-[ 96%] Built target Catch2
-[ 98%] Built target Catch2WithMain
-[100%] Built target test_14_primes
-[ 94%] Built target Catch2
-[ 97%] Built target Catch2WithMain
-[ 98%] Building CXX object CMakeFiles/test_15_conversions.dir/tests/test_15_conversions.cpp.obj
-In file included from D:\gdrive\numericrepresentations_gamma\tests\test_15_conversions.cpp:1:
-D:/gdrive/numericrepresentations_gamma/include/core/internal/conversions.hpp: In instantiation of 'constexpr std::expected<long long unsigned int, NumRepr::AuxFunc::ConversionError> NumRepr::AuxFunc::conversion_to_int_safe(const A&) [with auto B = 0; auto L = 1; A = std::array<MockDig, 1>]':
-D:\gdrive\numericrepresentations_gamma\tests\test_15_conversions.cpp:94:49:   required from here
-   94 |         auto res0 = conversion_to_int_safe<0, 1>(digits);
-      |                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~
-D:/gdrive/numericrepresentations_gamma/include/core/internal/conversions.hpp:40:22: error: division by zero is not a constant expression
-   40 |   constexpr uint64_t max_before_mult = numeric_limits<uint64_t>::max() / base;
-      |                      ^~~~~~~~~~~~~~~
-mingw32-make[3]: *** [CMakeFiles\test_15_conversions.dir\build.make:79: CMakeFiles/test_15_conversions.dir/tests/test_15_conversions.cpp.obj] Error 1
-mingw32-make[2]: *** [CMakeFiles\Makefile2:707: CMakeFiles/test_15_conversions.dir/all] Error 2
-mingw32-make[1]: *** [CMakeFiles\Makefile2:714: CMakeFiles/test_15_conversions.dir/rule] Error 2
-mingw32-make: *** [Makefile:341: test_15_conversions] Error 2
+[ 98%] Building CXX object CMakeFiles/test_03_core_internal.dir/tests/test_03_core_internal.cpp.obj
+In file included from D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp:3:
+D:/gdrive/numericrepresentations_gamma/include/core/internal/basic_types.hpp:531:21: error: deduction guide 'NumRepr::type_traits::fixed_string(const char (&)[N]) -> NumRepr::fixed_string<N>' must be declared in the same scope as 'NumRepr::fixed_string<N>'
+  531 | template <size_t N> fixed_string(const char (&)[N]) -> fixed_string<N>;
+      |                     ^~~~~~~~~~~~
+D:/gdrive/numericrepresentations_gamma/include/core/internal/basic_types.hpp:199:8: note:   declared here
+  199 | struct fixed_string {
+      |        ^~~~~~~~~~~~
+mingw32-make[3]: *** [CMakeFiles\test_03_core_internal.dir\build.make:79: CMakeFiles/test_03_core_internal.dir/tests/test_03_core_internal.cpp.obj] Error 1
+mingw32-make[2]: *** [CMakeFiles\Makefile2:311: CMakeFiles/test_03_core_internal.dir/all] Error 2
+mingw32-make[1]: *** [CMakeFiles\Makefile2:318: CMakeFiles/test_03_core_internal.dir/rule] Error 2
+mingw32-make: *** [Makefile:185: test_03_core_internal] Error 2
