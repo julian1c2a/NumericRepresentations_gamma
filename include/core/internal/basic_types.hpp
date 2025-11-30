@@ -41,7 +41,8 @@ namespace NumRepr {
 
 /**
  * @brief Representación del signo de un número.
- * @details [CAMBIO] Nombres actualizados para mayor claridad.
+ * @details Enumeración actualmente utilizada en operaciones aritméticas y
+ * comparaciones. Valores: vzero (0), vminus (-1), vplus (+1).
  */
 enum class sign_funct_e : char { 
     zero = 0,   // Antes: vzero
@@ -104,19 +105,18 @@ constexpr inline int to_int(sign_funct_e sign) noexcept {
 }
 
 constexpr inline bool is_positive(sign_funct_e sign) noexcept {
-  return sign == sign_funct_e::plus; // [CAMBIO] vplus -> plus
+  return sign == sign_funct_e::plus;
 }
 
 constexpr inline bool is_negative(sign_funct_e sign) noexcept {
-  return sign == sign_funct_e::minus; // [CAMBIO] vminus -> minus
+  return sign == sign_funct_e::minus;
 }
 
 constexpr inline bool is_zero(sign_funct_e sign) noexcept {
-  return sign == sign_funct_e::zero; // [CAMBIO] vzero -> zero
+  return sign == sign_funct_e::zero;
 }
 
 constexpr inline sign_funct_e opposite_sign(sign_funct_e sign) noexcept {
-  // [CAMBIO] Actualizados todos los casos del operador ternario
   return (sign == sign_funct_e::plus)    ? sign_funct_e::minus
          : (sign == sign_funct_e::minus) ? sign_funct_e::plus
                                           : sign_funct_e::zero;
@@ -134,9 +134,9 @@ template <size_t N>
 struct fixed_string {
     static constexpr size_t size = N; 
     
-    // FIX MSVC CRÍTICO: Eliminada inicialización por defecto {} para evitar
-    // error "read of uninitialized symbol" en consteval.
-    char data[N]; 
+    // FIX MSVC: Restaurada inicialización {} para evitar error C2131/C2737 (objeto no inicializado).
+    // Combinado con el fix en atoull_ct (no usar string_view), esto satisface a MSVC.
+    char data[N]{}; 
 
     constexpr fixed_string() = default;
 
@@ -298,7 +298,8 @@ atoull_consume(std::string_view sv) noexcept {
 
 /**
  * @brief Convierte string literal a ullint_t en tiempo de compilación.
- * @details Versión optimizada para MSVC.
+ * @details Versión optimizada para MSVC: Itera directamente sobre el array
+ * crudo STR.data mediante índices explícitos.
  */
 template <NumRepr::fixed_string STR> 
 consteval ullint_t atoull_ct() {
@@ -306,6 +307,8 @@ consteval ullint_t atoull_ct() {
   constexpr ullint_t maxv = std::numeric_limits<ullint_t>::max();
   bool any_digit = false;
 
+  // FIX MSVC: Bucle for indexado tradicional sobre el array crudo.
+  // Evita abstracciones de iteradores que pueden fallar en consteval MSVC.
   for (size_t k = 0; k < STR.size; ++k) {
     char c = STR.data[k];
     
