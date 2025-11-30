@@ -195,6 +195,13 @@ constexpr inline sign_funct_e opposite_sign(sign_funct_e sign) noexcept {
  * @brief Wrapper estructural para cadenas fijas en tiempo de compilación (CNTTP).
  * @details Permite pasar literales de cadena como parámetros de plantilla en C++20.
  */
+// -----------------------------------------------------------------------------
+// FIXED STRING (CNTTP)
+// -----------------------------------------------------------------------------
+
+/**
+ * @brief Wrapper estructural para cadenas fijas en tiempo de compilación.
+ */
 template <size_t N>
 struct fixed_string {
     char data[N]{};
@@ -206,14 +213,18 @@ struct fixed_string {
     }
 
     consteval operator std::string_view() const {
-        // El tamaño N incluye el terminador nulo.
-        // string_view no debería incluirlo si existe.
-        if (N > 0 && data[N-1] == '\0')
+        if (N > 0 && data[N-1] == '\0') {
             return {data, N - 1};
-        else
+        } else {
             return {data, N};
+        }
     }
 };
+
+// CORRECCIÓN: La guía de deducción va AQUÍ, justo después de la struct y dentro del namespace
+// GUÍA DE DEDUCCIÓN DE TIPOS
+template <size_t N> fixed_string(const char (&)[N]) -> fixed_string<N>;
+
 
 namespace type_traits {
 
@@ -260,14 +271,6 @@ template <char_type_c CharT> constexpr inline CharT nullchar{CharT('\0')};
  * comportamiento indefinido
  * @endcode
  */
-inline constexpr ullint_t atoull(const char *text) noexcept {
-  ullint_t i = 0;
-  while (*text) {
-    i = (i << 3) + (i << 1) + static_cast<ullint_t>(*text - '0');
-    ++text;
-  }
-  return i;
-}
 
 /**
  * @brief Convierte string_view ASCII decimal a uint64_t sin validación.
@@ -283,23 +286,10 @@ inline constexpr ullint_t atoull(const char *text) noexcept {
  *
  * @warning Sin validación. Para entrada no confiable, usa atoull_checked.
  */
-inline constexpr ullint_t atoull(std::string_view sv) noexcept {
-  ullint_t i = 0;
-  for (char c : sv) {
-    i = (i << 3) + (i << 1) + static_cast<ullint_t>(c - '0');
-  }
-  return i;
-}
 
 /**
  * @brief Códigos de error para conversión string→uint64_t.
  */
-enum class atoull_err_t : int {
-  empty_str, ///< String vacío o nullptr
-  no_digit,  ///< Carácter no numérico encontrado
-  overflow,  ///< Valor excede ULLONG_MAX
-  unknown    ///< Error desconocido (no usado actualmente)
-};
 
 /**
  * @brief Convierte string ASCII decimal a uint64_t CON validación completa.
@@ -331,28 +321,6 @@ enum class atoull_err_t : int {
  * assert(!r4 && r4.error() == atoull_err_t::empty_str);
  * @endcode
  */
-inline std::expected<ullint_t, atoull_err_t>
-atoull_checked(const char *text) noexcept {
-  if (text == nullptr)
-    return std::unexpected(atoull_err_t::empty_str);
-  ullint_t i = 0;
-  bool any = false;
-  constexpr ullint_t maxv = std::numeric_limits<ullint_t>::max();
-  while (*text) {
-    char c = *text;
-    if (c < '0' || c > '9')
-      return std::unexpected(atoull_err_t::no_digit);
-    unsigned digit = static_cast<unsigned>(c - '0');
-    if (i > (maxv - digit) / 10)
-      return std::unexpected(atoull_err_t::overflow);
-    i = i * 10 + digit;
-    any = true;
-    ++text;
-  }
-  if (!any)
-    return std::unexpected(atoull_err_t::empty_str);
-  return std::expected<ullint_t, atoull_err_t>(i);
-}
 
 /**
  * @brief Convierte string_view ASCII decimal a uint64_t CON validación
@@ -365,26 +333,6 @@ atoull_checked(const char *text) noexcept {
  *
  * @see atoull_checked(const char*) para documentación detallada
  */
-inline std::expected<ullint_t, atoull_err_t>
-atoull_checked(std::string_view sv) noexcept {
-  if (sv.data() == nullptr || sv.size() == 0)
-    return std::unexpected(atoull_err_t::empty_str);
-  ullint_t i = 0;
-  bool any = false;
-  constexpr ullint_t maxv = std::numeric_limits<ullint_t>::max();
-  for (char c : sv) {
-    if (c < '0' || c > '9')
-      return std::unexpected(atoull_err_t::no_digit);
-    unsigned digit = static_cast<unsigned>(c - '0');
-    if (i > (maxv - digit) / 10)
-      return std::unexpected(atoull_err_t::overflow);
-    i = i * 10 + digit;
-    any = true;
-  }
-  if (!any)
-    return std::unexpected(atoull_err_t::empty_str);
-  return std::expected<ullint_t, atoull_err_t>(i);
-}
 
 /**
  * @brief Parsea dígitos decimales desde el inicio de un string y retorna valor
@@ -418,6 +366,107 @@ atoull_checked(std::string_view sv) noexcept {
  * // Error: no_digit (empieza con 'a')
  * @endcode
  */
+
+/**
+ * @brief Parsea dígitos decimales desde el inicio de un string_view.
+ * @details Sobrecarga de atoull_consume para string_view. Misma semántica que
+ * const char*.
+ *
+ * @param sv Vista de string a parsear.
+ * @return std::expected con pair{valor, cantidad_consumida} o error.
+ *
+ * @see atoull_consume(const char*) para documentación detallada
+ */
+
+/**
+ * @brief Convierte string literal a ullint_t en tiempo de compilación.
+ *
+ * @details Esta función consteval utiliza un parámetro de plantilla "Non-Type Class Template" (CNTTP)
+ * disponible en C++20 para aceptar literales de cadena directamente (e.g., atoull_ct<"123">()).
+ *
+ * Implementa la misma lógica de overflow checking que atoull_checked().
+ *
+ * @tparam STR Objeto fixed_string construido desde el literal.
+ *
+ * @return ullint_t con el valor parseado.
+ *
+ * @throws const char* Error de compilación si hay caracteres inválidos, overflow o string vacío.
+ *
+ * @note USAGE: atoull_ct<"123456">()
+ */
+/**
+ * @brief Convierte string literal a ullint_t en tiempo de compilación.
+ * @details Versión optimizada para MSVC.
+ */
+
+ inline constexpr ullint_t atoull(const char *text) noexcept {
+  ullint_t i = 0;
+  while (*text) {
+    i = (i << 3) + (i << 1) + static_cast<ullint_t>(*text - '0');
+    ++text;
+  }
+  return i;
+}
+
+inline constexpr ullint_t atoull(std::string_view sv) noexcept {
+  ullint_t i = 0;
+  for (char c : sv) {
+    i = (i << 3) + (i << 1) + static_cast<ullint_t>(c - '0');
+  }
+  return i;
+}
+
+enum class atoull_err_t : int {
+  empty_str, 
+  no_digit,  
+  overflow,  
+  unknown    
+};
+
+inline std::expected<ullint_t, atoull_err_t>
+atoull_checked(const char *text) noexcept {
+  if (text == nullptr)
+    return std::unexpected(atoull_err_t::empty_str);
+  ullint_t i = 0;
+  bool any = false;
+  constexpr ullint_t maxv = std::numeric_limits<ullint_t>::max();
+  while (*text) {
+    char c = *text;
+    if (c < '0' || c > '9')
+      return std::unexpected(atoull_err_t::no_digit);
+    unsigned digit = static_cast<unsigned>(c - '0');
+    if (i > (maxv - digit) / 10)
+      return std::unexpected(atoull_err_t::overflow);
+    i = i * 10 + digit;
+    any = true;
+    ++text;
+  }
+  if (!any)
+    return std::unexpected(atoull_err_t::empty_str);
+  return std::expected<ullint_t, atoull_err_t>(i);
+}
+
+inline std::expected<ullint_t, atoull_err_t>
+atoull_checked(std::string_view sv) noexcept {
+  if (sv.data() == nullptr || sv.size() == 0)
+    return std::unexpected(atoull_err_t::empty_str);
+  ullint_t i = 0;
+  bool any = false;
+  constexpr ullint_t maxv = std::numeric_limits<ullint_t>::max();
+  for (char c : sv) {
+    if (c < '0' || c > '9')
+      return std::unexpected(atoull_err_t::no_digit);
+    unsigned digit = static_cast<unsigned>(c - '0');
+    if (i > (maxv - digit) / 10)
+      return std::unexpected(atoull_err_t::overflow);
+    i = i * 10 + digit;
+    any = true;
+  }
+  if (!any)
+    return std::unexpected(atoull_err_t::empty_str);
+  return std::expected<ullint_t, atoull_err_t>(i);
+}
+
 inline std::expected<std::pair<ullint_t, size_t>, atoull_err_t>
 atoull_consume(const char *text) noexcept {
   if (text == nullptr)
@@ -441,16 +490,6 @@ atoull_consume(const char *text) noexcept {
       std::pair<ullint_t, size_t>{i, idx});
 }
 
-/**
- * @brief Parsea dígitos decimales desde el inicio de un string_view.
- * @details Sobrecarga de atoull_consume para string_view. Misma semántica que
- * const char*.
- *
- * @param sv Vista de string a parsear.
- * @return std::expected con pair{valor, cantidad_consumida} o error.
- *
- * @see atoull_consume(const char*) para documentación detallada
- */
 inline std::expected<std::pair<ullint_t, size_t>, atoull_err_t>
 atoull_consume(std::string_view sv) noexcept {
   if (sv.data() == nullptr || sv.size() == 0)
@@ -476,35 +515,19 @@ atoull_consume(std::string_view sv) noexcept {
 
 /**
  * @brief Convierte string literal a ullint_t en tiempo de compilación.
- *
- * @details Esta función consteval utiliza un parámetro de plantilla "Non-Type Class Template" (CNTTP)
- * disponible en C++20 para aceptar literales de cadena directamente (e.g., atoull_ct<"123">()).
- *
- * Implementa la misma lógica de overflow checking que atoull_checked().
- *
- * @tparam STR Objeto fixed_string construido desde el literal.
- *
- * @return ullint_t con el valor parseado.
- *
- * @throws const char* Error de compilación si hay caracteres inválidos, overflow o string vacío.
- *
- * @note USAGE: atoull_ct<"123456">()
- */
-/**
- * @brief Convierte string literal a ullint_t en tiempo de compilación.
- * @details Versión optimizada para MSVC.
+ * @details Versión optimizada para MSVC: Itera directamente sobre el array
+ * crudo STR.data para evitar la creación de std::string_view, que causa
+ * errores de "símbolo no inicializado" en contextos consteval estrictos.
  */
 template <NumRepr::fixed_string STR> 
 consteval ullint_t atoull_ct() {
-  // --- CAMBIO 2: Iterar directamente sobre STR.data para evitar std::string_view en consteval ---
-  
   ullint_t i = 0;
   constexpr ullint_t maxv = std::numeric_limits<ullint_t>::max();
   bool any_digit = false;
 
-  // Accedemos al array crudo directamente. MSVC prefiere esto en consteval.
+  // FIX MSVC: Bucle sobre array crudo en lugar de iterador string_view
   for (char c : STR.data) {
-    if (c == '\0') break; // Terminador nulo
+    if (c == '\0') break; // Terminador nulo explícito
 
     if (c < '0' || c > '9') {
       throw "atoull_ct: non-digit character found";
@@ -527,7 +550,7 @@ consteval ullint_t atoull_ct() {
   return i;
 }
 
-// --- CAMBIO 1: Guía de deducción explícita para ayudar a MSVC ---
+// --- CAMBIO 1: Guía de deducción explícida para ayudar a MSVC ---
 template <size_t N> fixed_string(const char (&)[N]) -> fixed_string<N>;
 
 //================================================
