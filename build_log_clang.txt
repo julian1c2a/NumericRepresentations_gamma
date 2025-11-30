@@ -1,8 +1,8 @@
 ==========================================
  CONFIGURANDO Y CONSTRUYENDO: clang-release
 ==========================================
--- Configuring done (1.6s)
--- Generating done (0.7s)
+-- Configuring done (1.7s)
+-- Generating done (0.8s)
 -- Build files have been written to: D:/gdrive/numericrepresentations_gamma/build/build_targets/clang/release
 [ 96%] Built target Catch2
 [ 98%] Built target Catch2WithMain
@@ -14,12 +14,12 @@
 [ 97%] Built target Catch2WithMain
 [ 98%] Building CXX object CMakeFiles/test_03_core_internal.dir/tests/test_03_core_internal.cpp.obj
 In file included from D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp:3:
-D:/gdrive/numericrepresentations_gamma/include/core/internal/basic_types.hpp:531:21: error: deduction guide must be declared in the same scope as template 'NumRepr::fixed_string'
-  531 | template <size_t N> fixed_string(const char (&)[N]) -> fixed_string<N>;
-      |                     ^
-D:/gdrive/numericrepresentations_gamma/include/core/internal/basic_types.hpp:199:8: note: template is declared here
-  199 | struct fixed_string {
-      |        ^
+D:/gdrive/numericrepresentations_gamma/include/core/internal/basic_types.hpp:417:53: error: redefinition of 'nullchar'
+  417 | template <char_type_c CharT> constexpr inline CharT nullchar{CharT('\0')};
+      |                                                     ^
+D:/gdrive/numericrepresentations_gamma/include/core/internal/basic_types.hpp:252:53: note: previous definition is here
+  252 | template <char_type_c CharT> constexpr inline CharT nullchar{CharT('\0')};
+      |                                                     ^
 1 error generated.
 mingw32-make[3]: *** [CMakeFiles\test_03_core_internal.dir\build.make:79: CMakeFiles/test_03_core_internal.dir/tests/test_03_core_internal.cpp.obj] Error 1
 mingw32-make[2]: *** [CMakeFiles\Makefile2:311: CMakeFiles/test_03_core_internal.dir/all] Error 2

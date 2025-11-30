@@ -1,7 +1,7 @@
 ==========================================
  CONFIGURANDO Y CONSTRUYENDO: gcc-release
 ==========================================
--- Configuring done (1.7s)
+-- Configuring done (1.6s)
 -- Generating done (0.7s)
 -- Build files have been written to: D:/gdrive/numericrepresentations_gamma/build/build_targets/gcc/release
 [ 96%] Built target Catch2
@@ -14,12 +14,12 @@
 [ 97%] Built target Catch2WithMain
 [ 98%] Building CXX object CMakeFiles/test_03_core_internal.dir/tests/test_03_core_internal.cpp.obj
 In file included from D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp:3:
-D:/gdrive/numericrepresentations_gamma/include/core/internal/basic_types.hpp:531:21: error: deduction guide 'NumRepr::type_traits::fixed_string(const char (&)[N]) -> NumRepr::fixed_string<N>' must be declared in the same scope as 'NumRepr::fixed_string<N>'
-  531 | template <size_t N> fixed_string(const char (&)[N]) -> fixed_string<N>;
-      |                     ^~~~~~~~~~~~
-D:/gdrive/numericrepresentations_gamma/include/core/internal/basic_types.hpp:199:8: note:   declared here
-  199 | struct fixed_string {
-      |        ^~~~~~~~~~~~
+D:/gdrive/numericrepresentations_gamma/include/core/internal/basic_types.hpp:417:53: error: redefinition of 'template<class CharT>  requires  char_type_c<CharT> constexpr const CharT NumRepr::type_traits::nullchar'
+  417 | template <char_type_c CharT> constexpr inline CharT nullchar{CharT('\0')};
+      |                                                     ^~~~~~~~
+D:/gdrive/numericrepresentations_gamma/include/core/internal/basic_types.hpp:252:53: note: 'template<class CharT>  requires  char_type_c<CharT> constexpr const CharT NumRepr::type_traits::nullchar<CharT>' previously declared here
+  252 | template <char_type_c CharT> constexpr inline CharT nullchar{CharT('\0')};
+      |                                                     ^~~~~~~~
 mingw32-make[3]: *** [CMakeFiles\test_03_core_internal.dir\build.make:79: CMakeFiles/test_03_core_internal.dir/tests/test_03_core_internal.cpp.obj] Error 1
 mingw32-make[2]: *** [CMakeFiles\Makefile2:311: CMakeFiles/test_03_core_internal.dir/all] Error 2
 mingw32-make[1]: *** [CMakeFiles\Makefile2:318: CMakeFiles/test_03_core_internal.dir/rule] Error 2
