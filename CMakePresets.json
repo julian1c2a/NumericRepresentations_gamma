@@ -11,6 +11,7 @@
         "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_C_COMPILER": "C:/msys64/ucrt64/bin/gcc.exe",
         "CMAKE_CXX_COMPILER": "C:/msys64/ucrt64/bin/g++.exe",
+        "CMAKE_PREFIX_PATH": "${sourceDir}/libs_install/gcc/debug/Catch2",
         "CMAKE_CXX_STANDARD": "23"
       }
     },
@@ -24,6 +25,7 @@
         "CMAKE_BUILD_TYPE": "Release",
         "CMAKE_C_COMPILER": "C:/msys64/ucrt64/bin/gcc.exe",
         "CMAKE_CXX_COMPILER": "C:/msys64/ucrt64/bin/g++.exe",
+        "CMAKE_PREFIX_PATH": "${sourceDir}/libs_install/gcc/release/Catch2",
         "CMAKE_CXX_STANDARD": "23"
       }
     },
@@ -37,6 +39,7 @@
         "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_C_COMPILER": "C:/msys64/clang64/bin/clang.exe",
         "CMAKE_CXX_COMPILER": "C:/msys64/clang64/bin/clang++.exe",
+        "CMAKE_PREFIX_PATH": "${sourceDir}/libs_install/clang/debug/Catch2",
         "CMAKE_CXX_STANDARD": "23"
       }
     },
@@ -50,6 +53,7 @@
         "CMAKE_BUILD_TYPE": "Release",
         "CMAKE_C_COMPILER": "C:/msys64/clang64/bin/clang.exe",
         "CMAKE_CXX_COMPILER": "C:/msys64/clang64/bin/clang++.exe",
+        "CMAKE_PREFIX_PATH": "${sourceDir}/libs_install/clang/release/Catch2",
         "CMAKE_CXX_STANDARD": "23"
       }
     },
@@ -62,6 +66,7 @@
       "toolchainFile": "${sourceDir}/msvc_toolchain.cmake",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_PREFIX_PATH": "${sourceDir}/libs_install/msvc/Catch2",
         "CMAKE_CXX_STANDARD": "23"
       }
     },
@@ -74,6 +79,7 @@
       "toolchainFile": "${sourceDir}/msvc_toolchain.cmake",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_PREFIX_PATH": "${sourceDir}/libs_install/msvc/Catch2",
         "CMAKE_CXX_STANDARD": "23"
       }
     }
