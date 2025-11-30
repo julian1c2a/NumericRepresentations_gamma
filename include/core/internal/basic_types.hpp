@@ -204,26 +204,33 @@ constexpr inline sign_funct_e opposite_sign(sign_funct_e sign) noexcept {
  */
 template <size_t N>
 struct fixed_string {
+    // FIX MSVC: Exponer tamaño explícitamente para evitar dependencias de sizeof en loops
+    static constexpr size_t size = N; 
+    
     char data[N]{};
 
-    consteval fixed_string(const char (&str)[N]) {
+    // FIX MSVC: Default ctor explícito ayuda en algunas inicializaciones internas
+    constexpr fixed_string() = default;
+
+    // FIX MSVC: Usar constexpr en lugar de consteval relaja restricciones 
+    // innecesarias del compilador mientras sigue permitiendo uso NTTP.
+    constexpr fixed_string(const char (&str)[N]) {
         for (size_t i = 0; i < N; ++i) {
             data[i] = str[i];
         }
     }
 
     consteval operator std::string_view() const {
-        if (N > 0 && data[N-1] == '\0') {
+        if (N > 0 && data[N-1] == '\0')
             return {data, N - 1};
-        } else {
+        else
             return {data, N};
-        }
     }
 };
 
-// CORRECCIÓN: La guía de deducción va AQUÍ, justo después de la struct y dentro del namespace
-// GUÍA DE EXPLÍCITA DE DEDUCCIÓN DE TIPOS
+// GUÍA DE DEDUCCIÓN EXPLÍCITA DE TIPOS (CRÍTICO: Debe estar tras la struct)
 template <size_t N> fixed_string(const char (&)[N]) -> fixed_string<N>;
+
 
 namespace type_traits {
 
@@ -241,8 +248,15 @@ concept char_type_c =
     std::is_same_v<CharT, char> || std::is_same_v<CharT, signed char> ||
     std::is_same_v<CharT, unsigned char> || std::is_same_v<CharT, wchar_t>;
 
-// GUÍA DE DEDUCCIÓN EXPLÍCITA DE TIPOS PARA nullchar
+// TEMPLATE-CONSTANTE EN COMPILE-TIME DE CARÁCTER NULL
 template <char_type_c CharT> constexpr inline CharT nullchar{CharT('\0')};
+
+/**
+ * @brief Convierte string literal a ullint_t en tiempo de compilación.
+ * @details Versión optimizada para MSVC: Itera directamente sobre el array
+ * crudo STR.data para evitar la creación de std::string_view, que causa
+ * errores de "símbolo no inicializado" en contextos consteval estrictos.
+ */
 
 /**
  * @brief Convierte string ASCII decimal a uint64_t sin validación.
@@ -399,7 +413,10 @@ template <char_type_c CharT> constexpr inline CharT nullchar{CharT('\0')};
  * @details Versión optimizada para MSVC.
  */
 
- inline constexpr ullint_t atoull(const char *text) noexcept {
+
+template <char_type_c CharT> constexpr inline CharT nullchar{CharT('\0')};
+
+inline constexpr ullint_t atoull(const char *text) noexcept {
   ullint_t i = 0;
   while (*text) {
     i = (i << 3) + (i << 1) + static_cast<ullint_t>(*text - '0');
@@ -516,8 +533,9 @@ atoull_consume(std::string_view sv) noexcept {
 /**
  * @brief Convierte string literal a ullint_t en tiempo de compilación.
  * @details Versión optimizada para MSVC: Itera directamente sobre el array
- * crudo STR.data para evitar la creación de std::string_view, que causa
- * errores de "símbolo no inicializado" en contextos consteval estrictos.
+ * crudo STR.data mediante índices explícitos. Esto evita la creación de 
+ * std::string_view y iteradores que causan el error "read of uninitialized symbol"
+ * en el evaluador constante estricto de MSVC.
  */
 template <NumRepr::fixed_string STR> 
 consteval ullint_t atoull_ct() {
@@ -525,9 +543,12 @@ consteval ullint_t atoull_ct() {
   constexpr ullint_t maxv = std::numeric_limits<ullint_t>::max();
   bool any_digit = false;
 
-  // FIX MSVC: Bucle sobre array crudo en lugar de iterador string_view
-  for (char c : STR.data) {
-    if (c == '\0') break; // Terminador nulo explícito
+  // FIX MSVC: Bucle for indexado tradicional sobre el array crudo.
+  // Evita abstracciones de iteradores que pueden fallar en consteval MSVC.
+  for (size_t k = 0; k < STR.size; ++k) {
+    char c = STR.data[k];
+    
+    if (c == '\0') { break; } // Terminador nulo explícito
 
     if (c < '0' || c > '9') {
       throw "atoull_ct: non-digit character found";
