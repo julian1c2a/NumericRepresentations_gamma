@@ -41,8 +41,13 @@ namespace NumRepr {
 
 /**
  * @brief Representación del signo de un número.
+ * @details [CAMBIO] Nombres actualizados para mayor claridad.
  */
-enum class sign_funct_e : char { vzero = 0, vminus = -1, vplus = +1 };
+enum class sign_funct_e : char { 
+    zero = 0,   // Antes: vzero
+    minus = -1, // Antes: vminus
+    plus = +1   // Antes: vplus
+};
 
 /**
  * @brief Formatos de representación de dígitos.
@@ -99,21 +104,22 @@ constexpr inline int to_int(sign_funct_e sign) noexcept {
 }
 
 constexpr inline bool is_positive(sign_funct_e sign) noexcept {
-  return sign == sign_funct_e::vplus;
+  return sign == sign_funct_e::plus; // [CAMBIO] vplus -> plus
 }
 
 constexpr inline bool is_negative(sign_funct_e sign) noexcept {
-  return sign == sign_funct_e::vminus;
+  return sign == sign_funct_e::minus; // [CAMBIO] vminus -> minus
 }
 
 constexpr inline bool is_zero(sign_funct_e sign) noexcept {
-  return sign == sign_funct_e::vzero;
+  return sign == sign_funct_e::zero; // [CAMBIO] vzero -> zero
 }
 
 constexpr inline sign_funct_e opposite_sign(sign_funct_e sign) noexcept {
-  return (sign == sign_funct_e::vplus)    ? sign_funct_e::vminus
-         : (sign == sign_funct_e::vminus) ? sign_funct_e::vplus
-                                          : sign_funct_e::vzero;
+  // [CAMBIO] Actualizados todos los casos del operador ternario
+  return (sign == sign_funct_e::plus)    ? sign_funct_e::minus
+         : (sign == sign_funct_e::minus) ? sign_funct_e::plus
+                                          : sign_funct_e::zero;
 }
 
 // -----------------------------------------------------------------------------
@@ -126,14 +132,14 @@ constexpr inline sign_funct_e opposite_sign(sign_funct_e sign) noexcept {
  */
 template <size_t N>
 struct fixed_string {
-    // Exponer tamaño para evitar dependencias de sizeof en loops (MSVC Friendly)
     static constexpr size_t size = N; 
     
-    char data[N]{};
+    // FIX MSVC CRÍTICO: Eliminada inicialización por defecto {} para evitar
+    // error "read of uninitialized symbol" en consteval.
+    char data[N]; 
 
     constexpr fixed_string() = default;
 
-    // constexpr en lugar de consteval para máxima flexibilidad
     constexpr fixed_string(const char (&str)[N]) {
         for (size_t i = 0; i < N; ++i) {
             data[i] = str[i];
@@ -148,7 +154,7 @@ struct fixed_string {
     }
 };
 
-// GUÍA DE DEDUCCIÓN (CRÍTICO: Tras la struct, mismo namespace)
+// GUÍA DE DEDUCCIÓN
 template <size_t N> fixed_string(const char (&)[N]) -> fixed_string<N>;
 
 // -----------------------------------------------------------------------------
@@ -292,8 +298,7 @@ atoull_consume(std::string_view sv) noexcept {
 
 /**
  * @brief Convierte string literal a ullint_t en tiempo de compilación.
- * @details Versión optimizada para MSVC: Itera directamente sobre el array
- * crudo STR.data mediante índices explícitos.
+ * @details Versión optimizada para MSVC.
  */
 template <NumRepr::fixed_string STR> 
 consteval ullint_t atoull_ct() {
@@ -301,12 +306,10 @@ consteval ullint_t atoull_ct() {
   constexpr ullint_t maxv = std::numeric_limits<ullint_t>::max();
   bool any_digit = false;
 
-  // FIX MSVC: Bucle for indexado tradicional sobre el array crudo.
-  // Evita abstracciones de iteradores que pueden fallar en consteval MSVC.
   for (size_t k = 0; k < STR.size; ++k) {
     char c = STR.data[k];
     
-    if (c == '\0') break; // Terminador nulo explícito
+    if (c == '\0') break; 
 
     if (c < '0' || c > '9') {
       throw "atoull_ct: non-digit character found";
