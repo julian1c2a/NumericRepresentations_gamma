@@ -87,25 +87,25 @@ struct LifetimeTracker {
 
 TEST_CASE("sign_funct_e utilities work correctly", "[basic_types][enum]") {
     SECTION("Conversión a entero") {
-        REQUIRE(to_int(sign_funct_e::vplus) == 1);
-        REQUIRE(to_int(sign_funct_e::vminus) == -1);
-        REQUIRE(to_int(sign_funct_e::vzero) == 0);
+        REQUIRE(to_int(sign_funct_e::plus) == 1);
+        REQUIRE(to_int(sign_funct_e::minus) == -1);
+        REQUIRE(to_int(sign_funct_e::zero) == 0);
     }
 
     SECTION("Predicados de estado") {
-        REQUIRE(is_positive(sign_funct_e::vplus));
-        REQUIRE_FALSE(is_positive(sign_funct_e::vminus));
+        REQUIRE(is_positive(sign_funct_e::plus));
+        REQUIRE_FALSE(is_positive(sign_funct_e::minus));
         
-        REQUIRE(is_negative(sign_funct_e::vminus));
-        REQUIRE_FALSE(is_negative(sign_funct_e::vplus));
+        REQUIRE(is_negative(sign_funct_e::minus));
+        REQUIRE_FALSE(is_negative(sign_funct_e::plus));
         
-        REQUIRE(is_zero(sign_funct_e::vzero));
+        REQUIRE(is_zero(sign_funct_e::zero));
     }
 
     SECTION("Inversión de signo") {
-        REQUIRE(opposite_sign(sign_funct_e::vplus) == sign_funct_e::vminus);
-        REQUIRE(opposite_sign(sign_funct_e::vminus) == sign_funct_e::vplus);
-        REQUIRE(opposite_sign(sign_funct_e::vzero) == sign_funct_e::vzero);
+        REQUIRE(opposite_sign(sign_funct_e::plus) == sign_funct_e::minus);
+        REQUIRE(opposite_sign(sign_funct_e::minus) == sign_funct_e::plus);
+        REQUIRE(opposite_sign(sign_funct_e::zero) == sign_funct_e::zero);
     }
 }
 
