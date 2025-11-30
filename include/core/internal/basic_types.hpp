@@ -15,7 +15,7 @@
 #include <istream>
 #include <sstream>
 #include <string>
-#include <string_view> // Necesario para la sobrecarga de atoull runtime
+#include <string_view> 
 #include <type_traits>
 #include <utility>
 
@@ -126,42 +126,37 @@ constexpr inline sign_funct_e opposite_sign(sign_funct_e sign) noexcept {
 
 /**
  * @brief Wrapper estructural para cadenas fijas en tiempo de compilación.
- * @details Permite pasar literales de cadena como parámetros de plantilla en C++20.
- * IMPORTANTE: Implementación optimizada para MSVC usando std::index_sequence
- * para inicialización directa del array const.
+ * @details Implementación robusta para MSVC usando std::array y generador funcional.
  */
 template <size_t N>
 struct fixed_string {
     static constexpr size_t size = N; 
     
-    // Almacenamiento público inmutable. 
-    // Al ser const, MSVC exige inicialización total en el constructor.
-    const char data[N]; 
+    // Usamos std::array para facilitar la inicialización constexpr en MSVC
+    std::array<char, N> data; 
 
-    // Constructor por defecto
+    // Helper funcional (C++17 style) para generar el array
+    // Esto aísla la expansión del pack y evita el error C2131 en MSVC
+    template <size_t... I>
+    static constexpr std::array<char, N> to_array(const char (&str)[N], std::index_sequence<I...>) {
+        return {{str[I]...}};
+    }
+
     constexpr fixed_string() : data{} {}
 
-    // Constructor privado helper: Inicializa el array en la lista de inicialización.
-    // Esto es crucial para MSVC: evita la asignación en el cuerpo del constructor
-    // y satisface el requisito de inicializar miembros const.
-    template <size_t... I>
-    constexpr fixed_string(const char (&str)[N], std::index_sequence<I...>)
-        : data{str[I]...} {}
-
-    // Constructor principal: Delega al helper generando la secuencia de índices
+    // Constructor principal: Llama al generador
     constexpr fixed_string(const char (&str)[N]) 
-        : fixed_string(str, std::make_index_sequence<N>{}) {}
+        : data(to_array(str, std::make_index_sequence<N>{})) {}
 
-    // Conversión a string_view
     consteval operator std::string_view() const {
         if (N > 0 && data[N-1] == '\0')
-            return {data, N - 1};
+            return {data.data(), N - 1};
         else
-            return {data, N};
+            return {data.data(), N};
     }
 };
 
-// GUÍA DE DEDUCCIÓN (Correctamente posicionada tras la struct)
+// GUÍA DE DEDUCCIÓN
 template <size_t N> fixed_string(const char (&)[N]) -> fixed_string<N>;
 
 // -----------------------------------------------------------------------------
@@ -305,8 +300,7 @@ atoull_consume(std::string_view sv) noexcept {
 
 /**
  * @brief Convierte string literal a ullint_t en tiempo de compilación.
- * @details Versión optimizada para MSVC: Itera directamente sobre el array
- * crudo STR.data mediante índices explícitos.
+ * @details Versión optimizada para MSVC.
  */
 template <NumRepr::fixed_string STR> 
 consteval ullint_t atoull_ct() {
@@ -314,8 +308,7 @@ consteval ullint_t atoull_ct() {
   constexpr ullint_t maxv = std::numeric_limits<ullint_t>::max();
   bool any_digit = false;
 
-  // FIX MSVC: Bucle for indexado tradicional sobre el array crudo.
-  // Evita abstracciones de iteradores que pueden fallar en consteval MSVC.
+  // Accedemos al array crudo de std::array
   for (size_t k = 0; k < STR.size; ++k) {
     char c = STR.data[k];
     
