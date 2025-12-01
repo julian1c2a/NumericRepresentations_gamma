@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ==============================================================================
-# SCRIPT CORREGIDO DE INSTALACIÓN DE DEPENDENCIAS (CATCH2)
+# SCRIPT DE INSTALACIÓN DE DEPENDENCIAS (CATCH2)
 # ==============================================================================
 
 INPUT_ARG=${1:-msvc}
@@ -38,13 +38,13 @@ build_cmake() {
         INSTALL_PATH="$COMPILER_INSTALL_ROOT/Catch2"
         BUILD_DIR="$BUILD_DIR_BASE"
         
-        # LIMPIEZA CRÍTICA: Borramos build previo para evitar caché de MinGW
+        # LIMPIEZA CRÍTICA: Borramos instalación previa para eliminar archivos .a de MinGW
+        # que confunden al linker de MSVC.
         rm -rf "$BUILD_DIR"
+        rm -rf "$INSTALL_PATH"
         
         echo ">>> [MSVC] Configurando con Visual Studio 17 2022..."
         
-        # Forzamos generador Visual Studio. 
-        # NOTA: Esto requiere tener VS2022 instalado (que ya vi en tus logs que tienes).
         cmake -S "$BUILD_ROOT/Catch2" -B "$BUILD_DIR" \
             -G "Visual Studio 17 2022" -A x64 \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_PATH" \
@@ -66,6 +66,7 @@ build_cmake() {
         
         # Limpieza por seguridad
         rm -rf "$BUILD_DIR_REL" "$BUILD_DIR_DBG"
+        rm -rf "$COMPILER_INSTALL_ROOT" # Limpiamos install para evitar mezclas
 
         echo ">>> [$COMPILER_MODE] Configurando y Compilando..."
         
@@ -91,7 +92,7 @@ build_cmake() {
 
 case "$COMPILER_MODE" in
     msvc)
-        build_cmake # Ya tiene los argumentos dentro
+        build_cmake 
         ;;
     gcc)
         ARGS=("-DCMAKE_CXX_COMPILER=g++")
@@ -101,7 +102,8 @@ case "$COMPILER_MODE" in
         build_cmake "${ARGS[@]}"
         ;;
     clang)
-        # IMPORTANTE: Forzamos libc++ para coincidir con el entorno clang64
+        # IMPORTANTE: Forzamos libc++ para coincidir con la librería nativa en clang64
+        # Esto usará libc++.a en lugar de intentar linkar con libstdc++
         ARGS=("-DCMAKE_CXX_COMPILER=clang++" "-DCMAKE_CXX_FLAGS=-stdlib=libc++")
         if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" || "$OSTYPE" == "win32" ]]; then
             ARGS+=("-G" "MinGW Makefiles")
