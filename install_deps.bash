@@ -21,6 +21,7 @@ fi
 CATCH2_VERSION="v3.4.0"
 BASE_INSTALL_DIR="$(pwd)/libs_install"
 BUILD_ROOT="build_deps"
+TOOLCHAIN_FILE="$(pwd)/msvc_toolchain.cmake" # Ruta absoluta al toolchain
 
 # Descarga
 mkdir -p "$BUILD_ROOT"
@@ -33,29 +34,49 @@ COMPILER_INSTALL_ROOT="$BASE_INSTALL_DIR/$COMPILER_MODE"
 BUILD_DIR_BASE="$BUILD_ROOT/build_catch_$COMPILER_MODE"
 
 build_cmake() {
-    # CASO A: MSVC (Forzamos Visual Studio 2022 para generar .lib válidos)
-    if [ "$COMPILER_MODE" == "msvc" ]; then
-        INSTALL_PATH="$COMPILER_INSTALL_ROOT/Catch2"
-        BUILD_DIR="$BUILD_DIR_BASE"
-        
-        # LIMPIEZA CRÍTICA: Borramos instalación previa para eliminar archivos .a de MinGW
-        # que confunden al linker de MSVC.
-        rm -rf "$BUILD_DIR"
-        rm -rf "$INSTALL_PATH"
-        
-        echo ">>> [MSVC] Configurando con Visual Studio 17 2022..."
-        
-        cmake -S "$BUILD_ROOT/Catch2" -B "$BUILD_DIR" \
-            -G "Visual Studio 17 2022" -A x64 \
-            -DCMAKE_INSTALL_PREFIX="$INSTALL_PATH" \
-            -DBUILD_TESTING=OFF \
-            -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
-            "$@"
+    # NOTA: Ninja es un generador "Single-Configuration", por lo que necesitamos
+    # carpetas de compilación separadas para Debug y Release, igual que en GCC/Clang.
+    
+    # Rutas base
+    # Nota: MSVC con Ninja suele requerir carpetas separadas si no es Multi-Config
+    # A diferencia del generador de Visual Studio, Ninja no soporta --config en build time para cambiar de target
+    
+    # Sin embargo, para mantener consistencia con tu estructura de carpetas de instalación:
+    # Si usabas "Visual Studio", se instalaba todo en /libs_install/msvc/Catch2 (con subcarpetas lib/cmake/Catch2 dentro gestionando configs)
+    # Pero usando Ninja, es mejor separar explícitamente o instalar en el mismo prefijo con cuidado.
+    # Vamos a usar la misma estrategia que GCC/Clang para asegurar que no haya conflictos.
 
-        echo ">>> [MSVC] Compilando (Release)..."
-        cmake --build "$BUILD_DIR" --config Release --target install
-        echo ">>> [MSVC] Compilando (Debug)..."
-        cmake --build "$BUILD_DIR" --config Debug --target install
+    if [ "$COMPILER_MODE" == "msvc" ]; then
+        # MSVC CON NINJA + TOOLCHAIN
+        # Usamos el mismo directorio de instalación base, pero compilamos dos veces.
+        # Catch2 maneja bien la instalación de configs Debug/Release en el mismo prefijo si se hace correctamente,
+        # pero para evitar conflictos con los .lib (catch2.lib vs catch2d.lib), es seguro instalar en el mismo sitio
+        # si CMakeLists de Catch2 lo soporta. Catch2 añade 'd' al final en debug.
+
+        INSTALL_PATH="$COMPILER_INSTALL_ROOT/Catch2"
+        
+        # Limpieza inicial
+        rm -rf "$BUILD_DIR_BASE"
+        rm -rf "$INSTALL_PATH"
+
+        echo ">>> [MSVC-Ninja] Configurando y Compilando con Toolchain..."
+
+        for BTYPE in Release Debug; do
+            CURRENT_BUILD_DIR="${BUILD_DIR_BASE}_${BTYPE}"
+            
+            echo "   --- Construyendo $BTYPE ---"
+            
+            cmake -S "$BUILD_ROOT/Catch2" -B "$CURRENT_BUILD_DIR" \
+                -G "Ninja" \
+                -DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN_FILE" \
+                -DCMAKE_INSTALL_PREFIX="$INSTALL_PATH" \
+                -DCMAKE_BUILD_TYPE=$BTYPE \
+                -DBUILD_TESTING=OFF \
+                -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+                "$@"
+
+            cmake --build "$CURRENT_BUILD_DIR" --target install
+        done
 
     # CASO B: GCC / CLANG
     else
@@ -103,7 +124,6 @@ case "$COMPILER_MODE" in
         ;;
     clang)
         # IMPORTANTE: Forzamos libc++ para coincidir con la librería nativa en clang64
-        # Esto usará libc++.a en lugar de intentar linkar con libstdc++
         ARGS=("-DCMAKE_CXX_COMPILER=clang++" "-DCMAKE_CXX_FLAGS=-stdlib=libc++")
         if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" || "$OSTYPE" == "win32" ]]; then
             ARGS+=("-G" "MinGW Makefiles")
