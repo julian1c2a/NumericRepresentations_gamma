@@ -13,7 +13,7 @@
 -- Check for working CXX compiler: D:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe - skipped
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
--- Configuring done (2.3s)
+-- Configuring done (2.1s)
 -- Generating done (0.1s)
 -- Build files have been written to: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release
 [1/2] Building CXX object CMakeFiles\test_01_math_tables.dir\tests\test_01_math_tables.cpp.obj
@@ -22,7 +22,7 @@
 [2/2] Linking CXX executable test_02_append.exe
 [1/2] Building CXX object CMakeFiles\test_03_core_internal.dir\tests\test_03_core_internal.cpp.obj
 FAILED: [code=2] CMakeFiles/test_03_core_internal.dir/tests/test_03_core_internal.cpp.obj 
-"D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\cl.exe"  /nologo /TP  -ID:\gdrive\numericrepresentations_gamma\include -external:ID:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include -external:W0 /DWIN32 /D_WINDOWS /W3 /GR /EHsc  /I "D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\winrt" /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++latest -MD /permissive- /bigobj /constexpr:depth8192 /constexpr:steps50000000 /wd4146 /showIncludes /FoCMakeFiles\test_03_core_internal.dir\tests\test_03_core_internal.cpp.obj /FdCMakeFiles\test_03_core_internal.dir\ /FS -c D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp
+"D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\cl.exe"  /nologo /TP  -ID:\gdrive\numericrepresentations_gamma\include -external:ID:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include -external:W0 /DWIN32 /D_WINDOWS /W3 /GR /EHsc  /I "D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\winrt" /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++latest -MD /permissive- /bigobj /constexpr:depth8192 /constexpr:steps50000000 /wd4146 /Zc:preprocessor /showIncludes /FoCMakeFiles\test_03_core_internal.dir\tests\test_03_core_internal.cpp.obj /FdCMakeFiles\test_03_core_internal.dir\ /FS -c D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp
 D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(85): error C2672: 'NumRepr::type_traits::atoull_ct': no se encontr¢ una funci¢n sobrecargada que coincida
 D:\gdrive\numericrepresentations_gamma\include\core/internal/basic_types.hpp(306): note: puede ser 'NumRepr::ullint_t NumRepr::type_traits::atoull_ct(void)'
 D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(85): note: la expresi¢n no se evalu¢ como una constante
