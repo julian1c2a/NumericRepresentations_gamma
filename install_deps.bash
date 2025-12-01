@@ -1,137 +1,167 @@
-#!/bin/bash
+cmake_minimum_required(VERSION 3.25)
 
-# ==============================================================================
-# SCRIPT DE INSTALACIÓN DE DEPENDENCIAS (CATCH2)
-# ==============================================================================
+# Política para manejo correcto de runtimes en MSVC moderno
+cmake_policy(SET CMP0091 NEW) 
 
-INPUT_ARG=${1:-msvc}
+project(NumericRepresentations)
 
-# Detección de modo
-if [[ "$INPUT_ARG" == *"msvc"* ]]; then
-    COMPILER_MODE="msvc"
-elif [[ "$INPUT_ARG" == *"gcc"* ]]; then
-    COMPILER_MODE="gcc"
-elif [[ "$INPUT_ARG" == *"clang"* ]]; then
-    COMPILER_MODE="clang"
-else
-    echo "Advertencia: Asumiendo 'msvc' para '$INPUT_ARG'."
-    COMPILER_MODE="msvc"
-fi
+# CAMBIO IMPORTANTE: Subimos a C++23 para soporte de std::expected y constexpr bitset
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-CATCH2_VERSION="v3.4.0"
-BASE_INSTALL_DIR="$(pwd)/libs_install"
-BUILD_ROOT="build_deps"
-TOOLCHAIN_FILE="$(pwd)/msvc_toolchain.cmake" # Ruta absoluta al toolchain
+# --- FIX PARA CLANG EN WINDOWS/MSYS2 ---
+if(WIN32 AND CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  set(CMAKE_CXX_LINK_EXECUTABLE 
+    "<CMAKE_CXX_COMPILER> <FLAGS> <CMAKE_CXX_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>")
+endif()
 
-# Descarga
-mkdir -p "$BUILD_ROOT"
-if [ ! -d "$BUILD_ROOT/Catch2" ]; then
-    echo ">>> Clonando Catch2 $CATCH2_VERSION..."
-    git clone --branch $CATCH2_VERSION --depth 1 https://github.com/catchorg/Catch2.git "$BUILD_ROOT/Catch2"
-fi
+# --- CONFIGURACIÓN DE FLAGS ESPECÍFICOS ---
 
-COMPILER_INSTALL_ROOT="$BASE_INSTALL_DIR/$COMPILER_MODE"
-BUILD_DIR_BASE="$BUILD_ROOT/build_catch_$COMPILER_MODE"
+if(MSVC)
+  # Flags propuestos + /wd4146
+  # Añadimos /Zc:preprocessor para asegurar conformidad total con macros
+  add_compile_options(
+    /permissive- 
+    /bigobj 
+    /constexpr:depth8192 
+    /constexpr:steps50000000 
+    /wd4146 
+    /Zc:preprocessor
+  )
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  # Aumentamos límites para Clang y FORZAMOS libc++
+  add_compile_options(
+    -fconstexpr-depth=8192
+    -fconstexpr-steps=50000000
+    -stdlib=libc++
+  )
+  add_link_options(-stdlib=libc++)
+endif()
 
-build_cmake() {
-    # NOTA: Ninja es un generador "Single-Configuration", por lo que necesitamos
-    # carpetas de compilación separadas para Debug y Release, igual que en GCC/Clang.
-    
-    # Rutas base
-    # Nota: MSVC con Ninja suele requerir carpetas separadas si no es Multi-Config
-    # A diferencia del generador de Visual Studio, Ninja no soporta --config en build time para cambiar de target
-    
-    # Sin embargo, para mantener consistencia con tu estructura de carpetas de instalación:
-    # Si usabas "Visual Studio", se instalaba todo en /libs_install/msvc/Catch2 (con subcarpetas lib/cmake/Catch2 dentro gestionando configs)
-    # Pero usando Ninja, es mejor separar explícitamente o instalar en el mismo prefijo con cuidado.
-    # Vamos a usar la misma estrategia que GCC/Clang para asegurar que no haya conflictos.
+# --- SALIDAS ---
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
-    if [ "$COMPILER_MODE" == "msvc" ]; then
-        # MSVC CON NINJA + TOOLCHAIN
-        # Usamos el mismo directorio de instalación base, pero compilamos dos veces.
-        # Catch2 maneja bien la instalación de configs Debug/Release en el mismo prefijo si se hace correctamente,
-        # pero para evitar conflictos con los .lib (catch2.lib vs catch2d.lib), es seguro instalar en el mismo sitio
-        # si CMakeLists de Catch2 lo soporta. Catch2 añade 'd' al final en debug.
+enable_testing()
 
-        INSTALL_PATH="$COMPILER_INSTALL_ROOT/Catch2"
-        
-        # Limpieza inicial
-        rm -rf "$BUILD_DIR_BASE"
-        rm -rf "$INSTALL_PATH"
+# ==========================================
+# DEPENDENCIAS (CORREGIDO PARA EVITAR MINGW EN MSVC)
+# ==========================================
+if(MSVC)
+    # IMPORTANTE: Con MSVC, prohibimos buscar en las rutas del sistema (MinGW)
+    # para evitar contaminación de cabeceras stdio.h incompatibles.
+    # Solo buscará en CMAKE_PREFIX_PATH (definido en el Preset).
+    find_package(Catch2 3 REQUIRED PATHS "${CMAKE_PREFIX_PATH}" NO_DEFAULT_PATH)
+else()
+    find_package(Catch2 3 REQUIRED)
+endif()
 
-        echo ">>> [MSVC-Ninja] Configurando y Compilando con Toolchain..."
+# ==========================================
+# TARGETS
+# ==========================================
 
-        for BTYPE in Release Debug; do
-            CURRENT_BUILD_DIR="${BUILD_DIR_BASE}_${BTYPE}"
-            
-            echo "   --- Construyendo $BTYPE ---"
-            
-            cmake -S "$BUILD_ROOT/Catch2" -B "$CURRENT_BUILD_DIR" \
-                -G "Ninja" \
-                -DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN_FILE" \
-                -DCMAKE_INSTALL_PREFIX="$INSTALL_PATH" \
-                -DCMAKE_BUILD_TYPE=$BTYPE \
-                -DBUILD_TESTING=OFF \
-                -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
-                "$@"
+# Tests antiguos
+add_executable(test_primes_compiletime_catch2 tests/test_primes_compiletime_catch2.cpp)
+target_include_directories(test_primes_compiletime_catch2 PRIVATE include tests/external)
+target_link_libraries(test_primes_compiletime_catch2 PRIVATE Catch2::Catch2WithMain)
 
-            cmake --build "$CURRENT_BUILD_DIR" --target install
-        done
+add_executable(test_lookup_tables tests/test_lookup_tables.cpp)
+target_include_directories(test_lookup_tables PRIVATE include)
+target_link_libraries(test_lookup_tables PRIVATE Catch2::Catch2WithMain)
 
-    # CASO B: GCC / CLANG
-    else
-        INSTALL_PATH_REL="$COMPILER_INSTALL_ROOT/release/Catch2"
-        BUILD_DIR_REL="$BUILD_DIR_BASE/release"
-        INSTALL_PATH_DBG="$COMPILER_INSTALL_ROOT/debug/Catch2"
-        BUILD_DIR_DBG="$BUILD_DIR_BASE/debug"
-        
-        # Limpieza por seguridad
-        rm -rf "$BUILD_DIR_REL" "$BUILD_DIR_DBG"
-        rm -rf "$COMPILER_INSTALL_ROOT" # Limpiamos install para evitar mezclas
+# Test test_01_math_tables
+add_executable(test_01_math_tables tests/test_01_math_tables.cpp)
+target_include_directories(test_01_math_tables PRIVATE include)
+target_link_libraries(test_01_math_tables PRIVATE Catch2::Catch2WithMain)
 
-        echo ">>> [$COMPILER_MODE] Configurando y Compilando..."
-        
-        # Loop para Release y Debug
-        for BTYPE in Release Debug; do
-            if [ "$BTYPE" == "Release" ]; then
-                TPATH="$INSTALL_PATH_REL"; TBUILD="$BUILD_DIR_REL"
-            else
-                TPATH="$INSTALL_PATH_DBG"; TBUILD="$BUILD_DIR_DBG"
-            fi
-            
-            cmake -S "$BUILD_ROOT/Catch2" -B "$TBUILD" \
-                -DCMAKE_INSTALL_PREFIX="$TPATH" \
-                -DCMAKE_BUILD_TYPE=$BTYPE \
-                -DBUILD_TESTING=OFF \
-                -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
-                "$@"
-            
-            cmake --build "$TBUILD" --target install
-        done
-    fi
-}
+# Test test_02_append
+add_executable(test_02_append tests/test_02_append.cpp)
+target_include_directories(test_02_append PRIVATE include)
+target_link_libraries(test_02_append PRIVATE Catch2::Catch2WithMain)
 
-case "$COMPILER_MODE" in
-    msvc)
-        build_cmake 
-        ;;
-    gcc)
-        ARGS=("-DCMAKE_CXX_COMPILER=g++")
-        if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" || "$OSTYPE" == "win32" ]]; then
-            ARGS+=("-G" "MinGW Makefiles")
-        fi
-        build_cmake "${ARGS[@]}"
-        ;;
-    clang)
-        # IMPORTANTE: Forzamos libc++ para coincidir con la librería nativa en clang64
-        ARGS=("-DCMAKE_CXX_COMPILER=clang++" "-DCMAKE_CXX_FLAGS=-stdlib=libc++")
-        if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" || "$OSTYPE" == "win32" ]]; then
-            ARGS+=("-G" "MinGW Makefiles")
-        fi
-        build_cmake "${ARGS[@]}"
-        ;;
-esac
+# Test test_03_core_internal
+add_executable(test_03_core_internal tests/test_03_core_internal.cpp)
+target_include_directories(test_03_core_internal PRIVATE include)
+target_link_libraries(test_03_core_internal PRIVATE Catch2::Catch2WithMain)
 
-echo "=========================================="
-echo " INSTALACIÓN COMPLETADA para $COMPILER_MODE"
-echo "=========================================="
+# Test test_04_dig_t
+add_executable(test_04_dig_t tests/test_04_dig_t.cpp)
+target_include_directories(test_04_dig_t PRIVATE include)
+target_link_libraries(test_04_dig_t PRIVATE Catch2::Catch2WithMain)
+
+# Test test_05_dig_t_constructors
+add_executable(test_05_dig_t_constructors tests/test_05_dig_t_constructors.cpp)
+target_include_directories(test_05_dig_t_constructors PRIVATE include)
+target_link_libraries(test_05_dig_t_constructors PRIVATE Catch2::Catch2WithMain)
+
+# Test test_06_dig_t_assignations
+add_executable(test_06_dig_t_assignations tests/test_06_dig_t_assignations.cpp)
+target_include_directories(test_06_dig_t_assignations PRIVATE include)
+target_link_libraries(test_06_dig_t_assignations PRIVATE Catch2::Catch2WithMain)
+
+# Test test_07_dig_t_conversions
+add_executable(test_07_dig_t_conversions tests/test_07_dig_t_conversions.cpp)
+target_include_directories(test_07_dig_t_conversions PRIVATE include)
+target_link_libraries(test_07_dig_t_conversions PRIVATE Catch2::Catch2WithMain)
+
+# Test test_08_dig_t_operadores
+add_executable(test_08_dig_t_operadores tests/test_08_dig_t_operadores.cpp)
+target_include_directories(test_08_dig_t_operadores PRIVATE include)
+target_link_libraries(test_08_dig_t_operadores PRIVATE Catch2::Catch2WithMain)
+
+# Test test_09_dig_t_algebra
+add_executable(test_09_dig_t_algebra tests/test_09_dig_t_algebra.cpp)
+target_include_directories(test_09_dig_t_algebra PRIVATE include)
+target_link_libraries(test_09_dig_t_algebra PRIVATE Catch2::Catch2WithMain)
+
+# Test test_10_dig_t_io
+add_executable(test_10_dig_t_io tests/test_10_dig_t_io.cpp)
+target_include_directories(test_10_dig_t_io PRIVATE include)
+target_link_libraries(test_10_dig_t_io PRIVATE Catch2::Catch2WithMain)
+
+# Test test_11_basic_types
+add_executable(test_11_basic_types tests/test_11_basic_types.cpp)
+target_include_directories(test_11_basic_types PRIVATE include)
+target_link_libraries(test_11_basic_types PRIVATE Catch2::Catch2WithMain)
+
+# Test test_12_Int_ExpLog
+add_executable(test_12_Int_ExpLog tests/test_12_Int_ExpLog.cpp)
+target_include_directories(test_12_Int_ExpLog PRIVATE include)
+target_link_libraries(test_12_Int_ExpLog PRIVATE Catch2::Catch2WithMain)
+
+# Test test_13_IntRoot
+add_executable(test_13_IntRoot tests/test_13_IntRoot.cpp)
+target_include_directories(test_13_IntRoot PRIVATE include)
+target_link_libraries(test_13_IntRoot PRIVATE Catch2::Catch2WithMain)
+
+# Test test_14_primes
+add_executable(test_14_primes tests/test_14_primes.cpp)
+target_include_directories(test_14_primes PRIVATE include)
+target_link_libraries(test_14_primes PRIVATE Catch2::Catch2WithMain)
+
+# Test test_15_conversions
+add_executable(test_15_conversions tests/test_15_conversions.cpp)
+target_include_directories(test_15_conversions PRIVATE include)
+target_link_libraries(test_15_conversions PRIVATE Catch2::Catch2WithMain)
+
+# ==========================================
+# REGISTRO CTEST
+# ==========================================
+add_test(NAME test_primes_compiletime_catch2 COMMAND test_primes_compiletime_catch2)
+add_test(NAME test_lookup_tables COMMAND test_lookup_tables)
+add_test(NAME test_01_math_tables COMMAND test_01_math_tables)
+add_test(NAME test_02_append COMMAND test_02_append)
+add_test(NAME test_03_core_internal COMMAND test_03_core_internal)
+add_test(NAME test_04_dig_t COMMAND test_04_dig_t)
+add_test(NAME test_05_dig_t_constructors COMMAND test_05_dig_t_constructors)
+add_test(NAME test_06_dig_t_assignations COMMAND test_06_dig_t_assignations)
+add_test(NAME test_07_dig_t_conversions COMMAND test_07_dig_t_conversions)
+add_test(NAME test_08_dig_t_operadores COMMAND test_08_dig_t_operadores)
+add_test(NAME test_09_dig_t_algebra COMMAND test_09_dig_t_algebra)
+add_test(NAME test_10_dig_t_io COMMAND test_10_dig_t_io)
+add_test(NAME test_11_basic_types COMMAND test_11_basic_types)
+add_test(NAME test_12_Int_ExpLog COMMAND test_12_Int_ExpLog)
+add_test(NAME test_13_IntRoot COMMAND test_13_IntRoot)
+add_test(NAME test_14_primes COMMAND test_14_primes)
+add_test(NAME test_15_conversions COMMAND test_15_conversions)

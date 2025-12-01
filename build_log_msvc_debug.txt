@@ -1,25 +1,114 @@
 ==========================================
  CONFIGURANDO Y CONSTRUYENDO: msvc-debug
 ==========================================
--- The C compiler identification is MSVC 19.44.35220.0
--- The CXX compiler identification is MSVC 19.44.35220.0
--- Detecting C compiler ABI info
--- Detecting C compiler ABI info - done
--- Check for working C compiler: D:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe - skipped
--- Detecting C compile features
--- Detecting C compile features - done
--- Detecting CXX compiler ABI info
--- Detecting CXX compiler ABI info - done
--- Check for working CXX compiler: D:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe - skipped
--- Detecting CXX compile features
--- Detecting CXX compile features - done
--- Configuring done (3.8s)
+-- Configuring done (0.0s)
 -- Generating done (0.1s)
 -- Build files have been written to: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/debug
 [1/2] Building CXX object CMakeFiles\test_01_math_tables.dir\tests\test_01_math_tables.cpp.obj
-[2/2] Linking CXX executable test_01_math_tables.exe
-FAILED: [code=4294967295] test_01_math_tables.exe 
-C:\Windows\system32\cmd.exe /C "cd . && C:\msys64\ucrt64\bin\cmake.exe -E vs_link_exe --msvc-ver=1944 --intdir=CMakeFiles\test_01_math_tables.dir --rc=C:\PROGRA~2\WI3CF2~1\10\bin\100261~1.0\x64\rc.exe --mt=C:\PROGRA~2\WI3CF2~1\10\bin\100261~1.0\x64\mt.exe --manifests  -- "D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\link.exe" /nologo CMakeFiles\test_01_math_tables.dir\tests\test_01_math_tables.cpp.obj  /out:test_01_math_tables.exe /implib:test_01_math_tables.lib /pdb:test_01_math_tables.pdb /version:0.0 /LIBPATH:"D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\lib\x64" /LIBPATH:"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\ucrt\x64" /LIBPATH:"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64" /machine:x64 /debug /INCREMENTAL /subsystem:console  D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\lib\libCatch2Main.a  D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\lib\libCatch2.a  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
-LINK Pass 1: command "D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\link.exe /nologo CMakeFiles\test_01_math_tables.dir\tests\test_01_math_tables.cpp.obj /out:test_01_math_tables.exe /implib:test_01_math_tables.lib /pdb:test_01_math_tables.pdb /version:0.0 /LIBPATH:D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\lib\x64 /LIBPATH:C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\ucrt\x64 /LIBPATH:C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64 /machine:x64 /debug /INCREMENTAL /subsystem:console D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\lib\libCatch2Main.a D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\lib\libCatch2.a kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTFILE:CMakeFiles\test_01_math_tables.dir/intermediate.manifest CMakeFiles\test_01_math_tables.dir/manifest.res" failed (exit code 1143) with the following output:
-libCatch2Main.a(catch_main.cpp.obj) : fatal error LNK1143: archivo no v lido o da¤ado: no hay s¡mbolo para la secci¢n 0x8 de COMDAT
+FAILED: [code=2] CMakeFiles/test_01_math_tables.dir/tests/test_01_math_tables.cpp.obj 
+"D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\cl.exe"  /nologo /TP  -ID:\gdrive\numericrepresentations_gamma\include -external:IC:\msys64\ucrt64\include -external:W0 /DWIN32 /D_WINDOWS /W3 /GR /EHsc  /I "D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\winrt" /DWIN32 /D_WINDOWS /EHsc /Ob0 /Od /RTC1 -std:c++latest -MDd -Zi /permissive- /bigobj /constexpr:depth8192 /constexpr:steps50000000 /wd4146 /showIncludes /FoCMakeFiles\test_01_math_tables.dir\tests\test_01_math_tables.cpp.obj /FdCMakeFiles\test_01_math_tables.dir\ /FS -c D:\gdrive\numericrepresentations_gamma\tests\test_01_math_tables.cpp
+D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vcruntime.h(399): error C2182: '__security_check_cookie': este uso de 'void' no es v lido
+D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vcruntime.h(399): error C2065: 'uintptr_t': identificador no declarado
+D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vcruntime.h(399): error C2146: error de sintaxis: falta ')' delante del identificador '_StackCookie'
+D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vcruntime.h(400): error C2182: '__report_gsfailure': este uso de 'void' no es v lido
+D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vcruntime.h(400): error C3829: El atributo [[noreturn]] s¢lo puede aplicarse a una declaraci¢n de funci¢n
+D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vcruntime.h(400): error C2065: 'uintptr_t': identificador no declarado
+D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vcruntime.h(400): error C2146: error de sintaxis: falta ')' delante del identificador '_StackCookie'
+D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vcruntime.h(404): error C2146: error de sintaxis: falta ';' delante del identificador '__security_cookie'
+C:\msys64\ucrt64\include\corecrt.h(75): error C2378: 'uintptr_t': nueva definici¢n; no se puede sobrecargar el s¡mbolo con typedef
+D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vcruntime.h(404): note: vea la declaraci¢n de 'uintptr_t'
+C:\msys64\ucrt64\include\corecrt.h(155): error C2061: error de sintaxis: identificador 'uintptr_t'
+C:\msys64\ucrt64\include\corecrt.h(159): error C2061: error de sintaxis: identificador 'uintptr_t'
+C:\msys64\ucrt64\include\stddef.h(26): error C2143: error de sintaxis: falta ';' delante de '__cdecl'
+C:\msys64\ucrt64\include\stddef.h(26): error C2370: 'uintptr_t': nueva definici¢n; clase de almacenamiento distinta
+D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vcruntime.h(404): note: vea la declaraci¢n de 'uintptr_t'
+C:\msys64\ucrt64\include\stdio.h(184): error C2144: error de sintaxis: 'int' debe estar precedido de ';'
+C:\msys64\ucrt64\include\stdio.h(187): error C2144: error de sintaxis: 'int' debe estar precedido de ';'
+C:\msys64\ucrt64\include\stdio.h(190): error C2144: error de sintaxis: 'int' debe estar precedido de ';'
+C:\msys64\ucrt64\include\stdio.h(193): error C2144: error de sintaxis: 'int' debe estar precedido de ';'
+C:\msys64\ucrt64\include\stdio.h(196): error C2144: error de sintaxis: 'int' debe estar precedido de ';'
+C:\msys64\ucrt64\include\stdio.h(199): error C2144: error de sintaxis: 'int' debe estar precedido de ';'
+C:\msys64\ucrt64\include\stdio.h(202): error C2144: error de sintaxis: 'int' debe estar precedido de ';'
+C:\msys64\ucrt64\include\stdio.h(205): error C2144: error de sintaxis: 'int' debe estar precedido de ';'
+C:\msys64\ucrt64\include\stdio.h(210): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(210): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(214): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(214): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(218): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(218): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(222): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(222): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(226): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(226): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(230): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(230): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(235): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(235): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(239): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(239): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(243): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(243): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(247): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(247): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(252): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(252): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(256): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(256): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(260): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(260): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(264): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(264): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(478): error C2061: error de sintaxis: identificador '__builtin_va_list'
+C:\msys64\ucrt64\include\stdio.h(481): error C2061: error de sintaxis: identificador '__builtin_va_list'
+C:\msys64\ucrt64\include\stdio.h(483): error C2061: error de sintaxis: identificador '__builtin_va_list'
+C:\msys64\ucrt64\include\stdio.h(924): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(924): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(927): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(927): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(930): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(930): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(933): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(933): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(936): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(936): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(939): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(939): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(947): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(947): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(950): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(950): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(953): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(953): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(956): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(956): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(959): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(959): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(962): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(962): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\stdio.h(965): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\stdio.h(965): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\swprintf.inl(15): error C2061: error de sintaxis: identificador '__builtin_va_list'
+C:\msys64\ucrt64\include\swprintf.inl(15): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\swprintf.inl(15): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\swprintf.inl(18): error C3646: '__asm__': especificador de invalidaci¢n desconocido
+C:\msys64\ucrt64\include\swprintf.inl(18): error C2059: error de sintaxis: '('
+C:\msys64\ucrt64\include\sec_api/stdio_s.h(40): error C2062: tipo 'int' inesperado
+C:\msys64\ucrt64\include\sec_api/stdio_s.h(41): error C2143: error de sintaxis: falta ';' delante de '{'
+C:\msys64\ucrt64\include\sec_api/stdio_s.h(41): error C2447: '{': falta el encabezado de funci¢n (¨lista formal de estilo anterior?)
+C:\msys64\ucrt64\include\sec_api/stdio_s.h(45): error C2062: tipo 'int' inesperado
+C:\msys64\ucrt64\include\sec_api/stdio_s.h(46): error C2143: error de sintaxis: falta ';' delante de '{'
+C:\msys64\ucrt64\include\sec_api/stdio_s.h(46): error C2447: '{': falta el encabezado de funci¢n (¨lista formal de estilo anterior?)
+C:\msys64\ucrt64\include\sec_api/stdio_s.h(50): error C2062: tipo 'int' inesperado
+C:\msys64\ucrt64\include\sec_api/stdio_s.h(51): error C2143: error de sintaxis: falta ';' delante de '{'
+C:\msys64\ucrt64\include\sec_api/stdio_s.h(51): error C2447: '{': falta el encabezado de funci¢n (¨lista formal de estilo anterior?)
+C:\msys64\ucrt64\include\sec_api/stdio_s.h(55): error C2062: tipo 'int' inesperado
+C:\msys64\ucrt64\include\sec_api/stdio_s.h(56): error C2143: error de sintaxis: falta ';' delante de '{'
+C:\msys64\ucrt64\include\sec_api/stdio_s.h(56): error C2447: '{': falta el encabezado de funci¢n (¨lista formal de estilo anterior?)
+C:\msys64\ucrt64\include\sec_api/stdio_s.h(60): error C2062: tipo 'int' inesperado
+C:\msys64\ucrt64\include\sec_api/stdio_s.h(61): error C2143: error de sintaxis: falta ';' delante de '{'
+C:\msys64\ucrt64\include\sec_api/stdio_s.h(61): error C2447: '{': falta el encabezado de funci¢n (¨lista formal de estilo anterior?)
+C:\msys64\ucrt64\include\sec_api/stdio_s.h(70): error C2062: tipo 'int' inesperado
+C:\msys64\ucrt64\include\sec_api/stdio_s.h(71): error C2143: error de sintaxis: falta ';' delante de '{'
+C:\msys64\ucrt64\include\sec_api/stdio_s.h(71): error C2447: '{': falta el encabezado de funci¢n (¨lista formal de estilo anterior?)
+C:\msys64\ucrt64\include\sec_api/stdio_s.h(71): fatal error C1003: el recuento de errores supera 100; se detiene la compilaci¢n
 ninja: build stopped: subcommand failed.
