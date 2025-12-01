@@ -18,23 +18,23 @@ endif()
 # --- CONFIGURACIÓN DE FLAGS ESPECÍFICOS ---
 
 if(MSVC)
-  # Flags propuestos en constexpr_flags_investigation.md + /wd4146
+  # Flags propuestos + /wd4146
+  # Añadimos /Zc:preprocessor para asegurar conformidad total con macros
   add_compile_options(
     /permissive- 
     /bigobj 
     /constexpr:depth8192 
     /constexpr:steps50000000 
-    /wd4146 # Silencia "unary minus operator applied to unsigned type" (común en metaprog)
+    /wd4146 
+    /Zc:preprocessor
   )
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  # Aumentamos límites para Clang y FORZAMOS libc++ (La librería nativa de Clang)
-  # Esto coincide con la ruta que indicaste: c:\msys64\clang64\lib\libc++.a
+  # Aumentamos límites para Clang y FORZAMOS libc++
   add_compile_options(
     -fconstexpr-depth=8192
     -fconstexpr-steps=50000000
     -stdlib=libc++
   )
-  # Forzamos el linkado con libc++
   add_link_options(-stdlib=libc++)
 endif()
 
@@ -45,7 +45,17 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 enable_testing()
 
-find_package(Catch2 3 REQUIRED)
+# ==========================================
+# DEPENDENCIAS (CORREGIDO PARA EVITAR MINGW EN MSVC)
+# ==========================================
+if(MSVC)
+    # IMPORTANTE: Con MSVC, prohibimos buscar en las rutas del sistema (MinGW)
+    # para evitar contaminación de cabeceras stdio.h incompatibles.
+    # Solo buscará en CMAKE_PREFIX_PATH (definido en el Preset).
+    find_package(Catch2 3 REQUIRED PATHS "${CMAKE_PREFIX_PATH}" NO_DEFAULT_PATH)
+else()
+    find_package(Catch2 3 REQUIRED)
+endif()
 
 # ==========================================
 # TARGETS
