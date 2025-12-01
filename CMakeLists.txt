@@ -27,11 +27,15 @@ if(MSVC)
     /wd4146 # Silencia "unary minus operator applied to unsigned type" (común en metaprog)
   )
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  # Aumentamos límites para Clang (equivalentes a los de MSVC)
+  # Aumentamos límites para Clang y FORZAMOS libc++ (La librería nativa de Clang)
+  # Esto coincide con la ruta que indicaste: c:\msys64\clang64\lib\libc++.a
   add_compile_options(
     -fconstexpr-depth=8192
     -fconstexpr-steps=50000000
+    -stdlib=libc++
   )
+  # Forzamos el linkado con libc++
+  add_link_options(-stdlib=libc++)
 endif()
 
 # --- SALIDAS ---
@@ -41,13 +45,6 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 enable_testing()
 
-#  include(FetchContent)
-#  FetchContent_Declare(
-#    Catch2
-#    GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-#    GIT_TAG        v3.11.0
-#  )
-#  FetchContent_MakeAvailable(Catch2)
 find_package(Catch2 3 REQUIRED)
 
 # ==========================================
