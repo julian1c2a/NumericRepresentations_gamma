@@ -126,27 +126,22 @@ constexpr inline sign_funct_e opposite_sign(sign_funct_e sign) noexcept {
 
 /**
  * @brief Wrapper estructural para cadenas fijas en tiempo de compilación.
- * @details Implementación robusta para MSVC usando std::array y generador funcional.
+ * @details Implementación simplificada para máxima compatibilidad con MSVC.
  */
 template <size_t N>
 struct fixed_string {
     static constexpr size_t size = N; 
-    
-    // Usamos std::array para facilitar la inicialización constexpr en MSVC
-    std::array<char, N> data; 
+    std::array<char, N> data{}; 
 
-    // Helper funcional (C++17 style) para generar el array
-    // Esto aísla la expansión del pack y evita el error C2131 en MSVC
-    template <size_t... I>
-    static constexpr std::array<char, N> to_array(const char (&str)[N], std::index_sequence<I...>) {
-        return {{str[I]...}};
+    constexpr fixed_string() = default;
+
+    // Constructor simplificado: bucle directo en lugar de index_sequence.
+    // Esto evita errores de "uninitialized symbol" en MSVC debug/constexpr.
+    constexpr fixed_string(const char (&str)[N]) {
+        for (size_t i = 0; i < N; ++i) {
+            data[i] = str[i];
+        }
     }
-
-    constexpr fixed_string() : data{} {}
-
-    // Constructor principal: Llama al generador
-    constexpr fixed_string(const char (&str)[N]) 
-        : data(to_array(str, std::make_index_sequence<N>{})) {}
 
     consteval operator std::string_view() const {
         if (N > 0 && data[N-1] == '\0')
@@ -208,7 +203,8 @@ enum class atoull_err_t : int {
   unknown    
 };
 
-inline std::expected<ullint_t, atoull_err_t>
+// AÑADIDO: constexpr para permitir su uso en constantes de tiempo de compilación
+inline constexpr std::expected<ullint_t, atoull_err_t>
 atoull_checked(const char *text) noexcept {
   if (text == nullptr)
     return std::unexpected(atoull_err_t::empty_str);
@@ -231,7 +227,8 @@ atoull_checked(const char *text) noexcept {
   return std::expected<ullint_t, atoull_err_t>(i);
 }
 
-inline std::expected<ullint_t, atoull_err_t>
+// AÑADIDO: constexpr
+inline constexpr std::expected<ullint_t, atoull_err_t>
 atoull_checked(std::string_view sv) noexcept {
   if (sv.data() == nullptr || sv.size() == 0)
     return std::unexpected(atoull_err_t::empty_str);
@@ -252,7 +249,8 @@ atoull_checked(std::string_view sv) noexcept {
   return std::expected<ullint_t, atoull_err_t>(i);
 }
 
-inline std::expected<std::pair<ullint_t, size_t>, atoull_err_t>
+// AÑADIDO: constexpr
+inline constexpr std::expected<std::pair<ullint_t, size_t>, atoull_err_t>
 atoull_consume(const char *text) noexcept {
   if (text == nullptr)
     return std::unexpected(atoull_err_t::empty_str);
@@ -275,7 +273,8 @@ atoull_consume(const char *text) noexcept {
       std::pair<ullint_t, size_t>{i, idx});
 }
 
-inline std::expected<std::pair<ullint_t, size_t>, atoull_err_t>
+// AÑADIDO: constexpr
+inline constexpr std::expected<std::pair<ullint_t, size_t>, atoull_err_t>
 atoull_consume(std::string_view sv) noexcept {
   if (sv.data() == nullptr || sv.size() == 0)
     return std::unexpected(atoull_err_t::empty_str);
@@ -312,6 +311,7 @@ consteval ullint_t atoull_ct() {
   for (size_t k = 0; k < STR.size; ++k) {
     char c = STR.data[k];
     
+    // Check explícito de nulo por si acaso
     if (c == '\0') break; 
 
     if (c < '0' || c > '9') {
