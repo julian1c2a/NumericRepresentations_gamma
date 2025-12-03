@@ -149,15 +149,3 @@ echo "=========================================="
 echo " INSTALACIÓN COMPLETADA ($CATCH2_VERSION) para $COMPILER_MODE"
 echo "=========================================="
 ```
-
-#### 2. Pasos para resolverlo
-
-#1.  Ejecuta la actualización de dependencias:
-#    ```bash
-#    ./install_deps.bash msvc print
-#    ```
-#    *(Verifica en `deps_log_msvc.txt` que haya descargado e instalado la versión 3.7.1)*.
-
-#2.  Vuelve a compilar tu proyecto:
-#    ```bash
-#    ./build_tests.bash msvc-release print

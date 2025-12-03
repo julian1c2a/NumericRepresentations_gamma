@@ -1,50 +1,147 @@
 ==========================================
  CONFIGURANDO Y CONSTRUYENDO: msvc-release
 ==========================================
--- Configuring done (0.0s)
--- Generating done (0.1s)
+-- Configuring done (0.8s)
+-- Generating done (0.3s)
 -- Build files have been written to: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release
-ninja: no work to do.
-ninja: no work to do.
-ninja: no work to do.
-ninja: no work to do.
-ninja: no work to do.
-ninja: no work to do.
-ninja: no work to do.
-[1/2] Building CXX object CMakeFiles\test_08_dig_t_operadores.dir\tests\test_08_dig_t_operadores.cpp.obj
-FAILED: [code=2] CMakeFiles/test_08_dig_t_operadores.dir/tests/test_08_dig_t_operadores.cpp.obj 
-c:\PROGRA~1\MIB055~1\18\COMMUN~1\VC\Tools\MSVC\1450~1.357\bin\Hostx64\x64\cl.exe  /nologo /TP  -ID:\gdrive\numericrepresentations_gamma\include -external:ID:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include -external:W0 /DWIN32 /D_WINDOWS /W3 /GR /EHsc  /I "c:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\include" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\winrt" /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++latest -MD /permissive- /bigobj /constexpr:depth8192 /constexpr:steps50000000 /wd4146 /Zc:preprocessor /DNOMINMAX /Zm250 /showIncludes /FoCMakeFiles\test_08_dig_t_operadores.dir\tests\test_08_dig_t_operadores.cpp.obj /FdCMakeFiles\test_08_dig_t_operadores.dir\ /FS -c D:\gdrive\numericrepresentations_gamma\tests\test_08_dig_t_operadores.cpp
-D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include\catch2/internal/catch_decomposer.hpp(391): error C7595: "std::_Literal_zero::_Literal_zero": la llamada a la funci¢n inmediata no es una expresi¢n constante
-D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include\catch2/internal/catch_decomposer.hpp(391): note: el error se debi¢ a una lectura de una variable fuera de su duraci¢n
-D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include\catch2/internal/catch_decomposer.hpp(391): note: consulte el uso de 'rhs'
-D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include\catch2/internal/catch_decomposer.hpp(391): note: el contexto de creaci¢n de instancias de la plantilla (el m s antiguo primero) es
-D:\gdrive\numericrepresentations_gamma\tests\test_08_dig_t_operadores.cpp(161): note: Vea la referencia a la creaci¢n de una instancia de la funci¢n plantilla "Catch::BinaryExpr<LhsT,int> Catch::operator <<int>(Catch::ExprLhs<LhsT> &&,RhsT)" que se est  compilando
-        with
-        [
-            LhsT=std::strong_ordering,
-            RhsT=int
-        ]
-D:\gdrive\numericrepresentations_gamma\tests\test_08_dig_t_operadores.cpp(161): note: vea la primera referencia a "Catch::operator <" en "CATCH2_INTERNAL_TEST_11"
-D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include\catch2/internal/catch_decomposer.hpp(393): error C7595: "std::_Literal_zero::_Literal_zero": la llamada a la funci¢n inmediata no es una expresi¢n constante
-D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include\catch2/internal/catch_decomposer.hpp(393): note: el error se debi¢ a una lectura de una variable fuera de su duraci¢n
-D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include\catch2/internal/catch_decomposer.hpp(393): note: consulte el uso de 'rhs'
-D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include\catch2/internal/catch_decomposer.hpp(393): note: el contexto de creaci¢n de instancias de la plantilla (el m s antiguo primero) es
-D:\gdrive\numericrepresentations_gamma\tests\test_08_dig_t_operadores.cpp(162): note: Vea la referencia a la creaci¢n de una instancia de la funci¢n plantilla "Catch::BinaryExpr<LhsT,int> Catch::operator ><int>(Catch::ExprLhs<LhsT> &&,RhsT)" que se est  compilando
-        with
-        [
-            LhsT=std::strong_ordering,
-            RhsT=int
-        ]
-D:\gdrive\numericrepresentations_gamma\tests\test_08_dig_t_operadores.cpp(162): note: vea la primera referencia a "Catch::operator >" en "CATCH2_INTERNAL_TEST_11"
-D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include\catch2/internal/catch_decomposer.hpp(341): error C7595: "std::_Literal_zero::_Literal_zero": la llamada a la funci¢n inmediata no es una expresi¢n constante
-D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include\catch2/internal/catch_decomposer.hpp(341): note: el error se debi¢ a una lectura de una variable fuera de su duraci¢n
-D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include\catch2/internal/catch_decomposer.hpp(341): note: consulte el uso de 'rhs'
-D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include\catch2/internal/catch_decomposer.hpp(341): note: el contexto de creaci¢n de instancias de la plantilla (el m s antiguo primero) es
-D:\gdrive\numericrepresentations_gamma\tests\test_08_dig_t_operadores.cpp(163): note: Vea la referencia a la creaci¢n de una instancia de la funci¢n plantilla "Catch::BinaryExpr<LhsT,int> Catch::operator ==<int>(Catch::ExprLhs<LhsT> &&,RhsT)" que se est  compilando
-        with
-        [
-            LhsT=std::strong_ordering,
-            RhsT=int
-        ]
-D:\gdrive\numericrepresentations_gamma\tests\test_08_dig_t_operadores.cpp(163): note: vea la primera referencia a "Catch::operator ==" en "CATCH2_INTERNAL_TEST_11"
+[1/1] Linking CXX executable test_01_math_tables.exe
+FAILED: [code=4294967295] test_01_math_tables.exe 
+C:\Windows\system32\cmd.exe /C "cd . && C:\msys64\ucrt64\bin\cmake.exe -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\test_01_math_tables.dir --rc=C:\PROGRA~2\WI3CF2~1\10\bin\100261~1.0\x64\rc.exe --mt=C:\PROGRA~2\WI3CF2~1\10\bin\100261~1.0\x64\mt.exe --manifests  -- c:\PROGRA~1\MIB055~1\18\COMMUN~1\VC\Tools\MSVC\1450~1.357\bin\Hostx64\x64\link.exe /nologo CMakeFiles\test_01_math_tables.dir\tests\test_01_math_tables.cpp.obj  /out:test_01_math_tables.exe /implib:test_01_math_tables.lib /pdb:test_01_math_tables.pdb /version:0.0 /LIBPATH:"c:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\lib\x64" /LIBPATH:"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\ucrt\x64" /LIBPATH:"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64" /machine:x64 /INCREMENTAL:NO /subsystem:console  D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\lib\Catch2Main.lib  D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\lib\Catch2.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+LINK: command "c:\PROGRA~1\MIB055~1\18\COMMUN~1\VC\Tools\MSVC\1450~1.357\bin\Hostx64\x64\link.exe /nologo CMakeFiles\test_01_math_tables.dir\tests\test_01_math_tables.cpp.obj /out:test_01_math_tables.exe /implib:test_01_math_tables.lib /pdb:test_01_math_tables.pdb /version:0.0 /LIBPATH:c:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\lib\x64 /LIBPATH:C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\ucrt\x64 /LIBPATH:C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64 /machine:x64 /INCREMENTAL:NO /subsystem:console D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\lib\Catch2Main.lib D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\lib\Catch2.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST:EMBED,ID=1" failed (exit code 1169) with the following output:
+Catch2.lib(catch_stringref.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_reusable_string_stream.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_tostring.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_decomposer.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_assertion_handler.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_section.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_test_registry.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_singletons.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_polyfills.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_registry_hub.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_test_failure_exception.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_run_context.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_debugger.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_matchers_impl.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_matchers.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_matchers_string.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_timer.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_uncaught_exceptions.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_test_case_info.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_string_manip.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_interfaces_registry_hub.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_interfaces_testcase.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_test_case_registry_impl.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_reporter_registry.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_interfaces_exception.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_exception_translator_registry.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_tag_alias_registry.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_startup_exception_registry.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_enum_values_registry.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_interfaces_capture.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_source_line_info.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_fatal_condition_handler.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_message.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_test_case_tracker.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_assertion_result.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_interfaces_generatortracker.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_generators.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_interfaces_reporter.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_enforce.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_output_redirect.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_case_insensitive_comparisons.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_test_spec.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_test_case_info_hasher.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_interfaces_reporter_factory.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_reporter_common_base.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_reporter_streaming_base.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_reporter_automake.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_reporter_compact.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_reporter_console.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_reporter_json.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_reporter_cumulative_base.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_xmlwriter.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_reporter_junit.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_reporter_sonarqube.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_reporter_tap.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_reporter_teamcity.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_reporter_xml.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_stdstreams.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_message_info.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_lazy_expr.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_generator_exception.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_wildcard_pattern.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_reporter_helpers.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_console_colour.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_get_random_seed.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_version.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_textflow.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_jsonwriter.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_list.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_config.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_interfaces_config.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_reporter_spec_parser.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_parse_numbers.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_test_spec_parser.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+msvcprt.lib(MSVCP140.dll) : error LNK2005: ya se defini¢ "public: struct _Cvtvec __cdecl std::_Locinfo::_Getcvt(void)const " (?_Getcvt@_Locinfo@std@@QEBA?AU_Cvtvec@@XZ) en Catch2.lib(catch_tostring.cpp.obj)
+msvcprt.lib(MSVCP140.dll) : error LNK2005: ya se defini¢ "public: bool __cdecl std::ios_base::good(void)const " (?good@ios_base@std@@QEBA_NXZ) en Catch2.lib(catch_stringref.cpp.obj)
+msvcprt.lib(MSVCP140.dll) : error LNK2005: ya se defini¢ "public: int __cdecl std::ios_base::flags(void)const " (?flags@ios_base@std@@QEBAHXZ) en Catch2.lib(catch_stringref.cpp.obj)
+msvcprt.lib(MSVCP140.dll) : error LNK2005: ya se defini¢ "public: __int64 __cdecl std::ios_base::width(void)const " (?width@ios_base@std@@QEBA_JXZ) en Catch2.lib(catch_tostring.cpp.obj)
+msvcprt.lib(MSVCP140.dll) : error LNK2005: ya se defini¢ "public: __int64 __cdecl std::ios_base::width(__int64)" (?width@ios_base@std@@QEAA_J_J@Z) en Catch2.lib(catch_tostring.cpp.obj)
+msvcprt.lib(MSVCP140.dll) : error LNK2005: ya se defini¢ "public: int __cdecl std::basic_streambuf<char,struct std::char_traits<char> >::sputc(char)" (?sputc@?$basic_streambuf@DU?$char_traits@D@std@@@std@@QEAAHD@Z) en Catch2.lib(catch_tostring.cpp.obj)
+msvcprt.lib(MSVCP140.dll) : error LNK2005: ya se defini¢ "public: __int64 __cdecl std::basic_streambuf<char,struct std::char_traits<char> >::sputn(char const *,__int64)" (?sputn@?$basic_streambuf@DU?$char_traits@D@std@@@std@@QEAA_JPEBD_J@Z) en Catch2.lib(catch_stringref.cpp.obj)
+msvcprt.lib(MSVCP140.dll) : error LNK2005: ya se defini¢ "public: void __cdecl std::basic_ios<char,struct std::char_traits<char> >::setstate(int,bool)" (?setstate@?$basic_ios@DU?$char_traits@D@std@@@std@@QEAAXH_N@Z) en Catch2.lib(catch_stringref.cpp.obj)
+msvcprt.lib(MSVCP140.dll) : error LNK2005: ya se defini¢ "public: class std::basic_ostream<char,struct std::char_traits<char> > * __cdecl std::basic_ios<char,struct std::char_traits<char> >::tie(void)const " (?tie@?$basic_ios@DU?$char_traits@D@std@@@std@@QEBAPEAV?$basic_ostream@DU?$char_traits@D@std@@@2@XZ) en Catch2.lib(catch_stringref.cpp.obj)
+msvcprt.lib(MSVCP140.dll) : error LNK2005: ya se defini¢ "public: class std::basic_streambuf<char,struct std::char_traits<char> > * __cdecl std::basic_ios<char,struct std::char_traits<char> >::rdbuf(void)const " (?rdbuf@?$basic_ios@DU?$char_traits@D@std@@@std@@QEBAPEAV?$basic_streambuf@DU?$char_traits@D@std@@@2@XZ) en Catch2.lib(catch_stringref.cpp.obj)
+msvcprt.lib(MSVCP140.dll) : error LNK2005: ya se defini¢ "public: char __cdecl std::basic_ios<char,struct std::char_traits<char> >::fill(void)const " (?fill@?$basic_ios@DU?$char_traits@D@std@@@std@@QEBADXZ) en Catch2.lib(catch_reusable_string_stream.cpp.obj)
+msvcprt.lib(MSVCP140.dll) : error LNK2005: ya se defini¢ "public: char __cdecl std::basic_ios<char,struct std::char_traits<char> >::widen(char)const " (?widen@?$basic_ios@DU?$char_traits@D@std@@@std@@QEBADD@Z) en Catch2.lib(catch_reusable_string_stream.cpp.obj)
+msvcprt.lib(MSVCP140.dll) : error LNK2005: ya se defini¢ "public: void __cdecl std::basic_ostream<char,struct std::char_traits<char> >::_Osfx(void)" (?_Osfx@?$basic_ostream@DU?$char_traits@D@std@@@std@@QEAAXXZ) en Catch2.lib(catch_stringref.cpp.obj)
+msvcprt.lib(MSVCP140.dll) : error LNK2005: ya se defini¢ "public: class std::basic_ostream<char,struct std::char_traits<char> > & __cdecl std::basic_ostream<char,struct std::char_traits<char> >::operator<<(class std::basic_ostream<char,struct std::char_traits<char> > & (__cdecl*)(class std::basic_ostream<char,struct std::char_traits<char> > &))" (??6?$basic_ostream@DU?$char_traits@D@std@@@std@@QEAAAEAV01@P6AAEAV01@AEAV01@@Z@Z) en Catch2.lib(catch_reporter_compact.cpp.obj)
+msvcprt.lib(MSVCP140.dll) : error LNK2005: ya se defini¢ "public: class std::basic_ostream<char,struct std::char_traits<char> > & __cdecl std::basic_ostream<char,struct std::char_traits<char> >::operator<<(unsigned __int64)" (??6?$basic_ostream@DU?$char_traits@D@std@@@std@@QEAAAEAV01@_K@Z) en Catch2.lib(catch_tostring.cpp.obj)
+msvcprt.lib(MSVCP140.dll) : error LNK2005: ya se defini¢ "public: class std::basic_ostream<char,struct std::char_traits<char> > & __cdecl std::basic_ostream<char,struct std::char_traits<char> >::put(char)" (?put@?$basic_ostream@DU?$char_traits@D@std@@@std@@QEAAAEAV12@D@Z) en Catch2.lib(catch_reporter_helpers.cpp.obj)
+msvcprt.lib(MSVCP140.dll) : error LNK2005: ya se defini¢ "public: class std::basic_ostream<char,struct std::char_traits<char> > & __cdecl std::basic_ostream<char,struct std::char_traits<char> >::flush(void)" (?flush@?$basic_ostream@DU?$char_traits@D@std@@@std@@QEAAAEAV12@XZ) en Catch2.lib(catch_stringref.cpp.obj)
+libcpmt.lib(locale0.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+libcpmt.lib(locale0.obj) : error LNK2005: ya se defini¢ "void __cdecl std::_Facet_Register(class std::_Facet_base *)" (?_Facet_Register@std@@YAXPEAV_Facet_base@1@@Z) en msvcprt.lib(locale0_implib.obj)
+libcpmt.lib(locale0.obj) : error LNK2005: ya se defini¢ "private: static class std::locale::_Locimp * __cdecl std::locale::_Getgloballocale(void)" (?_Getgloballocale@locale@std@@CAPEAV_Locimp@12@XZ) en msvcprt.lib(MSVCP140.dll)
+libcpmt.lib(locale0.obj) : error LNK2005: ya se defini¢ "private: static class std::locale::_Locimp * __cdecl std::locale::_Init(bool)" (?_Init@locale@std@@CAPEAV_Locimp@12@_N@Z) en msvcprt.lib(MSVCP140.dll)
+libcpmt.lib(locale0.obj) : error LNK2005: ya se defini¢ "public: static void __cdecl std::_Locinfo::_Locinfo_ctor(class std::_Locinfo *,char const *)" (?_Locinfo_ctor@_Locinfo@std@@SAXPEAV12@PEBD@Z) en msvcprt.lib(MSVCP140.dll)
+libcpmt.lib(locale0.obj) : error LNK2005: ya se defini¢ "public: static void __cdecl std::_Locinfo::_Locinfo_dtor(class std::_Locinfo *)" (?_Locinfo_dtor@_Locinfo@std@@SAXPEAV12@@Z) en msvcprt.lib(MSVCP140.dll)
+libcpmt.lib(cout.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+libcpmt.lib(cerr.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+libcpmt.lib(clog.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+libcpmt.lib(locale.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+libcpmt.lib(iosptrs.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+libcpmt.lib(xlock.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+libcpmt.lib(xlock.obj) : error LNK2005: ya se defini¢ "public: __cdecl std::_Lockit::_Lockit(int)" (??0_Lockit@std@@QEAA@H@Z) en msvcprt.lib(MSVCP140.dll)
+libcpmt.lib(xlock.obj) : error LNK2005: ya se defini¢ "public: __cdecl std::_Lockit::~_Lockit(void)" (??1_Lockit@std@@QEAA@XZ) en msvcprt.lib(MSVCP140.dll)
+libcpmt.lib(wlocale.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+libcpmt.lib(wlocale.obj) : error LNK2005: ya se defini¢ "public: unsigned short const * __cdecl std::_Locinfo::_W_Getdays(void)const " (?_W_Getdays@_Locinfo@std@@QEBAPEBGXZ) en msvcprt.lib(MSVCP140.dll)
+libcpmt.lib(wlocale.obj) : error LNK2005: ya se defini¢ "public: unsigned short const * __cdecl std::_Locinfo::_W_Getmonths(void)const " (?_W_Getmonths@_Locinfo@std@@QEBAPEBGXZ) en msvcprt.lib(MSVCP140.dll)
+libcpmt.lib(xlocale.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+libcpmt.lib(xstol.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+libcpmt.lib(xstoul.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+libcpmt.lib(xstoll.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+libcpmt.lib(xstoull.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+libcpmt.lib(xmtx.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+libcpmt.lib(xdateord.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+libcpmt.lib(xmbtowc.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+libcpmt.lib(xwctomb.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+libcpmt.lib(xwctomb.obj) : error LNK2005: ya se defini¢ _Getcvt en msvcprt.lib(MSVCP140.dll)
+libcpmt.lib(xwcscoll.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+libcpmt.lib(xwcsxfrm.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+libcpmt.lib(xgetwctype.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+libcpmt.lib(xtowlower.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+libcpmt.lib(xtowupper.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+libcpmt.lib(StlCompareStringW.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+libcpmt.lib(StlLCMapStringW.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2Main.lib(catch_main.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_session.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_leak_detector.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_clara.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_commandline.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_random_seed_generation.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_reporter_multi.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_istream.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+Catch2.lib(catch_debug_console.cpp.obj) : error LNK2038: se detectaron diferencias para 'RuntimeLibrary': el valor 'MT_StaticRelease' no coincide con el valor 'MD_DynamicRelease' en test_01_math_tables.cpp.obj
+LINK : warning LNK4098: la biblioteca predeterminada'LIBCMT' entra en conflicto con otras bibliotecas; use la biblioteca /NODEFAULTLIB:biblioteca
+test_01_math_tables.exe : fatal error LNK1169: se encontraron uno o m s s¡mbolos definidos simult neamente
 ninja: build stopped: subcommand failed.

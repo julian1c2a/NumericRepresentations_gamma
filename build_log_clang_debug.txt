@@ -2,7 +2,7 @@
  CONFIGURANDO Y CONSTRUYENDO: clang-debug
 ==========================================
 -- Configuring done (0.1s)
--- Generating done (0.5s)
+-- Generating done (0.7s)
 -- Build files have been written to: D:/gdrive/numericrepresentations_gamma/build/build_targets/clang/debug
 [100%] Built target test_01_math_tables
 [100%] Built target test_02_append
