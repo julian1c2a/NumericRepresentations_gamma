@@ -1334,8 +1334,9 @@ namespace NumRepr {
     const dig_t &operator-=(dig_t arg) noexcept {
       nextsz_int_t cp_dm{m_d};
       cp_dm -= arg.m_d;
-      if (cp_dm < 0) cp_dm += ssi_B();
-      m_d = cp_dm;
+      if (cp_dm < 0) 
+        cp_dm += ssi_B();
+      m_d = static_cast<uint_t>(cp_dm);
       return (*this);
     }
 
@@ -1360,8 +1361,9 @@ namespace NumRepr {
       nextsz_int_t tmp{normalize<Int_t>(arg)};
       nextsz_int_t este{m_d};
       este -= tmp;
-      if (este < static_cast<nextsz_int_t>(0)) este += ssi_B();
-      m_d = este;
+      if (este < static_cast<nextsz_int_t>(0)) 
+        este += ssi_B();
+      m_d = static_cast<uint_t>(este);
       return (*this);
     }
 
