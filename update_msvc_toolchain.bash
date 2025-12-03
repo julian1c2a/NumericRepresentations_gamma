@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # ==============================================================================
-# UPDATE MSVC TOOLCHAIN (V7 - ENVIRONMENT METHOD)
+# UPDATE MSVC TOOLCHAIN (V8 - FORWARD SLASH FIX)
 # ==============================================================================
-# Configura MSVC definiendo las variables de entorno INCLUDE y LIB dentro de CMake.
-# Esto es mucho más robusto que inyectar flags manuales.
+# Genera msvc_toolchain.cmake usando SIEMPRE forward slashes (/)
+# para evitar errores de "Invalid escape sequence" en CMake.
 # ==============================================================================
 
 TOOLCHAIN_FILE="./msvc_toolchain.cmake"
@@ -40,7 +40,8 @@ if [ -z "$FOUND_MSVC_PATH" ]; then
     exit 1
 fi
 
-# Convertir ruta a formato Windows (ej: C:/...)
+# Convertir ruta a formato Windows PERO manteniendo SLASHES (/)
+# CMake prefiere C:/Path/To/File incluso en Windows
 MSVC_BASE_WIN=$(echo "$FOUND_MSVC_PATH" | sed -E 's|^/([a-zA-Z])|\1:/|')
 echo "🏆 MSVC: $MSVC_BASE_WIN"
 
@@ -59,47 +60,40 @@ if [ -z "$NEW_KIT_VERSION" ]; then
 fi
 echo "✅ KIT:  $NEW_KIT_VERSION"
 
-# 3. PREPARACIÓN DE RUTAS (CONVERTIR A BACKSLASH PARA WINDOWS ENV)
-# CMake maneja ENV{} mejor si las rutas son nativas de Windows
-TO_WIN_PATH() {
-    echo "$1" | sed 's|/|\\|g'
-}
-
-MSVC_BASE_BACK=$(TO_WIN_PATH "$MSVC_BASE_WIN")
-KIT_BASE_BACK="C:\\Program Files (x86)\\Windows Kits\\10"
+# 3. PREPARACIÓN DE RUTAS (TODO CON SLASHES)
+KIT_BASE_WIN="C:/Program Files (x86)/Windows Kits/10"
 
 # Construcción de variables de entorno (separadas por ;)
-# IMPORTANTE: Escapar los backslashes para el archivo CMake
+# IMPORTANTE: Usamos '/' en las rutas. Windows 10/11 y CMake lo aceptan bien.
 
 # INCLUDE PATHS
-INC_1="${MSVC_BASE_BACK}\\include"
-INC_2="${KIT_BASE_BACK}\\Include\\${NEW_KIT_VERSION}\\ucrt"
-INC_3="${KIT_BASE_BACK}\\Include\\${NEW_KIT_VERSION}\\shared"
-INC_4="${KIT_BASE_BACK}\\Include\\${NEW_KIT_VERSION}\\um"
-INC_5="${KIT_BASE_BACK}\\Include\\${NEW_KIT_VERSION}\\winrt"
+INC_1="${MSVC_BASE_WIN}/include"
+INC_2="${KIT_BASE_WIN}/Include/${NEW_KIT_VERSION}/ucrt"
+INC_3="${KIT_BASE_WIN}/Include/${NEW_KIT_VERSION}/shared"
+INC_4="${KIT_BASE_WIN}/Include/${NEW_KIT_VERSION}/um"
+INC_5="${KIT_BASE_WIN}/Include/${NEW_KIT_VERSION}/winrt"
 ENV_INCLUDE="${INC_1};${INC_2};${INC_3};${INC_4};${INC_5}"
 
 # LIB PATHS
-LIB_1="${MSVC_BASE_BACK}\\lib\\x64"
-LIB_2="${KIT_BASE_BACK}\\Lib\\${NEW_KIT_VERSION}\\ucrt\\x64"
-LIB_3="${KIT_BASE_BACK}\\Lib\\${NEW_KIT_VERSION}\\um\\x64"
+LIB_1="${MSVC_BASE_WIN}/lib/x64"
+LIB_2="${KIT_BASE_WIN}/Lib/${NEW_KIT_VERSION}/ucrt/x64"
+LIB_3="${KIT_BASE_WIN}/Lib/${NEW_KIT_VERSION}/um/x64"
 ENV_LIB="${LIB_1};${LIB_2};${LIB_3}"
 
-# PATH (Para que CMake encuentre cl.exe sin ruta absoluta si es necesario)
-ENV_PATH="${MSVC_BASE_BACK}\\bin\\Hostx64\\x64"
+# PATH
+ENV_PATH="${MSVC_BASE_WIN}/bin/Hostx64/x64"
 
 # 4. GENERACIÓN DEL ARCHIVO .CMAKE
 echo "--------------------------------------------------"
-echo "⚙️  Generando $TOOLCHAIN_FILE (Modo ENV Vars)..."
+echo "⚙️  Generando $TOOLCHAIN_FILE (Modo Forward Slash)..."
 
-# Usamos printf para evitar problemas de expansión extraña con backslashes
 cat > "$TOOLCHAIN_FILE" <<EOF
-# msvc_toolchain.cmake (Generado V7 - Environment Mode)
+# msvc_toolchain.cmake (Generado V8 - Safe Slashes)
 set(CMAKE_SYSTEM_NAME Windows)
 set(CMAKE_SYSTEM_PROCESSOR AMD64)
 
-# 1. Configurar Entorno Virtual (Simula Developer Command Prompt)
-# Esto hace que cl.exe encuentre <vector>, <iostream>, etc. automáticamente.
+# 1. Configurar Entorno Virtual
+# Usamos forward slashes (/) que no dan problemas de escape en CMake
 set(ENV{INCLUDE} "${ENV_INCLUDE}")
 set(ENV{LIB}     "${ENV_LIB}")
 set(ENV{PATH}    "${ENV_PATH};\$ENV{PATH}")
@@ -108,11 +102,10 @@ set(ENV{PATH}    "${ENV_PATH};\$ENV{PATH}")
 set(CMAKE_C_COMPILER   "${MSVC_BASE_WIN}/bin/Hostx64/x64/cl.exe")
 set(CMAKE_CXX_COMPILER "${MSVC_BASE_WIN}/bin/Hostx64/x64/cl.exe")
 set(CMAKE_LINKER       "${MSVC_BASE_WIN}/bin/Hostx64/x64/link.exe")
-set(CMAKE_RC_COMPILER  "C:/Program Files (x86)/Windows Kits/10/bin/${NEW_KIT_VERSION}/x64/rc.exe")
-set(CMAKE_MT           "C:/Program Files (x86)/Windows Kits/10/bin/${NEW_KIT_VERSION}/x64/mt.exe")
+set(CMAKE_RC_COMPILER  "${KIT_BASE_WIN}/bin/${NEW_KIT_VERSION}/x64/rc.exe")
+set(CMAKE_MT           "${KIT_BASE_WIN}/bin/${NEW_KIT_VERSION}/x64/mt.exe")
 
 # 3. Flags Globales Modernas (C++23)
-# /Zc:__cplusplus es CRÍTICO para que Catch2 detecte C++23 correctamente.
 add_compile_options(
     /DWIN32 /D_WINDOWS /W3 /GR /EHsc 
     /DNOMINMAX 
@@ -121,4 +114,5 @@ add_compile_options(
 )
 EOF
 
-echo "🎉 Archivo generado. Rutas inyectadas en ENV{INCLUDE}."
+echo "🎉 Archivo generado correctamente."
+```

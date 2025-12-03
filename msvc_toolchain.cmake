@@ -1,54 +1,25 @@
-# msvc_toolchain.cmake (Generado automáticamente V6)
+# msvc_toolchain.cmake (Generado V7 - Environment Mode)
 set(CMAKE_SYSTEM_NAME Windows)
 set(CMAKE_SYSTEM_PROCESSOR AMD64)
 
-# Rutas detectadas
-set(MSVC_BASE "c:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.50.35717")
-set(KIT_BASE  "C:/Program Files (x86)/Windows Kits/10")
-set(KIT_VER   "10.0.26100.0")
+# 1. Configurar Entorno Virtual (Simula Developer Command Prompt)
+# Esto hace que cl.exe encuentre <vector>, <iostream>, etc. automáticamente.
+set(ENV{INCLUDE} "c:\\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\include;C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt;C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared;C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um;C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\winrt")
+set(ENV{LIB}     "c:\\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\lib\x64;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\ucrt\x64;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64")
+set(ENV{PATH}    "c:\\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\bin\Hostx64\x64;$ENV{PATH}")
 
-# Herramientas
-set(CMAKE_C_COMPILER   "${MSVC_BASE}/bin/Hostx64/x64/cl.exe")
-set(CMAKE_CXX_COMPILER "${MSVC_BASE}/bin/Hostx64/x64/cl.exe")
-set(CMAKE_LINKER       "${MSVC_BASE}/bin/Hostx64/x64/link.exe")
-set(CMAKE_RC_COMPILER  "${KIT_BASE}/bin/${KIT_VER}/x64/rc.exe")
-set(CMAKE_MT           "${KIT_BASE}/bin/${KIT_VER}/x64/mt.exe")
+# 2. Definir Compiladores
+set(CMAKE_C_COMPILER   "c://Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.50.35717/bin/Hostx64/x64/cl.exe")
+set(CMAKE_CXX_COMPILER "c://Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.50.35717/bin/Hostx64/x64/cl.exe")
+set(CMAKE_LINKER       "c://Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.50.35717/bin/Hostx64/x64/link.exe")
+set(CMAKE_RC_COMPILER  "C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/rc.exe")
+set(CMAKE_MT           "C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x64/mt.exe")
 
-# Directorios
-set(MSVC_LIB_DIRS
-    "${MSVC_BASE}/lib/x64"
-    "${KIT_BASE}/Lib/${KIT_VER}/ucrt/x64"
-    "${KIT_BASE}/Lib/${KIT_VER}/um/x64"
+# 3. Flags Globales Modernas (C++23)
+# /Zc:__cplusplus es CRÍTICO para que Catch2 detecte C++23 correctamente.
+add_compile_options(
+    /DWIN32 /D_WINDOWS /W3 /GR /EHsc 
+    /DNOMINMAX 
+    /Zc:preprocessor 
+    /Zc:__cplusplus
 )
-
-set(MSVC_INC_DIRS
-    "${MSVC_BASE}/include"
-    "${KIT_BASE}/Include/${KIT_VER}/ucrt"
-    "${KIT_BASE}/Include/${KIT_VER}/shared"
-    "${KIT_BASE}/Include/${KIT_VER}/um"
-    "${KIT_BASE}/Include/${KIT_VER}/winrt"
-)
-
-# Inyección de rutas en flags
-set(FLAGS_INCLUDE "")
-foreach(DIR ${MSVC_INC_DIRS})
-    file(TO_NATIVE_PATH "${DIR}" DIR_NATIVE)
-    string(APPEND FLAGS_INCLUDE " /I \"${DIR_NATIVE}\"")
-endforeach()
-
-set(FLAGS_LIB "")
-foreach(DIR ${MSVC_LIB_DIRS})
-    file(TO_NATIVE_PATH "${DIR}" DIR_NATIVE)
-    string(APPEND FLAGS_LIB " /LIBPATH:\"${DIR_NATIVE}\"")
-endforeach()
-
-# --- FLAGS GLOBALES ---
-# Añadimos /Zc:__cplusplus para compatibilidad binaria estricta
-set(COMMON_FLAGS "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /DNOMINMAX /Zc:preprocessor /Zc:__cplusplus")
-
-set(CMAKE_C_FLAGS_INIT   "${COMMON_FLAGS} ${FLAGS_INCLUDE}")
-set(CMAKE_CXX_FLAGS_INIT "${COMMON_FLAGS} ${FLAGS_INCLUDE}")
-
-set(CMAKE_EXE_LINKER_FLAGS_INIT    "${FLAGS_LIB}")
-set(CMAKE_SHARED_LINKER_FLAGS_INIT "${FLAGS_LIB}")
-set(CMAKE_MODULE_LINKER_FLAGS_INIT "${FLAGS_LIB}")
