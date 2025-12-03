@@ -1,6 +1,6 @@
 >>> Verificando versión de Catch2...
 Desde https://github.com/catchorg/Catch2
- * [nuevo tag]         V1.5.0     -> V1.5.0
+ * [nuevo tag]         v1.5.0     -> v1.5.0
 HEAD está ahora en fa43b774 v3.7.1
 >>> Actualizado a v3.7.1
 ==================================================
@@ -22,8 +22,8 @@ HEAD está ahora en fa43b774 v3.7.1
 ⚙️  Actualizando ./msvc_toolchain.cmake...
 🎉 ¡ÉXITO! Archivo actualizado correctamente.
 >>> [MSVC-Ninja] Configurando y Compilando Catch2 v3.7.1...
-   --- Construyendo Release ---
--- Configuring done (0.4s)
+   --- Construyendo Release (CRT: MultiThreadedDLL) ---
+-- Configuring done (0.1s)
 -- Generating done (0.1s)
 -- Build files have been written to: D:/GDrive/NumericRepresentations_gamma/build_deps/build_catch_msvc_Release
 [0/1] Install the project...
@@ -264,7 +264,7 @@ HEAD está ahora en fa43b774 v3.7.1
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/reporters/catch_reporter_xml.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/catch_user_config.hpp
-   --- Construyendo Debug ---
+   --- Construyendo Debug (CRT: MultiThreadedDebugDLL) ---
 -- Configuring done (0.1s)
 -- Generating done (0.1s)
 -- Build files have been written to: D:/GDrive/NumericRepresentations_gamma/build_deps/build_catch_msvc_Debug
@@ -509,3 +509,4 @@ HEAD está ahora en fa43b774 v3.7.1
 ==========================================
  INSTALACIÓN COMPLETADA (v3.7.1) para msvc
 ==========================================
+/d/gdrive/numericrepresentations_gamma/install_deps.bash: línea 156: EOF inesperado mientras se buscaba un ``' coincidente

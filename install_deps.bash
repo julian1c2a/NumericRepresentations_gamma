@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ==============================================================================
-# SCRIPT DE INSTALACIÓN DE DEPENDENCIAS (CATCH2) - VERSIÓN V3.7.1 + FIX RUNTIME
+# SCRIPT DE INSTALACIÓN DE DEPENDENCIAS (CATCH2) - V3.7.1 + FIX RUNTIME + C++23
 # ==============================================================================
 # Uso: ./install_deps.bash [msvc|gcc|clang] [print]
 # ==============================================================================
@@ -58,18 +58,16 @@ build_cmake() {
     if [ "$COMPILER_MODE" == "msvc" ]; then
         INSTALL_PATH="$COMPILER_INSTALL_ROOT/Catch2"
         
-        # Limpieza inicial CRÍTICA para evitar mezclas de configuraciones previas
+        # Limpieza inicial CRÍTICA
         rm -rf "$BUILD_DIR_BASE"
         rm -rf "$INSTALL_PATH"
 
-        echo ">>> [MSVC-Ninja] Configurando y Compilando Catch2 $CATCH2_VERSION..."
+        echo ">>> [MSVC-Ninja] Configurando y Compilando Catch2 $CATCH2_VERSION en C++23..."
 
         for BTYPE in Release Debug; do
             CURRENT_BUILD_DIR="${BUILD_DIR_BASE}_${BTYPE}"
             
-            # --- FIX CRÍTICO RUNTIME LIBRARY ---
-            # Forzamos a Catch2 a usar la misma CRT que el proyecto principal (/MD o /MDd)
-            # Esto evita el error LNK2038 (mismatch MD_DynamicRelease vs MT_StaticRelease)
+            # Fix Runtime Library: MD/MDd
             if [ "$BTYPE" == "Debug" ]; then
                 RT_LIB="MultiThreadedDebugDLL"
             else
@@ -87,6 +85,8 @@ build_cmake() {
                 -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
                 -DCMAKE_POLICY_DEFAULT_CMP0091=NEW \
                 -DCMAKE_MSVC_RUNTIME_LIBRARY="$RT_LIB" \
+                -DCMAKE_CXX_STANDARD=23 \
+                -DCMAKE_CXX_STANDARD_REQUIRED=ON \
                 "$@"
 
             cmake --build "$CURRENT_BUILD_DIR" --target install
@@ -102,7 +102,7 @@ build_cmake() {
         rm -rf "$BUILD_DIR_REL" "$BUILD_DIR_DBG"
         rm -rf "$INSTALL_PATH_REL" "$INSTALL_PATH_DBG"
 
-        echo ">>> [$COMPILER_MODE] Configurando y Compilando Catch2 $CATCH2_VERSION..."
+        echo ">>> [$COMPILER_MODE] Configurando y Compilando Catch2 $CATCH2_VERSION en C++23..."
         
         for BTYPE in Release Debug; do
             if [ "$BTYPE" == "Release" ]; then
@@ -116,6 +116,8 @@ build_cmake() {
                 -DCMAKE_BUILD_TYPE=$BTYPE \
                 -DBUILD_TESTING=OFF \
                 -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+                -DCMAKE_CXX_STANDARD=23 \
+                -DCMAKE_CXX_STANDARD_REQUIRED=ON \
                 "$@"
             
             cmake --build "$TBUILD" --target install

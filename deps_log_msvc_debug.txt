@@ -1,3 +1,8 @@
+>>> Verificando versión de Catch2...
+Desde https://github.com/catchorg/Catch2
+ * [nuevo tag]         V1.5.0     -> V1.5.0
+HEAD está ahora en fa43b774 v3.7.1
+>>> Actualizado a v3.7.1
 ==================================================
  🔎 BUSCANDO COMPILADOR MSVC (C: y D:)
 ==================================================
@@ -16,13 +21,58 @@
 --------------------------------------------------
 ⚙️  Actualizando ./msvc_toolchain.cmake...
 🎉 ¡ÉXITO! Archivo actualizado correctamente.
->>> [MSVC-Ninja] Configurando y Compilando con Toolchain...
-   --- Construyendo Release ---
+>>> [MSVC-Ninja] Configurando y Compilando Catch2 v3.7.1...
+   --- Construyendo Release (CRT: MultiThreadedDLL) ---
 -- Configuring done (0.1s)
 -- Generating done (0.1s)
 -- Build files have been written to: D:/GDrive/NumericRepresentations_gamma/build_deps/build_catch_msvc_Release
 [0/1] Install the project...
 -- Install configuration: "Release"
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/Catch2Config.cmake
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/Catch2ConfigVersion.cmake
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/assertions.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/benchmarks.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/ci-and-misc.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/cmake-integration.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/command-line.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/commercial-users.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/comparing-floating-point-numbers.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/configuration.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/contributing.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/deprecations.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/event-listeners.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/faq.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/generators.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/limitations.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/list-of-examples.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/logging.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/matchers.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/migrate-v2-to-v3.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/opensource-users.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/other-macros.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/own-main.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/Readme.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/release-notes.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/release-process.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/reporter-events.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/reporters.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/skipping-passing-failing.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/test-cases-and-sections.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/test-fixtures.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/tostring.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/tutorial.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/usage-tips.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/why-catch.md
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/ParseAndAddCatchTests.cmake
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/Catch.cmake
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/CatchAddTests.cmake
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/CatchShardTests.cmake
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/CatchShardTestsImpl.cmake
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/Catch2/gdbinit
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/Catch2/lldbinit
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/pkgconfig/catch2.pc
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/pkgconfig/catch2-with-main.pc
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/Catch2.lib
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/Catch2Main.lib
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/Catch2Targets.cmake
@@ -67,7 +117,6 @@
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/catch_template_test_macros.hpp
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/catch_test_case_info.hpp
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/catch_test_macros.hpp
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/catch_test_run_info.hpp
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/catch_test_spec.hpp
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/catch_timer.hpp
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/catch_tostring.hpp
@@ -115,7 +164,6 @@
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_debugger.hpp
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_debug_console.hpp
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_decomposer.hpp
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_deprecation_macro.hpp
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_enforce.hpp
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_enum_values_registry.hpp
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_errno_guard.hpp
@@ -168,16 +216,15 @@
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_test_failure_exception.hpp
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_test_macro_impl.hpp
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_test_registry.hpp
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_test_run_info.hpp
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_test_spec_parser.hpp
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_textflow.hpp
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_thread_support.hpp
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_to_string.hpp
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_uncaught_exceptions.hpp
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_uniform_floating_point_distribution.hpp
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_uniform_integer_distribution.hpp
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_unique_name.hpp
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_unique_ptr.hpp
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_unreachable.hpp
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_void_type.hpp
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_wildcard_pattern.hpp
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_windows_h_proxy.hpp
@@ -217,58 +264,57 @@
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/reporters/catch_reporter_xml.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/catch_user_config.hpp
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/Catch2Config.cmake
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/Catch2ConfigVersion.cmake
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/assertions.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/benchmarks.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/ci-and-misc.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/cmake-integration.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/command-line.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/commercial-users.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/comparing-floating-point-numbers.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/configuration.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/contributing.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/deprecations.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/event-listeners.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/faq.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/generators.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/limitations.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/list-of-examples.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/logging.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/matchers.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/migrate-v2-to-v3.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/opensource-users.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/other-macros.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/own-main.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/Readme.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/release-notes.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/release-process.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/reporter-events.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/reporters.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/skipping-passing-failing.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/test-cases-and-sections.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/test-fixtures.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/thread-safety.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/tostring.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/tutorial.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/usage-tips.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/why-catch.md
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/ParseAndAddCatchTests.cmake
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/Catch.cmake
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/CatchAddTests.cmake
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/CatchShardTests.cmake
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/CatchShardTestsImpl.cmake
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/Catch2/gdbinit
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/Catch2/lldbinit
--- DESTDIR: 
--- PREFIX: 
-   --- Construyendo Debug ---
+   --- Construyendo Debug (CRT: MultiThreadedDebugDLL) ---
 -- Configuring done (0.1s)
 -- Generating done (0.1s)
 -- Build files have been written to: D:/GDrive/NumericRepresentations_gamma/build_deps/build_catch_msvc_Debug
 [0/1] Install the project...
 -- Install configuration: "Debug"
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/Catch2Config.cmake
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/Catch2ConfigVersion.cmake
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/assertions.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/benchmarks.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/ci-and-misc.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/cmake-integration.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/command-line.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/commercial-users.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/comparing-floating-point-numbers.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/configuration.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/contributing.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/deprecations.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/event-listeners.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/faq.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/generators.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/limitations.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/list-of-examples.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/logging.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/matchers.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/migrate-v2-to-v3.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/opensource-users.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/other-macros.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/own-main.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/Readme.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/release-notes.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/release-process.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/reporter-events.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/reporters.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/skipping-passing-failing.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/test-cases-and-sections.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/test-fixtures.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/tostring.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/tutorial.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/usage-tips.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/why-catch.md
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/ParseAndAddCatchTests.cmake
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/Catch.cmake
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/CatchAddTests.cmake
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/CatchShardTests.cmake
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/CatchShardTestsImpl.cmake
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/Catch2/gdbinit
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/Catch2/lldbinit
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/pkgconfig/catch2.pc
+-- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/pkgconfig/catch2-with-main.pc
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/Catch2d.lib
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/Catch2Maind.lib
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/Catch2Targets.cmake
@@ -313,7 +359,6 @@
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/catch_template_test_macros.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/catch_test_case_info.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/catch_test_macros.hpp
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/catch_test_run_info.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/catch_test_spec.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/catch_timer.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/catch_tostring.hpp
@@ -361,7 +406,6 @@
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_debugger.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_debug_console.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_decomposer.hpp
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_deprecation_macro.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_enforce.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_enum_values_registry.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_errno_guard.hpp
@@ -414,16 +458,15 @@
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_test_failure_exception.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_test_macro_impl.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_test_registry.hpp
+-- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_test_run_info.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_test_spec_parser.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_textflow.hpp
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_thread_support.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_to_string.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_uncaught_exceptions.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_uniform_floating_point_distribution.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_uniform_integer_distribution.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_unique_name.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_unique_ptr.hpp
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_unreachable.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_void_type.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_wildcard_pattern.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/internal/catch_windows_h_proxy.hpp
@@ -463,52 +506,7 @@
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/reporters/catch_reporter_xml.hpp
 -- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2
 -- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/include/catch2/catch_user_config.hpp
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/Catch2Config.cmake
--- Installing: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/Catch2ConfigVersion.cmake
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/assertions.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/benchmarks.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/ci-and-misc.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/cmake-integration.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/command-line.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/commercial-users.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/comparing-floating-point-numbers.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/configuration.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/contributing.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/deprecations.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/event-listeners.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/faq.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/generators.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/limitations.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/list-of-examples.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/logging.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/matchers.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/migrate-v2-to-v3.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/opensource-users.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/other-macros.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/own-main.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/Readme.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/release-notes.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/release-process.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/reporter-events.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/reporters.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/skipping-passing-failing.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/test-cases-and-sections.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/test-fixtures.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/thread-safety.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/tostring.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/tutorial.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/usage-tips.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/doc/Catch2/why-catch.md
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/ParseAndAddCatchTests.cmake
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/Catch.cmake
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/CatchAddTests.cmake
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/CatchShardTests.cmake
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/lib/cmake/Catch2/CatchShardTestsImpl.cmake
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/Catch2/gdbinit
--- Up-to-date: D:/GDrive/NumericRepresentations_gamma/libs_install/msvc/Catch2/share/Catch2/lldbinit
--- DESTDIR: 
--- PREFIX: 
 ==========================================
- INSTALACIÓN COMPLETADA para msvc
+ INSTALACIÓN COMPLETADA (v3.7.1) para msvc
 ==========================================
+/d/gdrive/numericrepresentations_gamma/install_deps.bash: línea 156: EOF inesperado mientras se buscaba un ``' coincidente

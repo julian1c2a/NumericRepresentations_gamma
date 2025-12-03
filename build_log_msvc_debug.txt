@@ -1,28 +1,36 @@
 ==========================================
  CONFIGURANDO Y CONSTRUYENDO: msvc-debug
 ==========================================
--- Configuring done (0.1s)
--- Generating done (0.3s)
+-- The C compiler identification is MSVC 19.50.35719.0
+-- The CXX compiler identification is MSVC 19.50.35719.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: c:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.50.35717/bin/Hostx64/x64/cl.exe - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: c:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.50.35717/bin/Hostx64/x64/cl.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (2.0s)
+-- Generating done (0.1s)
 -- Build files have been written to: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/debug
-ninja: no work to do.
-ninja: no work to do.
+[1/2] Building CXX object CMakeFiles\test_01_math_tables.dir\tests\test_01_math_tables.cpp.obj
+[2/2] Linking CXX executable test_01_math_tables.exe
+[1/2] Building CXX object CMakeFiles\test_02_append.dir\tests\test_02_append.cpp.obj
+[2/2] Linking CXX executable test_02_append.exe
 [1/2] Building CXX object CMakeFiles\test_03_core_internal.dir\tests\test_03_core_internal.cpp.obj
-FAILED: [code=2] CMakeFiles/test_03_core_internal.dir/tests/test_03_core_internal.cpp.obj 
-"D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\cl.exe"  /nologo /TP  -ID:\gdrive\numericrepresentations_gamma\include -external:ID:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include -external:W0 /DWIN32 /D_WINDOWS /W3 /GR /EHsc  /I "D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\winrt" /DWIN32 /D_WINDOWS /EHsc /Ob0 /Od /RTC1 -std:c++latest -MDd -Zi /permissive- /bigobj /constexpr:depth8192 /constexpr:steps50000000 /wd4146 /Zc:preprocessor /showIncludes /FoCMakeFiles\test_03_core_internal.dir\tests\test_03_core_internal.cpp.obj /FdCMakeFiles\test_03_core_internal.dir\ /FS -c D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(85): error C2672: 'NumRepr::type_traits::atoull_ct': no se encontr¢ una funci¢n sobrecargada que coincida
-D:\gdrive\numericrepresentations_gamma\include\core/internal/basic_types.hpp(305): note: puede ser 'NumRepr::ullint_t NumRepr::type_traits::atoull_ct(void)'
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(85): note: la expresi¢n no se evalu¢ como una constante
-D:\gdrive\numericrepresentations_gamma\include\core/internal/basic_types.hpp(142): note: se encontr¢ una (sub)expresi¢n no constante
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(85): error C2737: 'val': se debe inicializar el objeto constexpr
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(86): error C2131: la expresi¢n no se evalu¢ como una constante
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(86): note: error causado por la lectura de un s¡mbolo sin inicializar
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(86): note: consulte el uso de 'val'
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(89): error C2672: 'NumRepr::type_traits::atoull_ct': no se encontr¢ una funci¢n sobrecargada que coincida
-D:\gdrive\numericrepresentations_gamma\include\core/internal/basic_types.hpp(305): note: puede ser 'NumRepr::ullint_t NumRepr::type_traits::atoull_ct(void)'
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(89): note: la expresi¢n no se evalu¢ como una constante
-D:\gdrive\numericrepresentations_gamma\include\core/internal/basic_types.hpp(142): note: se encontr¢ una (sub)expresi¢n no constante
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(89): error C2737: 'val_0': se debe inicializar el objeto constexpr
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(90): error C2131: la expresi¢n no se evalu¢ como una constante
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(90): note: error causado por la lectura de un s¡mbolo sin inicializar
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(90): note: consulte el uso de 'val_0'
+[2/2] Linking CXX executable test_03_core_internal.exe
+[1/2] Building CXX object CMakeFiles\test_04_dig_t.dir\tests\test_04_dig_t.cpp.obj
+[2/2] Linking CXX executable test_04_dig_t.exe
+[1/2] Building CXX object CMakeFiles\test_05_dig_t_constructors.dir\tests\test_05_dig_t_constructors.cpp.obj
+[2/2] Linking CXX executable test_05_dig_t_constructors.exe
+[1/2] Building CXX object CMakeFiles\test_06_dig_t_assignations.dir\tests\test_06_dig_t_assignations.cpp.obj
+[2/2] Linking CXX executable test_06_dig_t_assignations.exe
+FAILED: [code=4294967295] test_06_dig_t_assignations.exe 
+C:\Windows\system32\cmd.exe /C "cd . && C:\msys64\ucrt64\bin\cmake.exe -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\test_06_dig_t_assignations.dir --rc=C:\PROGRA~2\WI3CF2~1\10\bin\100261~1.0\x64\rc.exe --mt=C:\PROGRA~2\WI3CF2~1\10\bin\100261~1.0\x64\mt.exe --manifests  -- c:\PROGRA~1\MIB055~1\18\COMMUN~1\VC\Tools\MSVC\1450~1.357\bin\Hostx64\x64\link.exe /nologo CMakeFiles\test_06_dig_t_assignations.dir\tests\test_06_dig_t_assignations.cpp.obj  /out:test_06_dig_t_assignations.exe /implib:test_06_dig_t_assignations.lib /pdb:test_06_dig_t_assignations.pdb /version:0.0 /LIBPATH:"c:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\lib\x64" /LIBPATH:"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\ucrt\x64" /LIBPATH:"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64" /machine:x64 /debug /INCREMENTAL /subsystem:console  D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\lib\Catch2Maind.lib  D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\lib\Catch2d.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+LINK Pass 1: command "c:\PROGRA~1\MIB055~1\18\COMMUN~1\VC\Tools\MSVC\1450~1.357\bin\Hostx64\x64\link.exe /nologo CMakeFiles\test_06_dig_t_assignations.dir\tests\test_06_dig_t_assignations.cpp.obj /out:test_06_dig_t_assignations.exe /implib:test_06_dig_t_assignations.lib /pdb:test_06_dig_t_assignations.pdb /version:0.0 /LIBPATH:c:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\lib\x64 /LIBPATH:C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\ucrt\x64 /LIBPATH:C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64 /machine:x64 /debug /INCREMENTAL /subsystem:console D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\lib\Catch2Maind.lib D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\lib\Catch2d.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTFILE:CMakeFiles\test_06_dig_t_assignations.dir/intermediate.manifest CMakeFiles\test_06_dig_t_assignations.dir/manifest.res" failed (exit code 1120) with the following output:
+test_06_dig_t_assignations.cpp.obj : error LNK2019: s¡mbolo externo "class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > __cdecl Catch::Detail::makeExceptionHappenedString(void)" (?makeExceptionHappenedString@Detail@Catch@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ) sin resolver al que se hace referencia en la funci¢n __catch$??$stringify@E@Detail@Catch@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBE@Z$0
+test_06_dig_t_assignations.exe : fatal error LNK1120: 1 externos sin resolver
 ninja: build stopped: subcommand failed.
