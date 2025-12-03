@@ -113,6 +113,8 @@ build_cmake() {
 
 case "$COMPILER_MODE" in
     msvc)
+        # LLAMADA AL NUEVO SCRIPT DE DETECCIÓN Y REPARACIÓN
+        ./update_msvc_toolchain.bash || exit 1
         build_cmake 
         ;;
     gcc)
