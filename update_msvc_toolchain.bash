@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # ==============================================================================
-# UPDATE MSVC TOOLCHAIN (V2 - MULTI-DRIVE & DYNAMIC PATH)
+# UPDATE MSVC TOOLCHAIN (V3 - DEEP SEARCH)
 # ==============================================================================
-# Detecta automáticamente instalaciones en C: o D:, sin importar si la carpeta
-# se llama "2022", "18", "Community" o "Professional".
+# Busca agresivamente la carpeta MSVC aumentando la profundidad de exploración
+# para soportar estructuras complejas (ej: .../18/Community/...)
 # ==============================================================================
 
 TOOLCHAIN_FILE="./msvc_toolchain.cmake"
@@ -13,7 +13,6 @@ echo " 🔎 BUSCANDO COMPILADOR MSVC (C: y D:)"
 echo "=================================================="
 
 # 1. DEFINICIÓN DE RUTAS DE BÚSQUEDA (Roots)
-# Convertimos rutas de Windows a Bash. Buscaremos en C y luego en D.
 POSSIBLE_ROOTS=(
     "/c/Program Files/Microsoft Visual Studio"
     "/d/Program Files/Microsoft Visual Studio"
@@ -27,21 +26,21 @@ for ROOT in "${POSSIBLE_ROOTS[@]}"; do
     if [ -d "$ROOT" ]; then
         echo "   -> Explorando: $ROOT ..."
         
-        # Buscamos la carpeta 'MSVC' dentro de la estructura. 
-        # -maxdepth 4 suele ser suficiente para: VS/2022/Community/VC/Tools/MSVC
-        # Usamos 'find' para localizar la carpeta padre de las versiones.
-        MSVC_TOOLS_DIRS=$(find "$ROOT" -maxdepth 4 -path "*/VC/Tools/MSVC" -type d 2>/dev/null)
+        # CAMBIO V3: Usamos -name "MSVC" directamente y aumentamos maxdepth a 9
+        # Esto encontrará .../VC/Tools/MSVC sin importar lo que haya en medio.
+        MSVC_TOOLS_DIRS=$(find "$ROOT" -maxdepth 9 -type d -name "MSVC" 2>/dev/null)
         
         for TOOLS_DIR in $MSVC_TOOLS_DIRS; do
-            # Dentro de MSVC, buscamos las carpetas de versión (ej: 14.50.35717)
+            # Verificar si dentro de MSVC hay carpetas con números (versiones)
+            # Buscamos carpetas tipo 14.xx.xxxxx
             LATEST_VER_IN_DIR=$(find "$TOOLS_DIR" -maxdepth 1 -type d -regextype posix-extended -regex ".*/[0-9]+\.[0-9]+\.[0-9]+" | sort -V | tail -n 1)
             
             if [ ! -z "$LATEST_VER_IN_DIR" ]; then
                 VER_NUM=$(basename "$LATEST_VER_IN_DIR")
-                echo "      Encontrada versión: $VER_NUM en $(dirname "$TOOLS_DIR")"
+                echo "      ✅ Encontrado candidato: $VER_NUM"
+                echo "         Ruta: $LATEST_VER_IN_DIR"
                 
-                # Comparamos versiones (lógica simple de sort -V)
-                # Si la encontrada es mayor que la actual guardada, la actualizamos.
+                # Lógica de versión mayor
                 if [ "$(printf '%s\n' "$HIGHEST_VERSION" "$VER_NUM" | sort -V | tail -n1)" == "$VER_NUM" ]; then
                     HIGHEST_VERSION=$VER_NUM
                     FOUND_MSVC_PATH=$LATEST_VER_IN_DIR
@@ -53,23 +52,23 @@ done
 
 # 3. VERIFICACIÓN DEL RESULTADO MSVC
 if [ -z "$FOUND_MSVC_PATH" ]; then
-    echo "❌ ERROR: No se encontró ninguna instalación válida de MSVC en C: o D:."
+    echo "❌ ERROR CRÍTICO: No se encontró la carpeta 'MSVC' con versiones válidas inside."
+    echo "   Por favor, verifica manualmente que existe:"
+    echo "   C:/Program Files/Microsoft Visual Studio/.../VC/Tools/MSVC/<version>"
     exit 1
 fi
 
-# Convertir ruta de Bash a Windows para el archivo CMake (ej: /c/Prog... -> C:/Prog...)
-# Truco: sed 's|^/\(.\)/|\1:/|' convierte /c/ a c:/ (minúscula), luego lo pasamos a mayúscula si quieres, 
-# pero Windows es case-insensitive, así que c:/ funciona bien.
+# Convertir ruta de Bash a Windows (ej: /c/Prog... -> c:/Prog...)
 MSVC_BASE_WIN=$(echo "$FOUND_MSVC_PATH" | sed -E 's|^/([a-zA-Z])|\1:|')
 
-echo "✅ SELECCIONADA: $MSVC_BASE_WIN"
+echo "🏆 SELECCIONADA FINAL: $MSVC_BASE_WIN"
 
 # ------------------------------------------------------------------------------
 # 4. DETECCIÓN DE WINDOWS KITS (Generalmente siempre en C:)
 # ------------------------------------------------------------------------------
 KIT_ROOT="/c/Program Files (x86)/Windows Kits/10/Include"
 if [ ! -d "$KIT_ROOT" ]; then
-    echo "❌ ERROR: No se encuentra Windows Kits en C:."
+    echo "❌ ERROR: No se encuentra Windows Kits en C: ($KIT_ROOT)."
     exit 1
 fi
 
@@ -85,15 +84,15 @@ echo "--------------------------------------------------"
 echo "⚙️  Actualizando $TOOLCHAIN_FILE..."
 
 # 5. APLICAR CAMBIOS
-# Reemplazamos MSVC_BASE con la nueva ruta (sea C: o D:)
+# Reemplazamos MSVC_BASE con la nueva ruta
+# Usamos separador | en sed para evitar conflictos con /
 sed -i.bak "s|set(MSVC_BASE \".*\")|set(MSVC_BASE \"$MSVC_BASE_WIN\")|g" "$TOOLCHAIN_FILE"
 
 # Reemplazamos KIT_VER
 sed -i.bak "s|set(KIT_VER   \".*\")|set(KIT_VER   \"$NEW_KIT_VERSION\")|g" "$TOOLCHAIN_FILE"
 
 if [ $? -eq 0 ]; then
-    echo "🎉 Archivo actualizado correctamente."
-    echo "   NUEVA RUTA MSVC: $MSVC_BASE_WIN"
+    echo "🎉 ¡ÉXITO! Archivo actualizado."
 else
     echo "❌ Fallo al editar el archivo."
     exit 1
