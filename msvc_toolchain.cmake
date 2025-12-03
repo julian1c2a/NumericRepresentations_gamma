@@ -1,4 +1,4 @@
-# msvc_toolchain.cmake (Generado automáticamente por v5)
+# msvc_toolchain.cmake (Generado automáticamente V6)
 set(CMAKE_SYSTEM_NAME Windows)
 set(CMAKE_SYSTEM_PROCESSOR AMD64)
 
@@ -14,7 +14,7 @@ set(CMAKE_LINKER       "${MSVC_BASE}/bin/Hostx64/x64/link.exe")
 set(CMAKE_RC_COMPILER  "${KIT_BASE}/bin/${KIT_VER}/x64/rc.exe")
 set(CMAKE_MT           "${KIT_BASE}/bin/${KIT_VER}/x64/mt.exe")
 
-# Directorios de Librerías y Cabeceras
+# Directorios
 set(MSVC_LIB_DIRS
     "${MSVC_BASE}/lib/x64"
     "${KIT_BASE}/Lib/${KIT_VER}/ucrt/x64"
@@ -29,7 +29,7 @@ set(MSVC_INC_DIRS
     "${KIT_BASE}/Include/${KIT_VER}/winrt"
 )
 
-# Inyección de Rutas en Flags (Ninja Workaround)
+# Inyección de rutas en flags
 set(FLAGS_INCLUDE "")
 foreach(DIR ${MSVC_INC_DIRS})
     file(TO_NATIVE_PATH "${DIR}" DIR_NATIVE)
@@ -42,9 +42,9 @@ foreach(DIR ${MSVC_LIB_DIRS})
     string(APPEND FLAGS_LIB " /LIBPATH:\"${DIR_NATIVE}\"")
 endforeach()
 
-# --- FLAGS INICIALES (AQUÍ ESTÁ LA MAGIA) ---
-# Incluimos /Zc:preprocessor y /DNOMINMAX aquí para que coexistan con los Includes.
-set(COMMON_FLAGS "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /DNOMINMAX /Zc:preprocessor")
+# --- FLAGS GLOBALES ---
+# Añadimos /Zc:__cplusplus para compatibilidad binaria estricta
+set(COMMON_FLAGS "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /DNOMINMAX /Zc:preprocessor /Zc:__cplusplus")
 
 set(CMAKE_C_FLAGS_INIT   "${COMMON_FLAGS} ${FLAGS_INCLUDE}")
 set(CMAKE_CXX_FLAGS_INIT "${COMMON_FLAGS} ${FLAGS_INCLUDE}")
