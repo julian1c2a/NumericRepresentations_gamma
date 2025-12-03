@@ -6,23 +6,45 @@
 -- Build files have been written to: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release
 ninja: no work to do.
 ninja: no work to do.
-[1/2] Building CXX object CMakeFiles\test_03_core_internal.dir\tests\test_03_core_internal.cpp.obj
-FAILED: [code=2] CMakeFiles/test_03_core_internal.dir/tests/test_03_core_internal.cpp.obj 
-"D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\cl.exe"  /nologo /TP  -ID:\gdrive\numericrepresentations_gamma\include -external:ID:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include -external:W0 /DWIN32 /D_WINDOWS /W3 /GR /EHsc  /I "D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\winrt" /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++latest -MD /permissive- /bigobj /constexpr:depth8192 /constexpr:steps50000000 /wd4146 /Zc:preprocessor /showIncludes /FoCMakeFiles\test_03_core_internal.dir\tests\test_03_core_internal.cpp.obj /FdCMakeFiles\test_03_core_internal.dir\ /FS -c D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(85): error C2672: 'NumRepr::type_traits::atoull_ct': no se encontr¢ una funci¢n sobrecargada que coincida
-D:\gdrive\numericrepresentations_gamma\include\core/internal/basic_types.hpp(305): note: puede ser 'NumRepr::ullint_t NumRepr::type_traits::atoull_ct(void)'
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(85): note: la expresi¢n no se evalu¢ como una constante
-D:\gdrive\numericrepresentations_gamma\include\core/internal/basic_types.hpp(142): note: se encontr¢ una (sub)expresi¢n no constante
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(85): error C2737: 'val': se debe inicializar el objeto constexpr
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(86): error C2131: la expresi¢n no se evalu¢ como una constante
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(86): note: error causado por la lectura de un s¡mbolo sin inicializar
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(86): note: consulte el uso de 'val'
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(89): error C2672: 'NumRepr::type_traits::atoull_ct': no se encontr¢ una funci¢n sobrecargada que coincida
-D:\gdrive\numericrepresentations_gamma\include\core/internal/basic_types.hpp(305): note: puede ser 'NumRepr::ullint_t NumRepr::type_traits::atoull_ct(void)'
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(89): note: la expresi¢n no se evalu¢ como una constante
-D:\gdrive\numericrepresentations_gamma\include\core/internal/basic_types.hpp(142): note: se encontr¢ una (sub)expresi¢n no constante
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(89): error C2737: 'val_0': se debe inicializar el objeto constexpr
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(90): error C2131: la expresi¢n no se evalu¢ como una constante
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(90): note: error causado por la lectura de un s¡mbolo sin inicializar
-D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp(90): note: consulte el uso de 'val_0'
+ninja: no work to do.
+ninja: no work to do.
+ninja: no work to do.
+ninja: no work to do.
+ninja: no work to do.
+[1/2] Building CXX object CMakeFiles\test_08_dig_t_operadores.dir\tests\test_08_dig_t_operadores.cpp.obj
+FAILED: [code=2] CMakeFiles/test_08_dig_t_operadores.dir/tests/test_08_dig_t_operadores.cpp.obj 
+c:\PROGRA~1\MIB055~1\18\COMMUN~1\VC\Tools\MSVC\1450~1.357\bin\Hostx64\x64\cl.exe  /nologo /TP  -ID:\gdrive\numericrepresentations_gamma\include -external:ID:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include -external:W0 /DWIN32 /D_WINDOWS /W3 /GR /EHsc  /I "c:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\include" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\winrt" /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++latest -MD /permissive- /bigobj /constexpr:depth8192 /constexpr:steps50000000 /wd4146 /Zc:preprocessor /DNOMINMAX /Zm250 /showIncludes /FoCMakeFiles\test_08_dig_t_operadores.dir\tests\test_08_dig_t_operadores.cpp.obj /FdCMakeFiles\test_08_dig_t_operadores.dir\ /FS -c D:\gdrive\numericrepresentations_gamma\tests\test_08_dig_t_operadores.cpp
+D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include\catch2/internal/catch_decomposer.hpp(391): error C7595: "std::_Literal_zero::_Literal_zero": la llamada a la funci¢n inmediata no es una expresi¢n constante
+D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include\catch2/internal/catch_decomposer.hpp(391): note: el error se debi¢ a una lectura de una variable fuera de su duraci¢n
+D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include\catch2/internal/catch_decomposer.hpp(391): note: consulte el uso de 'rhs'
+D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include\catch2/internal/catch_decomposer.hpp(391): note: el contexto de creaci¢n de instancias de la plantilla (el m s antiguo primero) es
+D:\gdrive\numericrepresentations_gamma\tests\test_08_dig_t_operadores.cpp(161): note: Vea la referencia a la creaci¢n de una instancia de la funci¢n plantilla "Catch::BinaryExpr<LhsT,int> Catch::operator <<int>(Catch::ExprLhs<LhsT> &&,RhsT)" que se est  compilando
+        with
+        [
+            LhsT=std::strong_ordering,
+            RhsT=int
+        ]
+D:\gdrive\numericrepresentations_gamma\tests\test_08_dig_t_operadores.cpp(161): note: vea la primera referencia a "Catch::operator <" en "CATCH2_INTERNAL_TEST_11"
+D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include\catch2/internal/catch_decomposer.hpp(393): error C7595: "std::_Literal_zero::_Literal_zero": la llamada a la funci¢n inmediata no es una expresi¢n constante
+D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include\catch2/internal/catch_decomposer.hpp(393): note: el error se debi¢ a una lectura de una variable fuera de su duraci¢n
+D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include\catch2/internal/catch_decomposer.hpp(393): note: consulte el uso de 'rhs'
+D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include\catch2/internal/catch_decomposer.hpp(393): note: el contexto de creaci¢n de instancias de la plantilla (el m s antiguo primero) es
+D:\gdrive\numericrepresentations_gamma\tests\test_08_dig_t_operadores.cpp(162): note: Vea la referencia a la creaci¢n de una instancia de la funci¢n plantilla "Catch::BinaryExpr<LhsT,int> Catch::operator ><int>(Catch::ExprLhs<LhsT> &&,RhsT)" que se est  compilando
+        with
+        [
+            LhsT=std::strong_ordering,
+            RhsT=int
+        ]
+D:\gdrive\numericrepresentations_gamma\tests\test_08_dig_t_operadores.cpp(162): note: vea la primera referencia a "Catch::operator >" en "CATCH2_INTERNAL_TEST_11"
+D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include\catch2/internal/catch_decomposer.hpp(341): error C7595: "std::_Literal_zero::_Literal_zero": la llamada a la funci¢n inmediata no es una expresi¢n constante
+D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include\catch2/internal/catch_decomposer.hpp(341): note: el error se debi¢ a una lectura de una variable fuera de su duraci¢n
+D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include\catch2/internal/catch_decomposer.hpp(341): note: consulte el uso de 'rhs'
+D:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include\catch2/internal/catch_decomposer.hpp(341): note: el contexto de creaci¢n de instancias de la plantilla (el m s antiguo primero) es
+D:\gdrive\numericrepresentations_gamma\tests\test_08_dig_t_operadores.cpp(163): note: Vea la referencia a la creaci¢n de una instancia de la funci¢n plantilla "Catch::BinaryExpr<LhsT,int> Catch::operator ==<int>(Catch::ExprLhs<LhsT> &&,RhsT)" que se est  compilando
+        with
+        [
+            LhsT=std::strong_ordering,
+            RhsT=int
+        ]
+D:\gdrive\numericrepresentations_gamma\tests\test_08_dig_t_operadores.cpp(163): note: vea la primera referencia a "Catch::operator ==" en "CATCH2_INTERNAL_TEST_11"
 ninja: build stopped: subcommand failed.

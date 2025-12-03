@@ -19,7 +19,8 @@ endif()
 
 if(MSVC)
   # Flags propuestos + /wd4146
-  # Añadimos /Zc:preprocessor para asegurar conformidad total con macros
+  # AÑADIDO: /DNOMINMAX para evitar conflictos con std::max/min y windows.h
+  # AÑADIDO: /Zm250 para aumentar el límite de memoria del compilador (Heap Error C1060)
   add_compile_options(
     /permissive- 
     /bigobj 
@@ -27,9 +28,10 @@ if(MSVC)
     /constexpr:steps50000000 
     /wd4146 
     /Zc:preprocessor
+    /DNOMINMAX
+    /Zm250
   )
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  # Aumentamos límites para Clang y FORZAMOS libc++
   add_compile_options(
     -fconstexpr-depth=8192
     -fconstexpr-steps=50000000
@@ -46,12 +48,10 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 enable_testing()
 
 # ==========================================
-# DEPENDENCIAS (CORREGIDO PARA EVITAR MINGW EN MSVC)
+# DEPENDENCIAS
 # ==========================================
 if(MSVC)
     # IMPORTANTE: Con MSVC, prohibimos buscar en las rutas del sistema (MinGW)
-    # para evitar contaminación de cabeceras stdio.h incompatibles.
-    # Solo buscará en CMAKE_PREFIX_PATH (definido en el Preset).
     find_package(Catch2 3 REQUIRED PATHS "${CMAKE_PREFIX_PATH}" NO_DEFAULT_PATH)
 else()
     find_package(Catch2 3 REQUIRED)

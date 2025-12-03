@@ -14,16 +14,12 @@ SECOND_ARG=${2:-""}
 
 # --- LÓGICA DE LOGGING DINÁMICO ---
 if [ "$SECOND_ARG" == "print" ]; then
-    # Limpiamos caracteres extraños del preset para usarlo de nombre de archivo
-    # (convierte 'gcc-release' a 'gcc_release' si fuera necesario, similar a tus otros scripts)
     SAFE_SUFFIX="${INPUT_ARG//-/_}"
     LOG_FILE="deps_log_${SAFE_SUFFIX}.txt"
-    
-    # Redirigimos stdout (1) y stderr (2) al archivo log
     exec > "$LOG_FILE" 2>&1
 fi
 
-# Detección de modo para configuración interna
+# Detección de modo
 if [[ "$INPUT_ARG" == *"msvc"* ]]; then
     COMPILER_MODE="msvc"
 elif [[ "$INPUT_ARG" == *"gcc"* ]]; then
@@ -35,16 +31,26 @@ else
     COMPILER_MODE="msvc"
 fi
 
-CATCH2_VERSION="v3.4.0"
+# CAMBIO IMPORTANTE: Subimos a v3.7.1 para corregir error C7595 con spaceship operator en MSVC C++23
+CATCH2_VERSION="v3.7.1"
 BASE_INSTALL_DIR="$(pwd)/libs_install"
 BUILD_ROOT="build_deps"
-TOOLCHAIN_FILE="$(pwd)/msvc_toolchain.cmake" # Ruta absoluta al toolchain
+TOOLCHAIN_FILE="$(pwd)/msvc_toolchain.cmake" 
 
-# Descarga del repo si no existe
 mkdir -p "$BUILD_ROOT"
+
+# Lógica robusta de descarga/actualización
 if [ ! -d "$BUILD_ROOT/Catch2" ]; then
     echo ">>> Clonando Catch2 $CATCH2_VERSION..."
     git clone --branch $CATCH2_VERSION --depth 1 https://github.com/catchorg/Catch2.git "$BUILD_ROOT/Catch2"
+else
+    echo ">>> Verificando versión de Catch2..."
+    pushd "$BUILD_ROOT/Catch2" > /dev/null
+    # Hacemos fetch y checkout forzado para asegurar que estamos en la versión correcta
+    git fetch --tags
+    git checkout $CATCH2_VERSION
+    echo ">>> Actualizado a $CATCH2_VERSION"
+    popd > /dev/null
 fi
 
 COMPILER_INSTALL_ROOT="$BASE_INSTALL_DIR/$COMPILER_MODE"
@@ -57,11 +63,11 @@ build_cmake() {
     if [ "$COMPILER_MODE" == "msvc" ]; then
         INSTALL_PATH="$COMPILER_INSTALL_ROOT/Catch2"
         
-        # Limpieza inicial
+        # Limpieza inicial para asegurar re-compilación limpia con la nueva versión
         rm -rf "$BUILD_DIR_BASE"
         rm -rf "$INSTALL_PATH"
 
-        echo ">>> [MSVC-Ninja] Configurando y Compilando con Toolchain..."
+        echo ">>> [MSVC-Ninja] Configurando y Compilando Catch2 $CATCH2_VERSION..."
 
         for BTYPE in Release Debug; do
             CURRENT_BUILD_DIR="${BUILD_DIR_BASE}_${BTYPE}"
@@ -87,13 +93,12 @@ build_cmake() {
         INSTALL_PATH_DBG="$COMPILER_INSTALL_ROOT/debug/Catch2"
         BUILD_DIR_DBG="$BUILD_DIR_BASE/debug"
         
-        # Limpieza por seguridad
         rm -rf "$BUILD_DIR_REL" "$BUILD_DIR_DBG"
-        rm -rf "$COMPILER_INSTALL_ROOT" # Limpiamos install para evitar mezclas
+        # No borramos INSTALL_ROOT entero por si acaso, solo las carpetas destino si existen
+        rm -rf "$INSTALL_PATH_REL" "$INSTALL_PATH_DBG"
 
-        echo ">>> [$COMPILER_MODE] Configurando y Compilando..."
+        echo ">>> [$COMPILER_MODE] Configurando y Compilando Catch2 $CATCH2_VERSION..."
         
-        # Loop para Release y Debug
         for BTYPE in Release Debug; do
             if [ "$BTYPE" == "Release" ]; then
                 TPATH="$INSTALL_PATH_REL"; TBUILD="$BUILD_DIR_REL"
@@ -116,14 +121,10 @@ build_cmake() {
 case "$COMPILER_MODE" in
     msvc)
         # INTEGRACIÓN AUTOMÁTICA DEL TOOLCHAIN UPDATER
-        # Busca el script de actualización v4 (el más robusto) o el normal
         if [ -f "./update_msvc_toolchain_v4.bash" ]; then
             ./update_msvc_toolchain_v4.bash || exit 1
         elif [ -f "./update_msvc_toolchain.bash" ]; then
             ./update_msvc_toolchain.bash || exit 1
-        else
-            echo "⚠️ ADVERTENCIA: No se encontró el script update_msvc_toolchain*.bash"
-            echo "   Asegúrate de que las rutas en msvc_toolchain.cmake son correctas manualmente."
         fi
         
         build_cmake 
@@ -136,7 +137,6 @@ case "$COMPILER_MODE" in
         build_cmake "${ARGS[@]}"
         ;;
     clang)
-        # IMPORTANTE: Forzamos libc++ para coincidir con la librería nativa en clang64
         ARGS=("-DCMAKE_CXX_COMPILER=clang++" "-DCMAKE_CXX_FLAGS=-stdlib=libc++")
         if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" || "$OSTYPE" == "win32" ]]; then
             ARGS+=("-G" "MinGW Makefiles")
@@ -146,5 +146,18 @@ case "$COMPILER_MODE" in
 esac
 
 echo "=========================================="
-echo " INSTALACIÓN COMPLETADA para $COMPILER_MODE"
+echo " INSTALACIÓN COMPLETADA ($CATCH2_VERSION) para $COMPILER_MODE"
 echo "=========================================="
+```
+
+#### 2. Pasos para resolverlo
+
+#1.  Ejecuta la actualización de dependencias:
+#    ```bash
+#    ./install_deps.bash msvc print
+#    ```
+#    *(Verifica en `deps_log_msvc.txt` que haya descargado e instalado la versión 3.7.1)*.
+
+#2.  Vuelve a compilar tu proyecto:
+#    ```bash
+#    ./build_tests.bash msvc-release print

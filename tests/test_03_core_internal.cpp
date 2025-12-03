@@ -15,7 +15,6 @@ using namespace NumRepr::AuxFunc;
 // =============================================================================
 // IDENTIFICACIÓN DE LA SUITE
 // =============================================================================
-// Truco: Este constructor estático corre antes que el main de Catch2
 struct SuiteInfoPrinter {
     SuiteInfoPrinter() {
         std::cout << "\n=============================================================\n"
@@ -74,19 +73,21 @@ TEST_CASE("atoull_checked: Conversión segura", "[core][internal][basic_types]")
     }
 }
 
-// Variables estáticas para pasar como referencia a template NTTP
-static constexpr char NUM_STR[] = "123456789";
-static constexpr char ZERO_STR[] = "0";
+// Variables estáticas eliminadas o comentadas porque MSVC prefiere literales directos
+// static constexpr char NUM_STR[] = "123456789";
+// static constexpr char ZERO_STR[] = "0";
 
 TEST_CASE("atoull_ct: Literal de usuario compile-time", "[core][internal][basic_types]") {
     using namespace NumRepr::type_traits;
     
-    // CORRECCIÓN: Pasar la variable estática, no el literal directo
-    constexpr uint64_t val = atoull_ct<NUM_STR>();
+    // CORRECCIÓN PARA MSVC:
+    // Pasamos el literal de cadena DIRECTAMENTE al template.
+    // MSVC tiene problemas deduciendo 'fixed_string' desde una variable 'constexpr char[]'.
+    constexpr uint64_t val = atoull_ct<"123456789">();
     static_assert(val == 123456789, "atoull_ct valor incorrecto");
 
     // Casos de borde
-    constexpr uint64_t val_0 = atoull_ct<ZERO_STR>();
+    constexpr uint64_t val_0 = atoull_ct<"0">();
     static_assert(val_0 == 0);
 }
 
@@ -99,7 +100,6 @@ TEST_CASE("pack2array: Conversión de variadic packs", "[core][internal][pack]")
 
     SECTION("Generación de std::array") {
         constexpr auto arr = pack2array<int, int, int>{}(10, 20, 30);
-        // CORRECCIÓN: std::is_same_v necesita tipos exactos
         static_assert(std::is_same_v<std::remove_cv_t<decltype(arr)>, std::array<int, 3>>);
         CHECK(arr[0] == 10);
         CHECK(arr[1] == 20);
@@ -124,7 +124,7 @@ TEST_CASE("AuxFunc: Logaritmos y Bits", "[core][internal][aux_func]") {
         CHECK(int_log2(1) == 0);
         CHECK(int_log2(2) == 1);
         CHECK(int_log2(1024) == 10);
-        CHECK(int_log2(0) == 0); // Comportamiento definido en implementación
+        CHECK(int_log2(0) == 0); 
     }
 
     SECTION("int_log2_sf (Safe)") {
@@ -135,7 +135,7 @@ TEST_CASE("AuxFunc: Logaritmos y Bits", "[core][internal][aux_func]") {
     SECTION("bit_width") {
         CHECK(bit_width(0) == 0);
         CHECK(bit_width(1) == 1);
-        CHECK(bit_width(2) == 2); // 10
+        CHECK(bit_width(2) == 2); 
         CHECK(bit_width(255) == 8);
     }
 }
@@ -172,7 +172,6 @@ TEST_CASE("AuxFunc: Raíces Cuadradas", "[core][internal][aux_func]") {
 // 4. CONVERSIONS: Digit Arrays to Int
 // =============================================================================
 
-// Mock simple de un "Dígito" para probar conversion_to_int_safe
 struct MockDigit {
     uint8_t v;
     constexpr uint8_t operator()() const { return v; }
@@ -181,9 +180,6 @@ struct MockDigit {
 TEST_CASE("Conversions: Array to Integer", "[core][internal][conversions]") {
     
     std::array<MockDigit, 3> arr10 = {MockDigit{1}, MockDigit{2}, MockDigit{3}}; 
-    // La implementación itera desde L-2 hasta 0, sumando L-1 al principio.
-    // L-1 (índice 2) es el más significativo.
-    // 3 * 100 + 2 * 10 + 1 = 321.
 
     SECTION("Conversión Segura (Base 10)") {
         auto res = conversion_to_int_safe<10, 3>(arr10);
@@ -193,17 +189,13 @@ TEST_CASE("Conversions: Array to Integer", "[core][internal][conversions]") {
 
     SECTION("Conversión Segura (Base 2)") {
         std::array<MockDigit, 4> arr2 = {MockDigit{1}, MockDigit{0}, MockDigit{1}, MockDigit{1}};
-        // Indices: 0, 1, 2, 3
-        // L=4. MSB es index 3 (valor 1).
-        // 1*8 + 1*4 + 0*2 + 1*1 = 13
         auto res = conversion_to_int_safe<2, 4>(arr2);
         REQUIRE(res.has_value());
         CHECK(res.value() == 13);
     }
 
     SECTION("Errores de Conversión") {
-        // Dígito inválido (>= Base)
-        std::array<MockDigit, 2> invalid = {MockDigit{1}, MockDigit{10}}; // 10 no válido en base 10
+        std::array<MockDigit, 2> invalid = {MockDigit{1}, MockDigit{10}}; 
         auto err = conversion_to_int_safe<10, 2>(invalid);
         REQUIRE_FALSE(err.has_value());
         CHECK(err.error() == ConversionError::InvalidDigit);
