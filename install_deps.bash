@@ -163,3 +163,5 @@ echo "=========================================="
 echo " INSTALACIÓN COMPLETADA ($CATCH2_VERSION) para $COMPILER_MODE"
 echo "=========================================="
 ```
+# --- EXTRACCIÓN DE LA VERSIÓN DEL WINDOWS KIT ---
+# --- 1. DETECCIÓN DE MSVC ---
