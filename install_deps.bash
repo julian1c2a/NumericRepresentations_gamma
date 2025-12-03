@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ==============================================================================
-# SCRIPT DE INSTALACIÓN DE DEPENDENCIAS (CATCH2) - V3.7.1 + FIX RUNTIME + C++23
+# SCRIPT DE INSTALACIÓN DE DEPENDENCIAS (CATCH2) - V3.7.1 + FIX RUNTIME + FLAGS
 # ==============================================================================
 # Uso: ./install_deps.bash [msvc|gcc|clang] [print]
 # ==============================================================================
@@ -62,19 +62,25 @@ build_cmake() {
         rm -rf "$BUILD_DIR_BASE"
         rm -rf "$INSTALL_PATH"
 
-        echo ">>> [MSVC-Ninja] Configurando y Compilando Catch2 $CATCH2_VERSION en C++23..."
+        echo ">>> [MSVC-Ninja] Configurando y Compilando Catch2 $CATCH2_VERSION..."
 
         for BTYPE in Release Debug; do
             CURRENT_BUILD_DIR="${BUILD_DIR_BASE}_${BTYPE}"
             
-            # Fix Runtime Library: MD/MDd
+            # 1. Fix Runtime Library: MD/MDd
             if [ "$BTYPE" == "Debug" ]; then
                 RT_LIB="MultiThreadedDebugDLL"
             else
                 RT_LIB="MultiThreadedDLL"
             fi
 
-            echo "   --- Construyendo $BTYPE (CRT: $RT_LIB) ---"
+            # 2. Fix Flags: Alinear preprocesador con el proyecto principal
+            # /Zc:preprocessor : Vital para evitar errores de enlace LNK2019 en símbolos de excepciones
+            # /DNOMINMAX       : Evita conflictos de macros min/max
+            # /EHsc            : Habilita manejo de excepciones C++ estándar
+            MSVC_FLAGS="/Zc:preprocessor /DNOMINMAX /EHsc"
+
+            echo "   --- Construyendo $BTYPE (CRT: $RT_LIB | Flags: $MSVC_FLAGS) ---"
             
             cmake -S "$BUILD_ROOT/Catch2" -B "$CURRENT_BUILD_DIR" \
                 -G "Ninja" \
@@ -87,6 +93,7 @@ build_cmake() {
                 -DCMAKE_MSVC_RUNTIME_LIBRARY="$RT_LIB" \
                 -DCMAKE_CXX_STANDARD=23 \
                 -DCMAKE_CXX_STANDARD_REQUIRED=ON \
+                -DCMAKE_CXX_FLAGS="$MSVC_FLAGS" \
                 "$@"
 
             cmake --build "$CURRENT_BUILD_DIR" --target install
@@ -102,7 +109,7 @@ build_cmake() {
         rm -rf "$BUILD_DIR_REL" "$BUILD_DIR_DBG"
         rm -rf "$INSTALL_PATH_REL" "$INSTALL_PATH_DBG"
 
-        echo ">>> [$COMPILER_MODE] Configurando y Compilando Catch2 $CATCH2_VERSION en C++23..."
+        echo ">>> [$COMPILER_MODE] Configurando y Compilando Catch2 $CATCH2_VERSION..."
         
         for BTYPE in Release Debug; do
             if [ "$BTYPE" == "Release" ]; then
