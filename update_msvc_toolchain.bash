@@ -1,11 +1,12 @@
 #!/bin/bash
 
 # ==============================================================================
-# UPDATE MSVC TOOLCHAIN (V5 - GENERATOR)
+# UPDATE MSVC TOOLCHAIN (V6 - STANDARD COMPLIANCE)
 # ==============================================================================
-# 1. Busca la instalación de MSVC en C: y D:.
-# 2. GENERA un archivo msvc_toolchain.cmake nuevo con todas las flags correctas
-#    (Incluyendo /Zc:preprocessor y rutas de inclusión inyectadas).
+# Genera msvc_toolchain.cmake con flags robustas:
+# - /Zc:preprocessor : Preprocesador estándar (necesario para Catch2 v3)
+# - /Zc:__cplusplus  : Reporta correctamente __cplusplus (vital para C++23)
+# - /DNOMINMAX       : Evita conflictos con windows.h
 # ==============================================================================
 
 TOOLCHAIN_FILE="./msvc_toolchain.cmake"
@@ -13,7 +14,7 @@ echo "=================================================="
 echo " 🔎 BUSCANDO COMPILADOR MSVC (C: y D:)"
 echo "=================================================="
 
-# --- 1. DETECCIÓN DE RUTAS (Lógica v4 probada) ---
+# Rutas posibles
 POSSIBLE_ROOTS=("/c/Program Files/Microsoft Visual Studio" "/d/Program Files/Microsoft Visual Studio")
 FOUND_MSVC_PATH=""
 HIGHEST_VERSION="0.0.0"
@@ -44,7 +45,7 @@ fi
 MSVC_BASE_WIN=$(echo "$FOUND_MSVC_PATH" | sed -E 's|^/([a-zA-Z])|\1:|')
 echo "🏆 MSVC: $MSVC_BASE_WIN"
 
-# --- 2. DETECCIÓN DE WINDOWS KITS ---
+# --- DETECCIÓN DE WINDOWS KITS ---
 KIT_ROOT="/c/Program Files (x86)/Windows Kits/10/Include"
 NEW_KIT_VERSION=""
 if [ -d "$KIT_ROOT" ]; then
@@ -59,12 +60,12 @@ if [ -z "$NEW_KIT_VERSION" ]; then
 fi
 echo "✅ KIT:  $NEW_KIT_VERSION"
 
-# --- 3. GENERACIÓN DEL ARCHIVO .CMAKE ---
+# --- GENERACIÓN DEL TOOLCHAIN ---
 echo "--------------------------------------------------"
 echo "⚙️  Generando $TOOLCHAIN_FILE..."
 
 cat > "$TOOLCHAIN_FILE" <<EOF
-# msvc_toolchain.cmake (Generado automáticamente por v5)
+# msvc_toolchain.cmake (Generado automáticamente V6)
 set(CMAKE_SYSTEM_NAME Windows)
 set(CMAKE_SYSTEM_PROCESSOR AMD64)
 
@@ -80,7 +81,7 @@ set(CMAKE_LINKER       "\${MSVC_BASE}/bin/Hostx64/x64/link.exe")
 set(CMAKE_RC_COMPILER  "\${KIT_BASE}/bin/\${KIT_VER}/x64/rc.exe")
 set(CMAKE_MT           "\${KIT_BASE}/bin/\${KIT_VER}/x64/mt.exe")
 
-# Directorios de Librerías y Cabeceras
+# Directorios
 set(MSVC_LIB_DIRS
     "\${MSVC_BASE}/lib/x64"
     "\${KIT_BASE}/Lib/\${KIT_VER}/ucrt/x64"
@@ -95,7 +96,7 @@ set(MSVC_INC_DIRS
     "\${KIT_BASE}/Include/\${KIT_VER}/winrt"
 )
 
-# Inyección de Rutas en Flags (Ninja Workaround)
+# Inyección de rutas en flags
 set(FLAGS_INCLUDE "")
 foreach(DIR \${MSVC_INC_DIRS})
     file(TO_NATIVE_PATH "\${DIR}" DIR_NATIVE)
@@ -108,9 +109,9 @@ foreach(DIR \${MSVC_LIB_DIRS})
     string(APPEND FLAGS_LIB " /LIBPATH:\\"\${DIR_NATIVE}\\"")
 endforeach()
 
-# --- FLAGS INICIALES (AQUÍ ESTÁ LA MAGIA) ---
-# Incluimos /Zc:preprocessor y /DNOMINMAX aquí para que coexistan con los Includes.
-set(COMMON_FLAGS "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /DNOMINMAX /Zc:preprocessor")
+# --- FLAGS GLOBALES ---
+# Añadimos /Zc:__cplusplus para compatibilidad binaria estricta
+set(COMMON_FLAGS "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /DNOMINMAX /Zc:preprocessor /Zc:__cplusplus")
 
 set(CMAKE_C_FLAGS_INIT   "\${COMMON_FLAGS} \${FLAGS_INCLUDE}")
 set(CMAKE_CXX_FLAGS_INIT "\${COMMON_FLAGS} \${FLAGS_INCLUDE}")
@@ -120,4 +121,4 @@ set(CMAKE_SHARED_LINKER_FLAGS_INIT "\${FLAGS_LIB}")
 set(CMAKE_MODULE_LINKER_FLAGS_INIT "\${FLAGS_LIB}")
 EOF
 
-echo "🎉 Archivo generado correctamente."
+echo "🎉 Toolchain actualizado con soporte C++23 estricto."

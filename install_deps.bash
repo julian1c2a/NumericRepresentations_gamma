@@ -1,7 +1,9 @@
 #!/bin/bash
 
 # ==============================================================================
-# SCRIPT DE INSTALACIÓN DE DEPENDENCIAS (CATCH2) - VERSIÓN LIMPIA & ROBUSTA
+# SCRIPT DE INSTALACIÓN DE DEPENDENCIAS (CATCH2) - VERSIÓN FINAL
+# ==============================================================================
+# Este script descarga y compila la librería Catch2 usando el toolchain.
 # ==============================================================================
 
 INPUT_ARG=${1:-msvc}
@@ -31,10 +33,10 @@ BASE_INSTALL_DIR="$(pwd)/libs_install"
 BUILD_ROOT="build_deps"
 TOOLCHAIN_FILE="$(pwd)/msvc_toolchain.cmake" 
 
-# Asegurar directorios
+# Crear directorio de descarga
 mkdir -p "$BUILD_ROOT"
 
-# Descarga o Actualización del Repositorio
+# Lógica robusta de descarga/actualización
 if [ ! -d "$BUILD_ROOT/Catch2" ]; then
     echo ">>> Clonando Catch2 $CATCH2_VERSION..."
     git clone --branch $CATCH2_VERSION --depth 1 https://github.com/catchorg/Catch2.git "$BUILD_ROOT/Catch2"
@@ -51,6 +53,8 @@ COMPILER_INSTALL_ROOT="$BASE_INSTALL_DIR/$COMPILER_MODE"
 BUILD_DIR_BASE="$BUILD_ROOT/build_catch_$COMPILER_MODE"
 
 build_cmake() {
+    # NOTA: Ninja es un generador "Single-Configuration"
+    
     # CASO A: MSVC CON NINJA + TOOLCHAIN
     if [ "$COMPILER_MODE" == "msvc" ]; then
         INSTALL_PATH="$COMPILER_INSTALL_ROOT/Catch2"
@@ -71,6 +75,9 @@ build_cmake() {
                 RT_LIB="MultiThreadedDLL"
             fi
 
+            # NOTA CRÍTICA: NO pasamos -DCMAKE_CXX_FLAGS aquí manualmente.
+            # El output debe decir "Usando Toolchain Flags".
+
             echo "   --- Construyendo $BTYPE (CRT: $RT_LIB | Usando Toolchain Flags) ---"
             
             cmake -S "$BUILD_ROOT/Catch2" -B "$CURRENT_BUILD_DIR" \
@@ -84,9 +91,9 @@ build_cmake() {
                 -DCMAKE_MSVC_RUNTIME_LIBRARY="$RT_LIB" \
                 -DCMAKE_CXX_STANDARD=23 \
                 -DCMAKE_CXX_STANDARD_REQUIRED=ON \
-                || { echo "❌ Error en configuración de CMake ($BTYPE)"; exit 1; }
+                "$@" || { echo "❌ Error Configuración ($BTYPE)"; exit 1; }
 
-            cmake --build "$CURRENT_BUILD_DIR" --target install || { echo "❌ Error compilando ($BTYPE)"; exit 1; }
+            cmake --build "$CURRENT_BUILD_DIR" --target install || { echo "❌ Error Compilación ($BTYPE)"; exit 1; }
         done
 
     # CASO B: GCC / CLANG
@@ -124,17 +131,18 @@ build_cmake() {
 
 case "$COMPILER_MODE" in
     msvc)
-        # 1. EJECUTAR EL GENERADOR V5
+        # 1. EJECUTAR EL GENERADOR V5 (Crea el msvc_toolchain.cmake con las flags correctas)
+        # Busca el script generador por cualquiera de sus nombres
         if [ -f "./update_msvc_toolchain.bash" ]; then
             ./update_msvc_toolchain.bash || exit 1
         elif [ -f "./update_msvc_toolchain_v5.bash" ]; then
             ./update_msvc_toolchain_v5.bash || exit 1
         else
-            echo "❌ ERROR: Falta update_msvc_toolchain.bash."
+            echo "❌ ERROR: No se encuentra update_msvc_toolchain.bash."
             exit 1
         fi
         
-        # 2. Construir
+        # 2. Construir dependencias
         build_cmake 
         ;;
     gcc)
@@ -154,6 +162,5 @@ case "$COMPILER_MODE" in
 esac
 
 echo "=========================================="
-echo " INSTALACIÓN COMPLETADA CORRECTAMENTE ($CATCH2_VERSION)"
+echo " INSTALACIÓN COMPLETADA ($CATCH2_VERSION) para $COMPILER_MODE"
 echo "=========================================="
-```
