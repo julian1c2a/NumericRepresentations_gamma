@@ -1,15 +1,12 @@
 #!/bin/bash
 
 # ==============================================================================
-# SCRIPT DE INSTALACIÓN DE DEPENDENCIAS (CATCH2)
+# SCRIPT DE INSTALACIÓN DE DEPENDENCIAS (CATCH2) - VERSIÓN V3.7.1 + FIX RUNTIME
 # ==============================================================================
 # Uso: ./install_deps.bash [msvc|gcc|clang] [print]
-# Ejemplo: ./install_deps.bash msvc print  -> Genera deps_log_msvc.txt
 # ==============================================================================
 
-# Leemos el modo/preset (por defecto 'msvc')
 INPUT_ARG=${1:-msvc}
-# Leemos el segundo argumento para saber si imprimimos a fichero
 SECOND_ARG=${2:-""}
 
 # --- LÓGICA DE LOGGING DINÁMICO ---
@@ -31,7 +28,6 @@ else
     COMPILER_MODE="msvc"
 fi
 
-# CAMBIO IMPORTANTE: Subimos a v3.7.1 para corregir error C7595 con spaceship operator en MSVC C++23
 CATCH2_VERSION="v3.7.1"
 BASE_INSTALL_DIR="$(pwd)/libs_install"
 BUILD_ROOT="build_deps"
@@ -46,7 +42,6 @@ if [ ! -d "$BUILD_ROOT/Catch2" ]; then
 else
     echo ">>> Verificando versión de Catch2..."
     pushd "$BUILD_ROOT/Catch2" > /dev/null
-    # Hacemos fetch y checkout forzado para asegurar que estamos en la versión correcta
     git fetch --tags
     git checkout $CATCH2_VERSION
     echo ">>> Actualizado a $CATCH2_VERSION"
@@ -63,7 +58,7 @@ build_cmake() {
     if [ "$COMPILER_MODE" == "msvc" ]; then
         INSTALL_PATH="$COMPILER_INSTALL_ROOT/Catch2"
         
-        # Limpieza inicial para asegurar re-compilación limpia con la nueva versión
+        # Limpieza inicial CRÍTICA para evitar mezclas de configuraciones previas
         rm -rf "$BUILD_DIR_BASE"
         rm -rf "$INSTALL_PATH"
 
@@ -72,7 +67,16 @@ build_cmake() {
         for BTYPE in Release Debug; do
             CURRENT_BUILD_DIR="${BUILD_DIR_BASE}_${BTYPE}"
             
-            echo "   --- Construyendo $BTYPE ---"
+            # --- FIX CRÍTICO RUNTIME LIBRARY ---
+            # Forzamos a Catch2 a usar la misma CRT que el proyecto principal (/MD o /MDd)
+            # Esto evita el error LNK2038 (mismatch MD_DynamicRelease vs MT_StaticRelease)
+            if [ "$BTYPE" == "Debug" ]; then
+                RT_LIB="MultiThreadedDebugDLL"
+            else
+                RT_LIB="MultiThreadedDLL"
+            fi
+
+            echo "   --- Construyendo $BTYPE (CRT: $RT_LIB) ---"
             
             cmake -S "$BUILD_ROOT/Catch2" -B "$CURRENT_BUILD_DIR" \
                 -G "Ninja" \
@@ -81,6 +85,8 @@ build_cmake() {
                 -DCMAKE_BUILD_TYPE=$BTYPE \
                 -DBUILD_TESTING=OFF \
                 -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+                -DCMAKE_POLICY_DEFAULT_CMP0091=NEW \
+                -DCMAKE_MSVC_RUNTIME_LIBRARY="$RT_LIB" \
                 "$@"
 
             cmake --build "$CURRENT_BUILD_DIR" --target install
@@ -94,7 +100,6 @@ build_cmake() {
         BUILD_DIR_DBG="$BUILD_DIR_BASE/debug"
         
         rm -rf "$BUILD_DIR_REL" "$BUILD_DIR_DBG"
-        # No borramos INSTALL_ROOT entero por si acaso, solo las carpetas destino si existen
         rm -rf "$INSTALL_PATH_REL" "$INSTALL_PATH_DBG"
 
         echo ">>> [$COMPILER_MODE] Configurando y Compilando Catch2 $CATCH2_VERSION..."
