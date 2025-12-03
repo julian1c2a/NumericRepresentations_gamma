@@ -4,20 +4,26 @@
 # SCRIPT DE INSTALACIÓN DE DEPENDENCIAS (CATCH2)
 # ==============================================================================
 # Uso: ./install_deps.bash [msvc|gcc|clang] [print]
-# Ejemplo: ./install_deps.bash msvc print
+# Ejemplo: ./install_deps.bash msvc print  -> Genera deps_log_msvc.txt
 # ==============================================================================
 
+# Leemos el modo/preset (por defecto 'msvc')
 INPUT_ARG=${1:-msvc}
+# Leemos el segundo argumento para saber si imprimimos a fichero
 SECOND_ARG=${2:-""}
 
-# --- LÓGICA DE LOGGING (NUEVO) ---
+# --- LÓGICA DE LOGGING DINÁMICO ---
 if [ "$SECOND_ARG" == "print" ]; then
-    LOG_FILE="deps_log.txt"
+    # Limpiamos caracteres extraños del preset para usarlo de nombre de archivo
+    # (convierte 'gcc-release' a 'gcc_release' si fuera necesario, similar a tus otros scripts)
+    SAFE_SUFFIX="${INPUT_ARG//-/_}"
+    LOG_FILE="deps_log_${SAFE_SUFFIX}.txt"
+    
     # Redirigimos stdout (1) y stderr (2) al archivo log
     exec > "$LOG_FILE" 2>&1
 fi
 
-# Detección de modo
+# Detección de modo para configuración interna
 if [[ "$INPUT_ARG" == *"msvc"* ]]; then
     COMPILER_MODE="msvc"
 elif [[ "$INPUT_ARG" == *"gcc"* ]]; then
@@ -32,9 +38,9 @@ fi
 CATCH2_VERSION="v3.4.0"
 BASE_INSTALL_DIR="$(pwd)/libs_install"
 BUILD_ROOT="build_deps"
-TOOLCHAIN_FILE="$(pwd)/msvc_toolchain.cmake"
+TOOLCHAIN_FILE="$(pwd)/msvc_toolchain.cmake" # Ruta absoluta al toolchain
 
-# Descarga
+# Descarga del repo si no existe
 mkdir -p "$BUILD_ROOT"
 if [ ! -d "$BUILD_ROOT/Catch2" ]; then
     echo ">>> Clonando Catch2 $CATCH2_VERSION..."
@@ -45,7 +51,9 @@ COMPILER_INSTALL_ROOT="$BASE_INSTALL_DIR/$COMPILER_MODE"
 BUILD_DIR_BASE="$BUILD_ROOT/build_catch_$COMPILER_MODE"
 
 build_cmake() {
-    # MSVC CON NINJA + TOOLCHAIN
+    # NOTA: Ninja es un generador "Single-Configuration"
+    
+    # CASO A: MSVC CON NINJA + TOOLCHAIN
     if [ "$COMPILER_MODE" == "msvc" ]; then
         INSTALL_PATH="$COMPILER_INSTALL_ROOT/Catch2"
         
@@ -81,10 +89,11 @@ build_cmake() {
         
         # Limpieza por seguridad
         rm -rf "$BUILD_DIR_REL" "$BUILD_DIR_DBG"
-        rm -rf "$COMPILER_INSTALL_ROOT"
+        rm -rf "$COMPILER_INSTALL_ROOT" # Limpiamos install para evitar mezclas
 
         echo ">>> [$COMPILER_MODE] Configurando y Compilando..."
         
+        # Loop para Release y Debug
         for BTYPE in Release Debug; do
             if [ "$BTYPE" == "Release" ]; then
                 TPATH="$INSTALL_PATH_REL"; TBUILD="$BUILD_DIR_REL"
@@ -107,16 +116,16 @@ build_cmake() {
 case "$COMPILER_MODE" in
     msvc)
         # INTEGRACIÓN AUTOMÁTICA DEL TOOLCHAIN UPDATER
-        # Asumiendo que guardaste el último script como update_msvc_toolchain_v4.bash
+        # Busca el script de actualización v4 (el más robusto) o el normal
         if [ -f "./update_msvc_toolchain_v4.bash" ]; then
             ./update_msvc_toolchain_v4.bash || exit 1
         elif [ -f "./update_msvc_toolchain.bash" ]; then
             ./update_msvc_toolchain.bash || exit 1
         else
-            echo "⚠️ ADVERTENCIA: No se encontró el script update_msvc_toolchain.bash"
-            echo "   Asegúrate de que las rutas en msvc_toolchain.cmake son correctas."
+            echo "⚠️ ADVERTENCIA: No se encontró el script update_msvc_toolchain*.bash"
+            echo "   Asegúrate de que las rutas en msvc_toolchain.cmake son correctas manualmente."
         fi
-
+        
         build_cmake 
         ;;
     gcc)
@@ -127,6 +136,7 @@ case "$COMPILER_MODE" in
         build_cmake "${ARGS[@]}"
         ;;
     clang)
+        # IMPORTANTE: Forzamos libc++ para coincidir con la librería nativa en clang64
         ARGS=("-DCMAKE_CXX_COMPILER=clang++" "-DCMAKE_CXX_FLAGS=-stdlib=libc++")
         if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" || "$OSTYPE" == "win32" ]]; then
             ARGS+=("-G" "MinGW Makefiles")

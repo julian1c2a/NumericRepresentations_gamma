@@ -1,8 +1,8 @@
 ==========================================
  CONFIGURANDO Y CONSTRUYENDO: msvc-debug
 ==========================================
--- Configuring done (0.4s)
--- Generating done (0.1s)
+-- Configuring done (0.1s)
+-- Generating done (0.3s)
 -- Build files have been written to: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/debug
 ninja: no work to do.
 ninja: no work to do.

@@ -1,19 +1,11 @@
 ==========================================
  CONFIGURANDO Y CONSTRUYENDO: msvc-release
 ==========================================
--- Configuring done (0.2s)
+-- Configuring done (0.0s)
 -- Generating done (0.1s)
-CMake Warning:
-  Manually-specified variables were not used by the project:
-
-    CMAKE_TOOLCHAIN_FILE
-
-
 -- Build files have been written to: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release
-[1/2] Building CXX object CMakeFiles\test_01_math_tables.dir\tests\test_01_math_tables.cpp.obj
-[2/2] Linking CXX executable test_01_math_tables.exe
-[1/2] Building CXX object CMakeFiles\test_02_append.dir\tests\test_02_append.cpp.obj
-[2/2] Linking CXX executable test_02_append.exe
+ninja: no work to do.
+ninja: no work to do.
 [1/2] Building CXX object CMakeFiles\test_03_core_internal.dir\tests\test_03_core_internal.cpp.obj
 FAILED: [code=2] CMakeFiles/test_03_core_internal.dir/tests/test_03_core_internal.cpp.obj 
 "D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\cl.exe"  /nologo /TP  -ID:\gdrive\numericrepresentations_gamma\include -external:ID:\GDrive\NumericRepresentations_gamma\libs_install\msvc\Catch2\include -external:W0 /DWIN32 /D_WINDOWS /W3 /GR /EHsc  /I "D:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\um" /I "C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\winrt" /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++latest -MD /permissive- /bigobj /constexpr:depth8192 /constexpr:steps50000000 /wd4146 /Zc:preprocessor /showIncludes /FoCMakeFiles\test_03_core_internal.dir\tests\test_03_core_internal.cpp.obj /FdCMakeFiles\test_03_core_internal.dir\ /FS -c D:\gdrive\numericrepresentations_gamma\tests\test_03_core_internal.cpp
