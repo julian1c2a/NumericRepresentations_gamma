@@ -1,12 +1,10 @@
 #!/bin/bash
 
 # ==============================================================================
-# UPDATE MSVC TOOLCHAIN (V6 - STANDARD COMPLIANCE)
+# UPDATE MSVC TOOLCHAIN (V7 - ENVIRONMENT METHOD)
 # ==============================================================================
-# Genera msvc_toolchain.cmake con flags robustas:
-# - /Zc:preprocessor : Preprocesador estándar (necesario para Catch2 v3)
-# - /Zc:__cplusplus  : Reporta correctamente __cplusplus (vital para C++23)
-# - /DNOMINMAX       : Evita conflictos con windows.h
+# Configura MSVC definiendo las variables de entorno INCLUDE y LIB dentro de CMake.
+# Esto es mucho más robusto que inyectar flags manuales.
 # ==============================================================================
 
 TOOLCHAIN_FILE="./msvc_toolchain.cmake"
@@ -14,7 +12,7 @@ echo "=================================================="
 echo " 🔎 BUSCANDO COMPILADOR MSVC (C: y D:)"
 echo "=================================================="
 
-# Rutas posibles
+# 1. DETECCIÓN DE RUTAS
 POSSIBLE_ROOTS=("/c/Program Files/Microsoft Visual Studio" "/d/Program Files/Microsoft Visual Studio")
 FOUND_MSVC_PATH=""
 HIGHEST_VERSION="0.0.0"
@@ -42,10 +40,11 @@ if [ -z "$FOUND_MSVC_PATH" ]; then
     exit 1
 fi
 
-MSVC_BASE_WIN=$(echo "$FOUND_MSVC_PATH" | sed -E 's|^/([a-zA-Z])|\1:|')
+# Convertir ruta a formato Windows (ej: C:/...)
+MSVC_BASE_WIN=$(echo "$FOUND_MSVC_PATH" | sed -E 's|^/([a-zA-Z])|\1:/|')
 echo "🏆 MSVC: $MSVC_BASE_WIN"
 
-# --- DETECCIÓN DE WINDOWS KITS ---
+# 2. DETECCIÓN DE WINDOWS KITS
 KIT_ROOT="/c/Program Files (x86)/Windows Kits/10/Include"
 NEW_KIT_VERSION=""
 if [ -d "$KIT_ROOT" ]; then
@@ -60,65 +59,66 @@ if [ -z "$NEW_KIT_VERSION" ]; then
 fi
 echo "✅ KIT:  $NEW_KIT_VERSION"
 
-# --- GENERACIÓN DEL TOOLCHAIN ---
-echo "--------------------------------------------------"
-echo "⚙️  Generando $TOOLCHAIN_FILE..."
+# 3. PREPARACIÓN DE RUTAS (CONVERTIR A BACKSLASH PARA WINDOWS ENV)
+# CMake maneja ENV{} mejor si las rutas son nativas de Windows
+TO_WIN_PATH() {
+    echo "$1" | sed 's|/|\\|g'
+}
 
+MSVC_BASE_BACK=$(TO_WIN_PATH "$MSVC_BASE_WIN")
+KIT_BASE_BACK="C:\\Program Files (x86)\\Windows Kits\\10"
+
+# Construcción de variables de entorno (separadas por ;)
+# IMPORTANTE: Escapar los backslashes para el archivo CMake
+
+# INCLUDE PATHS
+INC_1="${MSVC_BASE_BACK}\\include"
+INC_2="${KIT_BASE_BACK}\\Include\\${NEW_KIT_VERSION}\\ucrt"
+INC_3="${KIT_BASE_BACK}\\Include\\${NEW_KIT_VERSION}\\shared"
+INC_4="${KIT_BASE_BACK}\\Include\\${NEW_KIT_VERSION}\\um"
+INC_5="${KIT_BASE_BACK}\\Include\\${NEW_KIT_VERSION}\\winrt"
+ENV_INCLUDE="${INC_1};${INC_2};${INC_3};${INC_4};${INC_5}"
+
+# LIB PATHS
+LIB_1="${MSVC_BASE_BACK}\\lib\\x64"
+LIB_2="${KIT_BASE_BACK}\\Lib\\${NEW_KIT_VERSION}\\ucrt\\x64"
+LIB_3="${KIT_BASE_BACK}\\Lib\\${NEW_KIT_VERSION}\\um\\x64"
+ENV_LIB="${LIB_1};${LIB_2};${LIB_3}"
+
+# PATH (Para que CMake encuentre cl.exe sin ruta absoluta si es necesario)
+ENV_PATH="${MSVC_BASE_BACK}\\bin\\Hostx64\\x64"
+
+# 4. GENERACIÓN DEL ARCHIVO .CMAKE
+echo "--------------------------------------------------"
+echo "⚙️  Generando $TOOLCHAIN_FILE (Modo ENV Vars)..."
+
+# Usamos printf para evitar problemas de expansión extraña con backslashes
 cat > "$TOOLCHAIN_FILE" <<EOF
-# msvc_toolchain.cmake (Generado automáticamente V6)
+# msvc_toolchain.cmake (Generado V7 - Environment Mode)
 set(CMAKE_SYSTEM_NAME Windows)
 set(CMAKE_SYSTEM_PROCESSOR AMD64)
 
-# Rutas detectadas
-set(MSVC_BASE "$MSVC_BASE_WIN")
-set(KIT_BASE  "C:/Program Files (x86)/Windows Kits/10")
-set(KIT_VER   "$NEW_KIT_VERSION")
+# 1. Configurar Entorno Virtual (Simula Developer Command Prompt)
+# Esto hace que cl.exe encuentre <vector>, <iostream>, etc. automáticamente.
+set(ENV{INCLUDE} "${ENV_INCLUDE}")
+set(ENV{LIB}     "${ENV_LIB}")
+set(ENV{PATH}    "${ENV_PATH};\$ENV{PATH}")
 
-# Herramientas
-set(CMAKE_C_COMPILER   "\${MSVC_BASE}/bin/Hostx64/x64/cl.exe")
-set(CMAKE_CXX_COMPILER "\${MSVC_BASE}/bin/Hostx64/x64/cl.exe")
-set(CMAKE_LINKER       "\${MSVC_BASE}/bin/Hostx64/x64/link.exe")
-set(CMAKE_RC_COMPILER  "\${KIT_BASE}/bin/\${KIT_VER}/x64/rc.exe")
-set(CMAKE_MT           "\${KIT_BASE}/bin/\${KIT_VER}/x64/mt.exe")
+# 2. Definir Compiladores
+set(CMAKE_C_COMPILER   "${MSVC_BASE_WIN}/bin/Hostx64/x64/cl.exe")
+set(CMAKE_CXX_COMPILER "${MSVC_BASE_WIN}/bin/Hostx64/x64/cl.exe")
+set(CMAKE_LINKER       "${MSVC_BASE_WIN}/bin/Hostx64/x64/link.exe")
+set(CMAKE_RC_COMPILER  "C:/Program Files (x86)/Windows Kits/10/bin/${NEW_KIT_VERSION}/x64/rc.exe")
+set(CMAKE_MT           "C:/Program Files (x86)/Windows Kits/10/bin/${NEW_KIT_VERSION}/x64/mt.exe")
 
-# Directorios
-set(MSVC_LIB_DIRS
-    "\${MSVC_BASE}/lib/x64"
-    "\${KIT_BASE}/Lib/\${KIT_VER}/ucrt/x64"
-    "\${KIT_BASE}/Lib/\${KIT_VER}/um/x64"
+# 3. Flags Globales Modernas (C++23)
+# /Zc:__cplusplus es CRÍTICO para que Catch2 detecte C++23 correctamente.
+add_compile_options(
+    /DWIN32 /D_WINDOWS /W3 /GR /EHsc 
+    /DNOMINMAX 
+    /Zc:preprocessor 
+    /Zc:__cplusplus
 )
-
-set(MSVC_INC_DIRS
-    "\${MSVC_BASE}/include"
-    "\${KIT_BASE}/Include/\${KIT_VER}/ucrt"
-    "\${KIT_BASE}/Include/\${KIT_VER}/shared"
-    "\${KIT_BASE}/Include/\${KIT_VER}/um"
-    "\${KIT_BASE}/Include/\${KIT_VER}/winrt"
-)
-
-# Inyección de rutas en flags
-set(FLAGS_INCLUDE "")
-foreach(DIR \${MSVC_INC_DIRS})
-    file(TO_NATIVE_PATH "\${DIR}" DIR_NATIVE)
-    string(APPEND FLAGS_INCLUDE " /I \\"\${DIR_NATIVE}\\"")
-endforeach()
-
-set(FLAGS_LIB "")
-foreach(DIR \${MSVC_LIB_DIRS})
-    file(TO_NATIVE_PATH "\${DIR}" DIR_NATIVE)
-    string(APPEND FLAGS_LIB " /LIBPATH:\\"\${DIR_NATIVE}\\"")
-endforeach()
-
-# --- FLAGS GLOBALES ---
-# Añadimos /Zc:__cplusplus para compatibilidad binaria estricta
-set(COMMON_FLAGS "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /DNOMINMAX /Zc:preprocessor /Zc:__cplusplus")
-
-set(CMAKE_C_FLAGS_INIT   "\${COMMON_FLAGS} \${FLAGS_INCLUDE}")
-set(CMAKE_CXX_FLAGS_INIT "\${COMMON_FLAGS} \${FLAGS_INCLUDE}")
-
-set(CMAKE_EXE_LINKER_FLAGS_INIT    "\${FLAGS_LIB}")
-set(CMAKE_SHARED_LINKER_FLAGS_INIT "\${FLAGS_LIB}")
-set(CMAKE_MODULE_LINKER_FLAGS_INIT "\${FLAGS_LIB}")
 EOF
 
-echo "🎉 Toolchain actualizado con soporte C++23 estricto."
+echo "🎉 Archivo generado. Rutas inyectadas en ENV{INCLUDE}."
