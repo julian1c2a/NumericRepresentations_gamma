@@ -1,0 +1,18 @@
+==========================================
+ EJECUTANDO TESTS DIRECTOS DESDE: ./build/build_targets/msvc/debug
+==========================================
+>>> Ejecutando test_01_math_tables...
+>>> Ejecutando test_02_append...
+Advertencia: No se encontró ./build/build_targets/msvc/debug/test_03_core_internal.exe
+Advertencia: No se encontró ./build/build_targets/msvc/debug/test_04_dig_t.exe
+Advertencia: No se encontró ./build/build_targets/msvc/debug/test_05_dig_t_constructors.exe
+Advertencia: No se encontró ./build/build_targets/msvc/debug/test_06_dig_t_assignations.exe
+Advertencia: No se encontró ./build/build_targets/msvc/debug/test_07_dig_t_conversions.exe
+Advertencia: No se encontró ./build/build_targets/msvc/debug/test_08_dig_t_operadores.exe
+Advertencia: No se encontró ./build/build_targets/msvc/debug/test_09_dig_t_algebra.exe
+Advertencia: No se encontró ./build/build_targets/msvc/debug/test_10_dig_t_io.exe
+Advertencia: No se encontró ./build/build_targets/msvc/debug/test_11_basic_types.exe
+Advertencia: No se encontró ./build/build_targets/msvc/debug/test_12_Int_ExpLog.exe
+Advertencia: No se encontró ./build/build_targets/msvc/debug/test_13_IntRoot.exe
+Advertencia: No se encontró ./build/build_targets/msvc/debug/test_14_primes.exe
+Advertencia: No se encontró ./build/build_targets/msvc/debug/test_15_conversions.exe

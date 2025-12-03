@@ -1,22 +1,64 @@
 ==========================================
  CONFIGURANDO Y CONSTRUYENDO: gcc-release
 ==========================================
--- Configuring done (0.1s)
--- Generating done (0.6s)
+-- The C compiler identification is GNU 15.2.0
+-- The CXX compiler identification is GNU 15.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: C:/msys64/ucrt64/bin/gcc.exe - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/msys64/ucrt64/bin/g++.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (3.2s)
+-- Generating done (1.0s)
 -- Build files have been written to: D:/gdrive/numericrepresentations_gamma/build/build_targets/gcc/release
+[ 50%] Building CXX object CMakeFiles/test_01_math_tables.dir/tests/test_01_math_tables.cpp.obj
+[100%] Linking CXX executable test_01_math_tables.exe
 [100%] Built target test_01_math_tables
+[ 50%] Building CXX object CMakeFiles/test_02_append.dir/tests/test_02_append.cpp.obj
+[100%] Linking CXX executable test_02_append.exe
 [100%] Built target test_02_append
+[ 50%] Building CXX object CMakeFiles/test_03_core_internal.dir/tests/test_03_core_internal.cpp.obj
+[100%] Linking CXX executable test_03_core_internal.exe
 [100%] Built target test_03_core_internal
+[ 50%] Building CXX object CMakeFiles/test_04_dig_t.dir/tests/test_04_dig_t.cpp.obj
+[100%] Linking CXX executable test_04_dig_t.exe
 [100%] Built target test_04_dig_t
+[ 50%] Building CXX object CMakeFiles/test_05_dig_t_constructors.dir/tests/test_05_dig_t_constructors.cpp.obj
+[100%] Linking CXX executable test_05_dig_t_constructors.exe
 [100%] Built target test_05_dig_t_constructors
+[ 50%] Building CXX object CMakeFiles/test_06_dig_t_assignations.dir/tests/test_06_dig_t_assignations.cpp.obj
+[100%] Linking CXX executable test_06_dig_t_assignations.exe
 [100%] Built target test_06_dig_t_assignations
+[ 50%] Building CXX object CMakeFiles/test_07_dig_t_conversions.dir/tests/test_07_dig_t_conversions.cpp.obj
+[100%] Linking CXX executable test_07_dig_t_conversions.exe
 [100%] Built target test_07_dig_t_conversions
+[ 50%] Building CXX object CMakeFiles/test_08_dig_t_operadores.dir/tests/test_08_dig_t_operadores.cpp.obj
+[100%] Linking CXX executable test_08_dig_t_operadores.exe
 [100%] Built target test_08_dig_t_operadores
+[ 50%] Building CXX object CMakeFiles/test_09_dig_t_algebra.dir/tests/test_09_dig_t_algebra.cpp.obj
+[100%] Linking CXX executable test_09_dig_t_algebra.exe
 [100%] Built target test_09_dig_t_algebra
+[ 50%] Building CXX object CMakeFiles/test_10_dig_t_io.dir/tests/test_10_dig_t_io.cpp.obj
+[100%] Linking CXX executable test_10_dig_t_io.exe
 [100%] Built target test_10_dig_t_io
+[ 50%] Building CXX object CMakeFiles/test_11_basic_types.dir/tests/test_11_basic_types.cpp.obj
+[100%] Linking CXX executable test_11_basic_types.exe
 [100%] Built target test_11_basic_types
+[ 50%] Building CXX object CMakeFiles/test_12_Int_ExpLog.dir/tests/test_12_Int_ExpLog.cpp.obj
+[100%] Linking CXX executable test_12_Int_ExpLog.exe
 [100%] Built target test_12_Int_ExpLog
+[ 50%] Building CXX object CMakeFiles/test_13_IntRoot.dir/tests/test_13_IntRoot.cpp.obj
+[100%] Linking CXX executable test_13_IntRoot.exe
 [100%] Built target test_13_IntRoot
+[ 50%] Building CXX object CMakeFiles/test_14_primes.dir/tests/test_14_primes.cpp.obj
+[100%] Linking CXX executable test_14_primes.exe
 [100%] Built target test_14_primes
+[ 50%] Building CXX object CMakeFiles/test_15_conversions.dir/tests/test_15_conversions.cpp.obj
+[100%] Linking CXX executable test_15_conversions.exe
 [100%] Built target test_15_conversions
 --- Construcción completada para gcc-release ---

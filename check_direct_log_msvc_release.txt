@@ -1,0 +1,66 @@
+==========================================
+ EJECUTANDO TESTS DIRECTOS DESDE: ./build/build_targets/msvc/release
+==========================================
+>>> Ejecutando test_01_math_tables...
+
+=============================================================
+ EJECUTANDO SUITE: test_01_math_tables
+=============================================================
+Randomness seeded to: 4054099693
+===============================================================================
+All tests passed (6673 assertions in 5 test cases)
+
+>>> Ejecutando test_02_append...
+
+=============================================================
+ EJECUTANDO SUITE: test_02_append
+=============================================================
+Randomness seeded to: 1225171952
+===============================================================================
+All tests passed (28 assertions in 3 test cases)
+
+Advertencia: No se encontró ./build/build_targets/msvc/release/test_03_core_internal.exe
+Advertencia: No se encontró ./build/build_targets/msvc/release/test_04_dig_t.exe
+Advertencia: No se encontró ./build/build_targets/msvc/release/test_05_dig_t_constructors.exe
+Advertencia: No se encontró ./build/build_targets/msvc/release/test_06_dig_t_assignations.exe
+Advertencia: No se encontró ./build/build_targets/msvc/release/test_07_dig_t_conversions.exe
+Advertencia: No se encontró ./build/build_targets/msvc/release/test_08_dig_t_operadores.exe
+Advertencia: No se encontró ./build/build_targets/msvc/release/test_09_dig_t_algebra.exe
+Advertencia: No se encontró ./build/build_targets/msvc/release/test_10_dig_t_io.exe
+>>> Ejecutando test_11_basic_types...
+
+=============================================================
+ EJECUTANDO SUITE: test_11_basic_types
+=============================================================
+Randomness seeded to: 3597092206
+===============================================================================
+All tests passed (37 assertions in 5 test cases)
+
+>>> Ejecutando test_12_Int_ExpLog...
+
+=============================================================
+ EJECUTANDO SUITE: test_12_Int_ExpLog
+=============================================================
+Randomness seeded to: 2234007824
+===============================================================================
+All tests passed (42 assertions in 4 test cases)
+
+>>> Ejecutando test_13_IntRoot...
+
+=============================================================
+ EJECUTANDO SUITE: test_13_IntRoot
+=============================================================
+Randomness seeded to: 2036857050
+===============================================================================
+All tests passed (70 assertions in 5 test cases)
+
+Advertencia: No se encontró ./build/build_targets/msvc/release/test_14_primes.exe
+>>> Ejecutando test_15_conversions...
+
+=============================================================
+ EJECUTANDO SUITE: test_15_conversions
+=============================================================
+Randomness seeded to: 2736940148
+===============================================================================
+All tests passed (18 assertions in 3 test cases)
+

@@ -1,0 +1,315 @@
+==========================================
+ EJECUTANDO CTEST CON PRESET: msvc-release
+==========================================
+Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release
+    Start 3: test_01_math_tables
+1/1 Test #3: test_01_math_tables ..............   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.04 sec
+Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release
+    Start 4: test_02_append
+1/1 Test #4: test_02_append ...................   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.05 sec
+Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release
+    Start 5: test_03_core_internal
+Could not find executable D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_03_core_internal.exe
+Looked in the following places:
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_03_core_internal.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_03_core_internal.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Release/test_03_core_internal.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Release/test_03_core_internal.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Debug/test_03_core_internal.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Debug/test_03_core_internal.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/MinSizeRel/test_03_core_internal.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/MinSizeRel/test_03_core_internal.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/RelWithDebInfo/test_03_core_internal.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/RelWithDebInfo/test_03_core_internal.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Deployment/test_03_core_internal.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Deployment/test_03_core_internal.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Development/test_03_core_internal.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Development/test_03_core_internal.exe.exe
+Unable to find executable: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_03_core_internal.exe
+1/1 Test #5: test_03_core_internal ............***Not Run   0.00 sec
+
+0% tests passed, 1 tests failed out of 1
+
+Total Test time (real) =   0.01 sec
+
+The following tests FAILED:
+	  5 - test_03_core_internal (Not Run)
+Errors while running CTest
+Output from these tests are in: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Testing/Temporary/LastTest.log
+Use "--rerun-failed --output-on-failure" to re-run the failed cases verbosely.
+Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release
+    Start 6: test_04_dig_t
+Could not find executable D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_04_dig_t.exe
+Looked in the following places:
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_04_dig_t.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_04_dig_t.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Release/test_04_dig_t.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Release/test_04_dig_t.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Debug/test_04_dig_t.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Debug/test_04_dig_t.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/MinSizeRel/test_04_dig_t.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/MinSizeRel/test_04_dig_t.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/RelWithDebInfo/test_04_dig_t.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/RelWithDebInfo/test_04_dig_t.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Deployment/test_04_dig_t.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Deployment/test_04_dig_t.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Development/test_04_dig_t.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Development/test_04_dig_t.exe.exe
+Unable to find executable: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_04_dig_t.exe
+1/1 Test #6: test_04_dig_t ....................***Not Run   0.00 sec
+
+0% tests passed, 1 tests failed out of 1
+
+Total Test time (real) =   0.01 sec
+
+The following tests FAILED:
+	  6 - test_04_dig_t (Not Run)
+Errors while running CTest
+Output from these tests are in: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Testing/Temporary/LastTest.log
+Use "--rerun-failed --output-on-failure" to re-run the failed cases verbosely.
+Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release
+    Start 7: test_05_dig_t_constructors
+Could not find executable D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_05_dig_t_constructors.exe
+Looked in the following places:
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_05_dig_t_constructors.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_05_dig_t_constructors.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Release/test_05_dig_t_constructors.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Release/test_05_dig_t_constructors.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Debug/test_05_dig_t_constructors.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Debug/test_05_dig_t_constructors.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/MinSizeRel/test_05_dig_t_constructors.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/MinSizeRel/test_05_dig_t_constructors.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/RelWithDebInfo/test_05_dig_t_constructors.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/RelWithDebInfo/test_05_dig_t_constructors.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Deployment/test_05_dig_t_constructors.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Deployment/test_05_dig_t_constructors.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Development/test_05_dig_t_constructors.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Development/test_05_dig_t_constructors.exe.exe
+Unable to find executable: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_05_dig_t_constructors.exe
+1/1 Test #7: test_05_dig_t_constructors .......***Not Run   0.00 sec
+
+0% tests passed, 1 tests failed out of 1
+
+Total Test time (real) =   0.01 sec
+
+The following tests FAILED:
+	  7 - test_05_dig_t_constructors (Not Run)
+Errors while running CTest
+Output from these tests are in: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Testing/Temporary/LastTest.log
+Use "--rerun-failed --output-on-failure" to re-run the failed cases verbosely.
+Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release
+    Start 8: test_06_dig_t_assignations
+Could not find executable D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_06_dig_t_assignations.exe
+Looked in the following places:
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_06_dig_t_assignations.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_06_dig_t_assignations.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Release/test_06_dig_t_assignations.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Release/test_06_dig_t_assignations.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Debug/test_06_dig_t_assignations.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Debug/test_06_dig_t_assignations.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/MinSizeRel/test_06_dig_t_assignations.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/MinSizeRel/test_06_dig_t_assignations.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/RelWithDebInfo/test_06_dig_t_assignations.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/RelWithDebInfo/test_06_dig_t_assignations.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Deployment/test_06_dig_t_assignations.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Deployment/test_06_dig_t_assignations.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Development/test_06_dig_t_assignations.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Development/test_06_dig_t_assignations.exe.exe
+Unable to find executable: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_06_dig_t_assignations.exe
+1/1 Test #8: test_06_dig_t_assignations .......***Not Run   0.00 sec
+
+0% tests passed, 1 tests failed out of 1
+
+Total Test time (real) =   0.01 sec
+
+The following tests FAILED:
+	  8 - test_06_dig_t_assignations (Not Run)
+Errors while running CTest
+Output from these tests are in: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Testing/Temporary/LastTest.log
+Use "--rerun-failed --output-on-failure" to re-run the failed cases verbosely.
+Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release
+    Start 9: test_07_dig_t_conversions
+Could not find executable D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_07_dig_t_conversions.exe
+Looked in the following places:
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_07_dig_t_conversions.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_07_dig_t_conversions.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Release/test_07_dig_t_conversions.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Release/test_07_dig_t_conversions.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Debug/test_07_dig_t_conversions.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Debug/test_07_dig_t_conversions.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/MinSizeRel/test_07_dig_t_conversions.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/MinSizeRel/test_07_dig_t_conversions.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/RelWithDebInfo/test_07_dig_t_conversions.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/RelWithDebInfo/test_07_dig_t_conversions.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Deployment/test_07_dig_t_conversions.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Deployment/test_07_dig_t_conversions.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Development/test_07_dig_t_conversions.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Development/test_07_dig_t_conversions.exe.exe
+Unable to find executable: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_07_dig_t_conversions.exe
+1/1 Test #9: test_07_dig_t_conversions ........***Not Run   0.00 sec
+
+0% tests passed, 1 tests failed out of 1
+
+Total Test time (real) =   0.02 sec
+
+The following tests FAILED:
+	  9 - test_07_dig_t_conversions (Not Run)
+Errors while running CTest
+Output from these tests are in: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Testing/Temporary/LastTest.log
+Use "--rerun-failed --output-on-failure" to re-run the failed cases verbosely.
+Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release
+    Start 10: test_08_dig_t_operadores
+Could not find executable D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_08_dig_t_operadores.exe
+Looked in the following places:
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_08_dig_t_operadores.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_08_dig_t_operadores.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Release/test_08_dig_t_operadores.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Release/test_08_dig_t_operadores.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Debug/test_08_dig_t_operadores.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Debug/test_08_dig_t_operadores.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/MinSizeRel/test_08_dig_t_operadores.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/MinSizeRel/test_08_dig_t_operadores.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/RelWithDebInfo/test_08_dig_t_operadores.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/RelWithDebInfo/test_08_dig_t_operadores.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Deployment/test_08_dig_t_operadores.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Deployment/test_08_dig_t_operadores.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Development/test_08_dig_t_operadores.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Development/test_08_dig_t_operadores.exe.exe
+Unable to find executable: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_08_dig_t_operadores.exe
+1/1 Test #10: test_08_dig_t_operadores .........***Not Run   0.00 sec
+
+0% tests passed, 1 tests failed out of 1
+
+Total Test time (real) =   0.01 sec
+
+The following tests FAILED:
+	 10 - test_08_dig_t_operadores (Not Run)
+Errors while running CTest
+Output from these tests are in: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Testing/Temporary/LastTest.log
+Use "--rerun-failed --output-on-failure" to re-run the failed cases verbosely.
+Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release
+    Start 11: test_09_dig_t_algebra
+Could not find executable D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_09_dig_t_algebra.exe
+Looked in the following places:
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_09_dig_t_algebra.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_09_dig_t_algebra.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Release/test_09_dig_t_algebra.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Release/test_09_dig_t_algebra.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Debug/test_09_dig_t_algebra.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Debug/test_09_dig_t_algebra.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/MinSizeRel/test_09_dig_t_algebra.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/MinSizeRel/test_09_dig_t_algebra.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/RelWithDebInfo/test_09_dig_t_algebra.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/RelWithDebInfo/test_09_dig_t_algebra.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Deployment/test_09_dig_t_algebra.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Deployment/test_09_dig_t_algebra.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Development/test_09_dig_t_algebra.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Development/test_09_dig_t_algebra.exe.exe
+Unable to find executable: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_09_dig_t_algebra.exe
+1/1 Test #11: test_09_dig_t_algebra ............***Not Run   0.00 sec
+
+0% tests passed, 1 tests failed out of 1
+
+Total Test time (real) =   0.01 sec
+
+The following tests FAILED:
+	 11 - test_09_dig_t_algebra (Not Run)
+Errors while running CTest
+Output from these tests are in: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Testing/Temporary/LastTest.log
+Use "--rerun-failed --output-on-failure" to re-run the failed cases verbosely.
+Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release
+    Start 12: test_10_dig_t_io
+Could not find executable D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_10_dig_t_io.exe
+Looked in the following places:
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_10_dig_t_io.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_10_dig_t_io.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Release/test_10_dig_t_io.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Release/test_10_dig_t_io.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Debug/test_10_dig_t_io.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Debug/test_10_dig_t_io.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/MinSizeRel/test_10_dig_t_io.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/MinSizeRel/test_10_dig_t_io.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/RelWithDebInfo/test_10_dig_t_io.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/RelWithDebInfo/test_10_dig_t_io.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Deployment/test_10_dig_t_io.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Deployment/test_10_dig_t_io.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Development/test_10_dig_t_io.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Development/test_10_dig_t_io.exe.exe
+Unable to find executable: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_10_dig_t_io.exe
+1/1 Test #12: test_10_dig_t_io .................***Not Run   0.00 sec
+
+0% tests passed, 1 tests failed out of 1
+
+Total Test time (real) =   0.01 sec
+
+The following tests FAILED:
+	 12 - test_10_dig_t_io (Not Run)
+Errors while running CTest
+Output from these tests are in: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Testing/Temporary/LastTest.log
+Use "--rerun-failed --output-on-failure" to re-run the failed cases verbosely.
+Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release
+    Start 13: test_11_basic_types
+1/1 Test #13: test_11_basic_types ..............   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.02 sec
+Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release
+    Start 14: test_12_Int_ExpLog
+1/1 Test #14: test_12_Int_ExpLog ...............   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.02 sec
+Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release
+    Start 15: test_13_IntRoot
+1/1 Test #15: test_13_IntRoot ..................   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.02 sec
+Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release
+    Start 16: test_14_primes
+Could not find executable D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_14_primes.exe
+Looked in the following places:
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_14_primes.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_14_primes.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Release/test_14_primes.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Release/test_14_primes.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Debug/test_14_primes.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Debug/test_14_primes.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/MinSizeRel/test_14_primes.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/MinSizeRel/test_14_primes.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/RelWithDebInfo/test_14_primes.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/RelWithDebInfo/test_14_primes.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Deployment/test_14_primes.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Deployment/test_14_primes.exe.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Development/test_14_primes.exe
+D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Development/test_14_primes.exe.exe
+Unable to find executable: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/test_14_primes.exe
+1/1 Test #16: test_14_primes ...................***Not Run   0.00 sec
+
+0% tests passed, 1 tests failed out of 1
+
+Total Test time (real) =   0.01 sec
+
+The following tests FAILED:
+	 16 - test_14_primes (Not Run)
+Errors while running CTest
+Output from these tests are in: D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release/Testing/Temporary/LastTest.log
+Use "--rerun-failed --output-on-failure" to re-run the failed cases verbosely.
+Test project D:/gdrive/numericrepresentations_gamma/build/build_targets/msvc/release
+    Start 17: test_15_conversions
+1/1 Test #17: test_15_conversions ..............   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.02 sec
