@@ -124,8 +124,8 @@ endforeach
 # TEST SUMMARY
 # =============================================================================
 
-if test_exes.size() > 0
-  message('Configured @0@ test executables'.format(test_exes.size()))
+if test_exes.keys().length() > 0
+  message('Configured @0@ test executables'.format(test_exes.keys().length()))
   
   # List all configured tests
   test_list = []

@@ -1,0 +1,11 @@
+[settings]
+os=Windows
+arch=x86_64
+compiler=gcc
+compiler.version=15
+compiler.libcxx=libstdc++
+build_type=Release
+
+[buildenv]
+CC=C:/ProgramData/mingw64/mingw64/bin/gcc.exe
+CXX=C:/ProgramData/mingw64/mingw64/bin/g++.exe
