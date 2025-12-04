@@ -133,5 +133,5 @@ if test_exes.size() > 0
     test_list += test_name
   endforeach
   
-  message('Tests: @0@'.format(', '.join(test_list)))
+  message('Tests: ' + ', '.join(test_list))
 endif
