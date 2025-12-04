@@ -94,15 +94,32 @@ add_project_arguments(compile_args, language: 'cpp')
 # =============================================================================
 # DEPENDENCIES
 # =============================================================================
-# Catch2 dependency (managed by Conan when available, fallback to system)
-catch2_dep = dependency('catch2', required: false, method: 'pkg-config')
+# Catch2 dependency (try multiple detection methods)
+catch2_dep = dependency('', required: false)
+
+# First try pkg-config (for Conan-installed packages)
 if not catch2_dep.found()
-  # Fallback: try to find Catch2 with main
+  catch2_dep = dependency('catch2', required: false, method: 'pkg-config')
+endif
+
+# Try catch2-with-main variant
+if not catch2_dep.found()
   catch2_dep = dependency('catch2-with-main', required: false, method: 'pkg-config')
 endif
 
+# Try CMake method (alternative for Conan packages)
 if not catch2_dep.found()
-  warning('Catch2 not found via pkg-config. Please install via Conan or system package manager.')
+  catch2_dep = dependency('Catch2', required: false, method: 'cmake')
+endif
+
+if not catch2_dep.found()
+  catch2_dep = dependency('catch2', required: false, method: 'cmake')
+endif
+
+# Final fallback - declare empty dependency with warning
+if not catch2_dep.found()
+  warning('Catch2 not found via any method. Tests may not build correctly.')
+  warning('Please ensure Conan has installed Catch2 and native file is configured.')
   catch2_dep = declare_dependency()
 endif
 

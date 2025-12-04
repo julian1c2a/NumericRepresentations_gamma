@@ -90,11 +90,3 @@ class NumericRepresentationsConan(ConanFile):
         # Required C++ standard
         if hasattr(self.cpp_info, 'cppstd'):
             self.cpp_info.cppstd = "23"
-
-# En lugar de: test_executables.length()
-# Usar: test_executables.keys().length()
-# O simplemente iterar sobre las claves
-
-foreach test_name, test_exe : test_executables
-    test(test_name, test_exe)
-endforeach
