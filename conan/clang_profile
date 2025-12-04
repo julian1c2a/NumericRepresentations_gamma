@@ -1,0 +1,12 @@
+# Conan profile for Clang (MSYS2 or LLVM)
+[settings]
+os=Windows
+arch=x86_64
+compiler=clang
+compiler.version=17
+compiler.libcxx=libstdc++11
+build_type=Release
+
+[buildenv]
+CC=clang
+CXX=clang++

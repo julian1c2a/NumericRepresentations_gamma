@@ -1,0 +1,61 @@
+# =============================================================================
+# MESON OPTIONS - NumericRepresentations Project
+# =============================================================================
+
+option('enable_tests', 
+       type: 'boolean', 
+       value: true, 
+       description: 'Enable building and running tests')
+
+option('enable_docs', 
+       type: 'boolean', 
+       value: true, 
+       description: 'Enable documentation generation with Doxygen')
+
+option('enable_benchmarks', 
+       type: 'boolean', 
+       value: false, 
+       description: 'Enable benchmark targets for performance testing')
+
+option('deep_constexpr', 
+       type: 'boolean', 
+       value: true, 
+       description: 'Enable deep constexpr evaluation for template metaprogramming')
+
+option('strict_warnings', 
+       type: 'boolean', 
+       value: true, 
+       description: 'Enable strict warning flags')
+
+option('native_optimizations', 
+       type: 'boolean', 
+       value: false, 
+       description: 'Enable native CPU optimizations (-march=native)')
+
+option('run_long_tests', 
+       type: 'boolean', 
+       value: false, 
+       description: 'Enable long-running computational tests')
+
+option('test_timeout', 
+       type: 'integer', 
+       value: 30, 
+       min: 5, 
+       max: 300, 
+       description: 'Test timeout in seconds')
+
+option('docs_format', 
+       type: 'combo', 
+       choices: ['html', 'latex', 'both'], 
+       value: 'html', 
+       description: 'Documentation output format')
+
+option('debug_templates', 
+       type: 'boolean', 
+       value: false, 
+       description: 'Enable template instantiation debugging')
+
+option('debug_constexpr', 
+       type: 'boolean', 
+       value: false, 
+       description: 'Enable constexpr evaluation debugging')

@@ -1,0 +1,12 @@
+# Conan profile for MSVC (Visual Studio 2022)
+[settings]
+os=Windows
+arch=x86_64
+compiler=msvc
+compiler.version=193
+compiler.runtime=dynamic
+build_type=Release
+
+[buildenv]
+CC=cl
+CXX=cl
