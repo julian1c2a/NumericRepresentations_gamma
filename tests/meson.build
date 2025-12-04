@@ -11,12 +11,26 @@ if get_option('run_long_tests')
 endif
 
 # =============================================================================
-# TEST EXECUTABLES
+# BASIC COMPILATION TEST (no external dependencies)
+# =============================================================================
+
+basic_test_exe = executable(
+  'basic_compilation_test',
+  'basic_compilation_test.cpp',
+  include_directories: inc_dirs,
+  cpp_args: compile_args,
+  install: false
+)
+
+test('basic_compilation', basic_test_exe)
+
+# =============================================================================
+# TEST EXECUTABLES (with Catch2)
 # =============================================================================
 
 # Test dependencies
-test_deps = [numeric_repr_lib, catch2_dep]
-test_include_dirs = [inc_dirs]
+test_deps = [catch2_dep]  # Removed numeric_repr_lib since it's not a library target
+test_include_dirs = inc_dirs
 test_compile_args = []
 
 # Compiler-specific test flags

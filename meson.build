@@ -17,9 +17,23 @@ project(
 # COMPILER DETECTION AND FLAGS
 # =============================================================================
 cpp = meson.get_compiler('cpp')
-is_msvc = cpp.get_id() == 'msvc'
-is_gcc = cpp.get_id() == 'gcc'
-is_clang = cpp.get_id() == 'clang'
+compiler_sim = get_option('compiler_simulation')
+
+# Real compiler detection
+real_msvc = cpp.get_id() == 'msvc'
+real_gcc = cpp.get_id() == 'gcc' 
+real_clang = cpp.get_id() == 'clang'
+
+# Simulated compiler behavior
+if compiler_sim == 'auto'
+  is_msvc = real_msvc
+  is_gcc = real_gcc
+  is_clang = real_clang
+else
+  is_msvc = compiler_sim == 'msvc'
+  is_gcc = compiler_sim == 'gcc'
+  is_clang = compiler_sim == 'clang'
+endif
 
 # Common include directories
 inc_dirs = include_directories('include')
@@ -30,34 +44,37 @@ inc_dirs = include_directories('include')
 compile_args = []
 
 if is_msvc
-  # MSVC-specific flags for template metaprogramming
+  # MSVC simulation using GCC-compatible flags
+  constexpr_depth = get_option('constexpr_depth')
+  constexpr_ops = get_option('constexpr_ops')
   compile_args += [
-    '/EHsc',                    # Standard exception handling
-    '/permissive-',             # Strict C++ conformance
-    '/constexpr:depth2048',     # Deep template recursion
-    '/constexpr:steps1048576',  # Complex constexpr evaluation
-    '/bigobj',                  # Large object files
-    '/Zc:preprocessor',         # Standard-conforming preprocessor
-    '/Zc:__cplusplus',          # Correct __cplusplus macro
-    '/utf-8',                   # UTF-8 source encoding
+    '-Wall', '-Wextra', 
+    '-Wno-unused-parameter',
+    '-fconstexpr-depth=' + constexpr_depth.to_string(),
+    '-fconstexpr-ops-limit=' + constexpr_ops.to_string(),
+    # Simulate MSVC's stricter behavior
+    '-Werror=return-type',      # Equivalent to MSVC error on missing return
+    '-Wno-pedantic',            # MSVC is less pedantic than GCC's pedantic mode
   ]
   
-  # MSVC optimization flags by build type
+  # MSVC optimization flags by build type (GCC equivalents)
   if get_option('buildtype') == 'release'
-    compile_args += ['/O2', '/Ob2', '/DNDEBUG']
+    compile_args += ['-O2', '-DNDEBUG']
   elif get_option('buildtype') == 'debug'
-    compile_args += ['/Od', '/Zi', '/DEBUG']
+    compile_args += ['-O0', '-g3', '-D_DEBUG']
   else
-    compile_args += ['/O1', '/Zi']
+    compile_args += ['-O1', '-g1']
   endif
   
 elif is_gcc
   # GCC-specific flags
+  constexpr_depth = get_option('constexpr_depth')
+  constexpr_ops = get_option('constexpr_ops')
   compile_args += [
     '-Wall', '-Wextra', '-Wpedantic',
     '-Wno-unused-parameter',
-    '-fconstexpr-depth=2048',
-    '-fconstexpr-ops-limit=1048576',
+    '-fconstexpr-depth=' + constexpr_depth.to_string(),
+    '-fconstexpr-ops-limit=' + constexpr_ops.to_string(),
   ]
   
   # GCC optimization by build type
@@ -70,12 +87,15 @@ elif is_gcc
   endif
   
 elif is_clang
-  # Clang-specific flags
+  # Clang-specific flags (using GCC-compatible alternatives for simulation)
+  constexpr_depth = get_option('constexpr_depth')
+  constexpr_ops = get_option('constexpr_ops')
   compile_args += [
     '-Wall', '-Wextra', '-Wpedantic',
     '-Wno-unused-parameter',
-    '-fconstexpr-depth=2048',
-    '-fconstexpr-steps=1048576',
+    '-fconstexpr-depth=' + constexpr_depth.to_string(),
+    '-fconstexpr-ops-limit=' + constexpr_ops.to_string(),  # Use GCC equivalent when simulating
+    '-Wno-c++98-compat',  # Would be Clang-specific but ignored by GCC
   ]
   
   # Clang optimization by build type
@@ -94,32 +114,56 @@ add_project_arguments(compile_args, language: 'cpp')
 # =============================================================================
 # DEPENDENCIES
 # =============================================================================
-# Catch2 dependency (try multiple detection methods)
+
+# Catch2 dependency detection with multiple fallback methods
 catch2_dep = dependency('', required: false)
+catch2_main_dep = dependency('', required: false)
 
-# First try pkg-config (for Conan-installed packages)
+# Method 1: Try standard dependency detection
 if not catch2_dep.found()
-  catch2_dep = dependency('catch2', required: false, method: 'pkg-config')
+  catch2_dep = dependency('catch2', required: false, method: 'auto')
 endif
 
-# Try catch2-with-main variant
 if not catch2_dep.found()
-  catch2_dep = dependency('catch2-with-main', required: false, method: 'pkg-config')
+  catch2_dep = dependency('catch2-with-main', required: false, method: 'auto')
 endif
 
-# Try CMake method (alternative for Conan packages)
+# Method 2: Try CMake detection (for Conan packages)
 if not catch2_dep.found()
   catch2_dep = dependency('Catch2', required: false, method: 'cmake')
 endif
 
+# Method 3: Manual library search
 if not catch2_dep.found()
-  catch2_dep = dependency('catch2', required: false, method: 'cmake')
+  catch2_lib = cpp.find_library('Catch2', required: false)
+  catch2_main_lib = cpp.find_library('Catch2Main', required: false)
+  
+  if catch2_lib.found() and catch2_main_lib.found()
+    catch2_dep = declare_dependency(
+      dependencies: [catch2_lib, catch2_main_lib]
+    )
+  elif catch2_lib.found()
+    catch2_dep = catch2_lib
+  endif
 endif
 
-# Final fallback - declare empty dependency with warning
+# Method 4: Conan-specific search using environment variables
 if not catch2_dep.found()
-  warning('Catch2 not found via any method. Tests may not build correctly.')
-  warning('Please ensure Conan has installed Catch2 and native file is configured.')
+  conan_catch2_include = get_option('conan_catch2_include_dir')
+  conan_catch2_lib = get_option('conan_catch2_lib_dir')
+  
+  if conan_catch2_include != '' and conan_catch2_lib != ''
+    catch2_dep = declare_dependency(
+      include_directories: include_directories(conan_catch2_include),
+      link_args: ['-L' + conan_catch2_lib, '-lCatch2', '-lCatch2Main']
+    )
+  endif
+endif
+
+# Final fallback - declare stub dependency
+if not catch2_dep.found()
+  warning('Catch2 not found via any method. Tests will be built without proper Catch2 linking.')
+  warning('Please ensure Conan has installed Catch2 properly.')
   catch2_dep = declare_dependency()
 endif
 

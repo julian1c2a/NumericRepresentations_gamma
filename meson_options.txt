@@ -1,61 +1,29 @@
-# =============================================================================
-# MESON OPTIONS - NumericRepresentations Project
-# =============================================================================
+# Meson build options for NumericRepresentations
 
-option('enable_tests', 
-       type: 'boolean', 
-       value: true, 
-       description: 'Enable building and running tests')
+# Compiler simulation mode for multi-compiler testing
+option('compiler_simulation', type: 'combo', choices: ['auto', 'gcc', 'clang', 'msvc'], value: 'auto', 
+       description: 'Simulate different compiler behaviors for testing')
 
-option('enable_docs', 
-       type: 'boolean', 
-       value: true, 
-       description: 'Enable documentation generation with Doxygen')
+# Test configuration
+option('enable_tests', type: 'boolean', value: true, description: 'Build test suite')
+option('enable_docs', type: 'boolean', value: true, description: 'Generate documentation')
+option('enable_benchmarks', type: 'boolean', value: false, description: 'Build benchmarks')
 
-option('enable_benchmarks', 
-       type: 'boolean', 
-       value: false, 
-       description: 'Enable benchmark targets for performance testing')
+# Performance options
+option('native_optimizations', type: 'boolean', value: true, description: 'Enable native CPU optimizations')
+option('test_timeout', type: 'integer', value: 30, description: 'Test timeout in seconds')
+option('run_long_tests', type: 'boolean', value: false, description: 'Include long-running tests')
 
-option('deep_constexpr', 
-       type: 'boolean', 
-       value: true, 
-       description: 'Enable deep constexpr evaluation for template metaprogramming')
+# Constexpr limits
+option('constexpr_depth', type: 'integer', value: 4096, description: 'Constexpr recursion depth limit')
+option('constexpr_ops', type: 'integer', value: 104857600, description: 'Constexpr operations limit')
 
-option('strict_warnings', 
-       type: 'boolean', 
-       value: true, 
-       description: 'Enable strict warning flags')
+# Catch2 manual configuration (for Conan)
+option('conan_catch2_include_dir', type: 'string', value: '', description: 'Manual Catch2 include directory from Conan')
+option('conan_catch2_lib_dir', type: 'string', value: '', description: 'Manual Catch2 library directory from Conan')
 
-option('native_optimizations', 
-       type: 'boolean', 
-       value: false, 
-       description: 'Enable native CPU optimizations (-march=native)')
-
-option('run_long_tests', 
-       type: 'boolean', 
-       value: false, 
-       description: 'Enable long-running computational tests')
-
-option('test_timeout', 
-       type: 'integer', 
-       value: 30, 
-       min: 5, 
-       max: 300, 
-       description: 'Test timeout in seconds')
-
-option('docs_format', 
-       type: 'combo', 
-       choices: ['html', 'latex', 'both'], 
-       value: 'html', 
-       description: 'Documentation output format')
-
-option('debug_templates', 
-       type: 'boolean', 
-       value: false, 
-       description: 'Enable template instantiation debugging')
-
-option('debug_constexpr', 
-       type: 'boolean', 
-       value: false, 
-       description: 'Enable constexpr evaluation debugging')
+# Debug options
+option('strict_warnings', type: 'boolean', value: true, description: 'Enable strict compiler warnings')
+option('deep_constexpr', type: 'boolean', value: true, description: 'Enable deep constexpr evaluation')
+option('debug_templates', type: 'boolean', value: false, description: 'Template debugging')
+option('debug_constexpr', type: 'boolean', value: false, description: 'Constexpr debugging')

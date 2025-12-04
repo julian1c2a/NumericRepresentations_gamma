@@ -17,7 +17,7 @@ struct SuiteInfoPrinter {
 };
 static SuiteInfoPrinter _info_printer;
 
-#include "external/catch_amalgamated.hpp"
+#include <catch2/catch_test_macros.hpp>
 #include "core/dig_t.hpp"
 
 TEST_CASE("dig_t assignations", "[dig_t][assignations]") {
