@@ -115,35 +115,46 @@ add_project_arguments(compile_args, language: 'cpp')
 # DEPENDENCIES
 # =============================================================================
 
-# Catch2 dependency detection with multiple fallback methods
+# Catch2 dependency detection with manual method first (most reliable)
 catch2_dep = dependency('', required: false)
-catch2_main_dep = dependency('', required: false)
 
-# Method 1: Try standard dependency detection
+# Method 1: Manual library search (PRIORITIZED for MSYS2)
+catch2_lib = cpp.find_library('Catch2', required: false)
+catch2_main_lib = cpp.find_library('Catch2Main', required: false)
+
+if catch2_lib.found() and catch2_main_lib.found()
+  catch2_dep = declare_dependency(
+    dependencies: [catch2_lib, catch2_main_lib],
+    compile_args: [],
+    include_directories: include_directories('C:/msys64/ucrt64/include', is_system: true)
+  )
+  message('Catch2 found via manual library search: Catch2 + Catch2Main')
+elif catch2_lib.found()
+  # Fallback: only Catch2 without Main (user must provide main)
+  catch2_dep = catch2_lib
+  message('Warning: Only Catch2 found, Catch2Main missing')
+endif
+
+# Method 2: Try standard dependency detection (fallback)
 if not catch2_dep.found()
   catch2_dep = dependency('catch2', required: false, method: 'auto')
+  if catch2_dep.found()
+    message('Catch2 found via standard dependency detection')
+  endif
 endif
 
 if not catch2_dep.found()
   catch2_dep = dependency('catch2-with-main', required: false, method: 'auto')
+  if catch2_dep.found()
+    message('Catch2 found via catch2-with-main')
+  endif
 endif
 
-# Method 2: Try CMake detection (for Conan packages)
+# Method 3: Try CMake detection (for Conan packages)
 if not catch2_dep.found()
   catch2_dep = dependency('Catch2', required: false, method: 'cmake')
-endif
-
-# Method 3: Manual library search
-if not catch2_dep.found()
-  catch2_lib = cpp.find_library('Catch2', required: false)
-  catch2_main_lib = cpp.find_library('Catch2Main', required: false)
-  
-  if catch2_lib.found() and catch2_main_lib.found()
-    catch2_dep = declare_dependency(
-      dependencies: [catch2_lib, catch2_main_lib]
-    )
-  elif catch2_lib.found()
-    catch2_dep = catch2_lib
+  if catch2_dep.found()
+    message('Catch2 found via CMake detection')
   endif
 endif
 

@@ -1,5 +1,5 @@
 #include <catch2/catch_test_macros.hpp>
-#include "core/internal/math/tables/primes.hpp"
+#include "core/internal/math/primes.hpp"
 #include <vector>
 #include <cstdint>
 #include <random>
