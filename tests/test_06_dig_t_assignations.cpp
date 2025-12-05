@@ -18,7 +18,7 @@ struct SuiteInfoPrinter {
 static SuiteInfoPrinter _info_printer;
 
 #include <catch2/catch_test_macros.hpp>
-#include "core/dig_t.hpp"
+#include "core/dig_t.hpp" // This line is correct
 
 TEST_CASE("dig_t assignations", "[dig_t][assignations]") {
     SECTION("Assignment from dig_t") {
