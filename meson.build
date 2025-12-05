@@ -44,26 +44,25 @@ inc_dirs = include_directories('include')
 compile_args = []
 
 if is_msvc
-  # MSVC simulation using GCC-compatible flags
+  # Real MSVC flags
   constexpr_depth = get_option('constexpr_depth')
-  constexpr_ops = get_option('constexpr_ops')
+  constexpr_steps = get_option('constexpr_ops')
   compile_args += [
-    '-Wall', '-Wextra', 
-    '-Wno-unused-parameter',
-    '-fconstexpr-depth=' + constexpr_depth.to_string(),
-    '-fconstexpr-ops-limit=' + constexpr_ops.to_string(),
-    # Simulate MSVC's stricter behavior
-    '-Werror=return-type',      # Equivalent to MSVC error on missing return
-    '-Wno-pedantic',            # MSVC is less pedantic than GCC's pedantic mode
+    '/W4',                              # MSVC warning level 4 (equivalent to -Wall -Wextra)
+    '/permissive-',                     # Disable non-conforming code
+    '/constexpr:depth' + constexpr_depth.to_string(),
+    '/constexpr:steps' + constexpr_steps.to_string(),
+    '/bigobj',                          # Support for large object files
+    '/DNOMINMAX',                       # Disable min/max macros
   ]
   
-  # MSVC optimization flags by build type (GCC equivalents)
+  # MSVC optimization flags by build type
   if get_option('buildtype') == 'release'
-    compile_args += ['-O2', '-DNDEBUG']
+    compile_args += ['/O2', '/DNDEBUG']
   elif get_option('buildtype') == 'debug'
-    compile_args += ['-O0', '-g3', '-D_DEBUG']
+    compile_args += ['/Od', '/Zi', '/D_DEBUG']
   else
-    compile_args += ['-O1', '-g1']
+    compile_args += ['/O1', '/Zi']
   endif
   
 elif is_gcc
