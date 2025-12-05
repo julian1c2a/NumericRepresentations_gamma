@@ -48,11 +48,11 @@ test_targets = [
     'source': 'test_01_math_tables.cpp',
     'priority': 'high'
   },
-  # {
-  #   'name': 'test_02_append',
-  #   'source': 'test_02_append.cpp',
-  #   'priority': 'high'
-  # },
+  {
+    'name': 'test_02_append',
+    'source': 'test_02_append.cpp',
+    'priority': 'high'
+  },
   {
     'name': 'test_03_core_internal',
     'source': 'test_03_core_internal.cpp',
@@ -93,7 +93,32 @@ test_targets = [
     'source': 'test_10_dig_t_io.cpp',
     'priority': 'high'
   },
-  # Other tests
+  {
+    'name': 'test_11_basic_types',
+    'source': 'test_11_basic_types.cpp',
+    'priority': 'high'
+  },
+  {
+    'name': 'test_12_Int_ExpLog',
+    'source': 'test_12_Int_ExpLog.cpp',
+    'priority': 'high'
+  },
+  {
+    'name': 'test_13_IntRoot',
+    'source': 'test_13_IntRoot.cpp',
+    'priority': 'high'
+  },
+  {
+    'name': 'test_14_primes',
+    'source': 'test_14_primes.cpp',
+    'priority': 'high'
+  },
+  {
+    'name': 'test_15_conversions',
+    'source': 'test_15_conversions.cpp',
+    'priority': 'high'
+  },
+  # Tests corregidos - estructura moderna
   {
     'name': 'test_LUT_of_primes',
     'source': 'test_LUT_of_primes.cpp',

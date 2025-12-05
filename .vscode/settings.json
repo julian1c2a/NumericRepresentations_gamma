@@ -40,5 +40,5 @@
     "codeQL.runningQueries.debug": true,
     "codeQL.runningQueries.saveCache": true,
     "C_Cpp.default.configurationProvider": "mesonbuild.mesonbuild",
-    "C_Cpp.default.compileCommands": "d:\\GDrive\\NumericRepresentations_gamma\\builddir/compile_commands.json"
+    "C_Cpp.default.compileCommands": "d:\\gdrive\\numericrepresentations_gamma\\builddir/compile_commands.json"
 }

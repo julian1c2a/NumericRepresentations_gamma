@@ -87,15 +87,15 @@ elif is_gcc
   endif
   
 elif is_clang
-  # Clang-specific flags (using GCC-compatible alternatives for simulation)
+  # Clang-specific flags
   constexpr_depth = get_option('constexpr_depth')
   constexpr_ops = get_option('constexpr_ops')
   compile_args += [
     '-Wall', '-Wextra', '-Wpedantic',
     '-Wno-unused-parameter',
     '-fconstexpr-depth=' + constexpr_depth.to_string(),
-    '-fconstexpr-ops-limit=' + constexpr_ops.to_string(),  # Use GCC equivalent when simulating
-    '-Wno-c++98-compat',  # Would be Clang-specific but ignored by GCC
+    '-fconstexpr-steps=' + constexpr_ops.to_string(),  # Clang uses -fconstexpr-steps
+    '-Wno-c++98-compat',  # Clang-specific warning
   ]
   
   # Clang optimization by build type

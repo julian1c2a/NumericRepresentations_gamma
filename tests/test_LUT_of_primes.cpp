@@ -1,11 +1,26 @@
 #include <catch2/catch_test_macros.hpp>
-#include "../include/core/internal/math/tables/primes.hpp"
-
-using namespace NumRepr::AuxFunc::LUT;
+#include "core/internal/math/tables/primes.hpp"
 #include <vector>
 #include <cstdint>
 #include <random>
 #include <algorithm>
+#include <iostream>
+
+using namespace NumRepr::AuxFunc::LUT;
+
+// =============================================================================
+// IDENTIFICACIÓN DE LA SUITE
+// =============================================================================
+// Truco: Este constructor estático corre antes que el main de Catch2
+struct SuiteInfoPrinter {
+    SuiteInfoPrinter() {
+        std::cout << "\n=============================================================\n"
+                  << " EJECUTANDO SUITE: test_LUT_of_primes\n"
+                  << "=============================================================" 
+                  << std::endl;
+    }
+};
+static SuiteInfoPrinter _info_printer;
 
 TEST_CASE("isPrime correctness for small numbers", "[primes]") {
     std::vector<uint16_t> known_primes = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 97, 101, 127, 131, 199, 211, 997, 65521};
