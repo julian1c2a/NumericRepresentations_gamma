@@ -5,7 +5,7 @@ project(
   license: 'MIT',
   meson_version: '>=0.63.0',
   default_options: [
-    'cpp_std=c++23',
+    'cpp_std=c++latest',
     'buildtype=debugoptimized',
     'warning_level=3',
     'werror=false',
@@ -120,21 +120,31 @@ add_project_arguments(compile_args, language: 'cpp')
 # Catch2 dependency detection with manual method first (most reliable)
 catch2_dep = dependency('', required: false)
 
-# Method 1: Manual library search (PRIORITIZED for MSYS2)
-catch2_lib = cpp.find_library('Catch2', required: false)
-catch2_main_lib = cpp.find_library('Catch2Main', required: false)
-
-if catch2_lib.found() and catch2_main_lib.found()
+# For MSVC, use header-only approach directly (most reliable)
+if cpp.get_id() == 'msvc'
   catch2_dep = declare_dependency(
-    dependencies: [catch2_lib, catch2_main_lib],
-    compile_args: [],
-    include_directories: include_directories('C:/msys64/ucrt64/include', is_system: true)
+    include_directories: include_directories('external/Catch2/extras', is_system: true)
   )
-  message('Catch2 found via manual library search: Catch2 + Catch2Main')
-elif catch2_lib.found()
-  # Fallback: only Catch2 without Main (user must provide main)
-  catch2_dep = catch2_lib
-  message('Warning: Only Catch2 found, Catch2Main missing')
+  message('Catch2 configured as header-only for MSVC in external/Catch2/extras')
+endif
+
+# Method 1: Manual library search (PRIORITIZED for GCC/Clang)
+if not catch2_dep.found()
+  catch2_lib = cpp.find_library('Catch2', required: false)
+  catch2_main_lib = cpp.find_library('Catch2Main', required: false)
+
+  if catch2_lib.found() and catch2_main_lib.found()
+    catch2_dep = declare_dependency(
+      dependencies: [catch2_lib, catch2_main_lib],
+      compile_args: [],
+      include_directories: include_directories('C:/msys64/ucrt64/include', is_system: true)
+    )
+    message('Catch2 found via manual library search: Catch2 + Catch2Main')
+  elif catch2_lib.found()
+    # Fallback: only Catch2 without Main (user must provide main)
+    catch2_dep = catch2_lib
+    message('Warning: Only Catch2 found, Catch2Main missing')
+  endif
 endif
 
 # Method 2: Try standard dependency detection (fallback)
