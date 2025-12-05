@@ -1,5 +1,5 @@
 // test_06_dig_t_assignations.cpp
-#define CATCH_CONFIG_MAIN
+// Test removed CATCH_CONFIG_MAIN - now handled by catch2_implementation.cpp for MSVC
 
 #include <iostream>
 
@@ -17,7 +17,7 @@ struct SuiteInfoPrinter {
 };
 static SuiteInfoPrinter _info_printer;
 
-#include <catch2/catch_test_macros.hpp>
+#include "catch2_wrapper.hpp"
 #include "core/dig_t.hpp" // This line is correct
 
 TEST_CASE("dig_t assignations", "[dig_t][assignations]") {

@@ -142,10 +142,18 @@ foreach test_info : test_targets
   test_source = test_info.get('source')
   test_priority = test_info.get('priority', 'medium')
   
+  # Prepare sources list
+  test_sources = [test_source]
+  
+  # For MSVC, add Catch2 implementation file
+  if cpp.get_id() == 'msvc'
+    test_sources += ['catch2_implementation.cpp']
+  endif
+  
   # Create executable
   test_exe = executable(
     test_name,
-    test_source,
+    test_sources,
     dependencies: test_deps,
     include_directories: test_include_dirs,
     cpp_args: test_compile_args,
