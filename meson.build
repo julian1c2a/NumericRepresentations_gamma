@@ -13,6 +13,9 @@ project(
   ]
 )
 
+# Import required modules
+fs = import('fs')
+
 # =============================================================================
 # COMPILER DETECTION AND FLAGS
 # =============================================================================
@@ -167,6 +170,17 @@ if not catch2_dep.found()
       include_directories: include_directories(conan_catch2_include),
       link_args: ['-L' + conan_catch2_lib, '-lCatch2', '-lCatch2Main']
     )
+  endif
+endif
+
+# Method 5: Header-only approach (for MSVC or when libraries not found)
+if not catch2_dep.found()
+  catch2_single_header = files('external/Catch2/extras/catch_amalgamated.hpp')
+  if fs.is_file(catch2_single_header[0])
+    catch2_dep = declare_dependency(
+      include_directories: include_directories('external/Catch2/extras', is_system: true)
+    )
+    message('Catch2 found as header-only in external/Catch2/extras')
   endif
 endif
 
