@@ -4,8 +4,9 @@ arch=x86_64
 compiler=gcc
 compiler.version=15
 compiler.libcxx=libstdc++
+compiler.cppstd=23
 build_type=Release
 
 [buildenv]
-CC=C:/ProgramData/mingw64/mingw64/bin/gcc.exe
-CXX=C:/ProgramData/mingw64/mingw64/bin/g++.exe
+CC=c:/msys64/ucrt64/bin/gcc.exe
+CXX=c:/msys64/ucrt64/bin/g++.exe

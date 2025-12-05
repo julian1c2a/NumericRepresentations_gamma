@@ -1,5 +1,4 @@
-#define CATCH_CONFIG_MAIN
-#include "external/catch.hpp"
+#include <catch2/catch_test_macros.hpp>
 #include "../include/core/internal/math/tables/primes.hpp"
 
 using namespace NumRepr::AuxFunc::LUT;

@@ -3,5 +3,9 @@ os=Windows
 arch=x86_64
 compiler=msvc
 compiler.version=193
+compiler.cppstd=23
 compiler.runtime=dynamic
 build_type=Release
+
+[conf]
+tools.microsoft.vcvars:path=C:/Program Files/Microsoft Visual Studio/18/Community/VC/Auxiliary/Build/vcvarsall.bat

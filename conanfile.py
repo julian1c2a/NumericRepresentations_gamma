@@ -34,7 +34,7 @@ class NumericRepresentationsConan(ConanFile):
     def requirements(self):
         # Main dependencies
         if self.options.enable_tests:
-            self.requires("catch2/3.5.0")
+            self.requires("catch2/3.11.0")
             
     def build_requirements(self):
         # Build tools

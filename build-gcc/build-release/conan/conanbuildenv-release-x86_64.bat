@@ -18,6 +18,6 @@ for %%v in (CXX CC PATH) do (
 endlocal
 
 
-set "CXX=C:/ProgramData/mingw64/mingw64/bin/g++.exe"
-set "CC=C:/ProgramData/mingw64/mingw64/bin/gcc.exe"
-set "PATH=C:\Users\ALUMNOS\.conan2\p\meson85908f9d185b9\f\bin;C:\Users\ALUMNOS\.conan2\p\ninjaa3155d7c5e37b\p\bin;%PATH%"
+set "CXX=c:/msys64/ucrt64/bin/g++.exe"
+set "CC=c:/msys64/ucrt64/bin/gcc.exe"
+set "PATH=C:\Users\julia\.conan2\p\meson85908f9d185b9\f\bin;C:\Users\julia\.conan2\p\ninjaa3155d7c5e37b\p\bin;%PATH%"

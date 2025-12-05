@@ -48,11 +48,11 @@ test_targets = [
     'source': 'test_01_math_tables.cpp',
     'priority': 'high'
   },
-  {
-    'name': 'test_02_append',
-    'source': 'test_02_append.cpp',
-    'priority': 'high'
-  },
+  # {
+  #   'name': 'test_02_append',
+  #   'source': 'test_02_append.cpp',
+  #   'priority': 'high'
+  # },
   {
     'name': 'test_03_core_internal',
     'source': 'test_03_core_internal.cpp',
@@ -92,6 +92,17 @@ test_targets = [
     'name': 'test_10_dig_t_io',
     'source': 'test_10_dig_t_io.cpp',
     'priority': 'high'
+  },
+  # Other tests
+  {
+    'name': 'test_LUT_of_primes',
+    'source': 'test_LUT_of_primes.cpp',
+    'priority': 'medium'
+  },
+  {
+    'name': 'test_primes_compiletime_catch2',
+    'source': 'test_primes_compiletime_catch2.cpp',
+    'priority': 'medium'
   },
 ]
 

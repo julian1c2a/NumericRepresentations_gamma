@@ -1,4 +1,5 @@
-#include "../include/core/internal/lookup_tables/primes_ct.hpp"
+// Update the path below to the correct location of primes_ct.hpp
+#include "../core/internal/math/tables/primes_ct.hpp"
 
 static_assert(NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct<2>(), "2 debe ser primo");
 static_assert(NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct<3>(), "3 debe ser primo");
