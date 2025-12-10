@@ -1,5 +1,6 @@
 #include <catch2/catch_test_macros.hpp>
 #include "core/internal/math/primes.hpp"
+#include "core/internal/append/int128_ops.hpp"  // Para mulmod
 #include <vector>
 #include <cstdint>
 #include <random>
@@ -7,6 +8,7 @@
 #include <iostream>
 
 using namespace NumRepr::AuxFunc::LUT;
+using NumRepr::mulmod;  // Agregar mulmod al scope
 
 // =============================================================================
 // IDENTIFICACIÓN DE LA SUITE
@@ -71,8 +73,10 @@ TEST_CASE("isPrime random stress test", "[primes][random]") {
 TEST_CASE("mulmod and binpower properties", "[modular]") {
     REQUIRE(mulmod(2, 3, 5) == (2 * 3) % 5);
     REQUIRE(mulmod(123456789, 987654321, 1000000007) == (123456789ULL * 987654321ULL) % 1000000007ULL);
-    REQUIRE(NumRepr::AuxFunc::LUT::binpower_ct<2, 10, 1000>() == 24);
-    REQUIRE(NumRepr::AuxFunc::LUT::binpower_ct<3, 7, 13>() == 3);
+    
+    // Test binpower (existe en NumRepr::AuxFunc::LUT)
+    REQUIRE(binpower(2, 10, 1000) == 24);  // 2^10 % 1000 = 1024 % 1000 = 24
+    REQUIRE(binpower(3, 7, 13) == 3);      // 3^7 % 13 = 2187 % 13 = 3
 }
 
 TEST_CASE("mulmod_ct and binpower_ct compile-time evaluation", "[constexpr]") {

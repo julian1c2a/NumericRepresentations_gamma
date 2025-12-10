@@ -32,8 +32,13 @@ static SuiteInfoPrinter _info_printer;
 // Construye un uint128_t desde partes alta y baja
 template <typename T = uint128_t>
 constexpr T make_u128(uint64_t high, uint64_t low) {
-    if constexpr (std::is_integral_v<T>) {
-        // Caso Nativo (__int128)
+    static_assert(sizeof(T) == 16, "T must be 128-bit type");
+    
+    if constexpr (std::is_same_v<T, uint128_t>) {
+        // Para uint128_t (unsigned __int128), usar operaciones de bits
+        return (static_cast<T>(high) << 64) | low;
+    } else if constexpr (std::is_integral_v<T>) {
+        // Otros tipos integrales de 128 bits
         return (static_cast<T>(high) << 64) | low;
     } else {
         // Caso Struct (constructor es low, high)
@@ -44,7 +49,10 @@ constexpr T make_u128(uint64_t high, uint64_t low) {
 // Obtiene la parte alta
 template <typename T = uint128_t>
 constexpr uint64_t get_high(const T& v) {
-    if constexpr (std::is_integral_v<T>) {
+    if constexpr (std::is_same_v<T, uint128_t>) {
+        // Para uint128_t (unsigned __int128), usar shift
+        return static_cast<uint64_t>(v >> 64);
+    } else if constexpr (std::is_integral_v<T>) {
         return static_cast<uint64_t>(v >> 64);
     } else {
         return v.high;
@@ -54,7 +62,10 @@ constexpr uint64_t get_high(const T& v) {
 // Obtiene la parte baja
 template <typename T = uint128_t>
 constexpr uint64_t get_low(const T& v) {
-    if constexpr (std::is_integral_v<T>) {
+    if constexpr (std::is_same_v<T, uint128_t>) {
+        // Para uint128_t (unsigned __int128), usar cast directo
+        return static_cast<uint64_t>(v);
+    } else if constexpr (std::is_integral_v<T>) {
         return static_cast<uint64_t>(v);
     } else {
         return v.low;

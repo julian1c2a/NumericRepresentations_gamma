@@ -10,6 +10,51 @@ namespace NumRepr {
 namespace AuxFunc {
 
 // =============================================================================
+// TRAIT HELPERS FOR EXTENDED TYPES
+// =============================================================================
+
+// Custom make_unsigned trait that supports __int128 types
+template<typename T>
+struct make_unsigned_extended {
+    using type = std::make_unsigned_t<T>;
+};
+
+// Specializations for __int128 types
+#if defined(__SIZEOF_INT128__)
+template<>
+struct make_unsigned_extended<__int128> {
+    using type = __uint128_t;
+};
+
+template<>
+struct make_unsigned_extended<__uint128_t> {
+    using type = __uint128_t;
+};
+#endif
+
+template<typename T>
+using make_unsigned_extended_t = typename make_unsigned_extended<T>::type;
+
+// Custom bit_width function that supports __int128 types
+template<typename T>
+constexpr int bit_width_extended(T x) noexcept {
+#if defined(__SIZEOF_INT128__)
+    if constexpr (std::is_same_v<T, __uint128_t>) {
+        if (x == 0) return 0;
+        int result = 0;
+        while (x > 0) {
+            x >>= 1;
+            ++result;
+        }
+        return result;
+    } else
+#endif
+    {
+        return std::bit_width(x);
+    }
+}
+
+// =============================================================================
 // IMPLEMENTACIÓN BASE (Iterativa y Constexpr)
 // =============================================================================
 
@@ -25,12 +70,12 @@ constexpr T floorsqrt_impl(T n) noexcept {
   if (n < 0) { return 0; }
   if (n == 0 || n == 1) { return n; }
 
-  using UnsignedT = std::make_unsigned_t<T>;
+  using UnsignedT = make_unsigned_extended_t<T>;
   const UnsignedT un {static_cast<UnsignedT>(n)};
 
-  // Estimación inicial usando std::bit_width (C++20)
+  // Estimación inicial usando bit_width
   // sqrt(x) aprox 2^(log2(x)/2)
-  const int bw {std::bit_width(un)};
+  const int bw {bit_width_extended(un)};
   UnsignedT x0 { UnsignedT(1) << (bw / 2) };
   
   // Ajuste fino inicial para no subestimar demasiado
