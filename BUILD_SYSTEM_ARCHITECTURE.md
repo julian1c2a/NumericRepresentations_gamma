@@ -92,7 +92,7 @@ Este documento describe el conjunto completo de archivos de configuración y scr
 
 ### Archivos de Configuración
 - **`gcc_native.ini`** - Configuración específica GCC
-- **`scripts/detect_catch2.py`** - Script detección Catch2 (Python)
+- **`scripts/detect_catch2.py`** -+ Script detección Catch2 (Python)
 
 ## 📁 Directorios de Build
 
