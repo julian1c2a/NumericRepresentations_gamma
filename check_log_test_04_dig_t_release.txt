@@ -1,0 +1,14 @@
+==========================================
+ EJECUTANDO TESTS CON MESON: test_04_dig_t (release)
+==========================================
+--- Ejecutando: test_04_dig_t ---
+
+=============================================================
+ EJECUTANDO SUITE: test_04_dig_t
+=============================================================
+Randomness seeded to: 2518611722
+===============================================================================
+All tests passed (62 assertions in 6 test cases)
+
+✅ test_04_dig_t: PASÓ
+--- Ejecución completada para test_04_dig_t (release) ---

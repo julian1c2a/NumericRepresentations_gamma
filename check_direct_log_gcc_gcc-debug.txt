@@ -1,0 +1,1 @@
+Error: Modo no válido 'gcc-debug'. Usar 'debug' o 'release'

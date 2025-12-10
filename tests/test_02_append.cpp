@@ -1,4 +1,4 @@
-#include <catch2/catch_test_macros.hpp>
+#include "catch2_wrapper.hpp"
 
 #include "core/internal/append/int128_ops.hpp"
 #include "core/internal/append/expected.hpp"

@@ -6,43 +6,43 @@
 #include "core/internal/math/primes.hpp"
 
 // --- Verificaciones en tiempo de compilación ---
-static_assert(NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct<2>(), "2 debe ser primo");
-static_assert(NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct<3>(), "3 debe ser primo");
-static_assert(NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct<65521>(), "65521 debe ser primo");
-static_assert(!NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct<0>(), "0 no debe ser primo");
-static_assert(!NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct<1>(), "1 no debe ser primo");
-static_assert(!NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct<4>(), "4 no debe ser primo");
-static_assert(!NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct<65535>(), "65535 no debe ser primo");
-static_assert(!NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct<65536>(), "65536 no debe ser primo");
+static_assert(NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct(2), "2 debe ser primo");
+static_assert(NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct(3), "3 debe ser primo");
+static_assert(NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct(65521), "65521 debe ser primo");
+static_assert(!NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct(0), "0 no debe ser primo");
+static_assert(!NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct(1), "1 no debe ser primo");
+static_assert(!NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct(4), "4 no debe ser primo");
+static_assert(!NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct(65535), "65535 no debe ser primo");
+static_assert(!NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct(65536), "65536 no debe ser primo");
 
 // --- Verificaciones en tiempo de compilación ---
-static_assert(NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct<2>(), "2 debe ser primo");
-static_assert(NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct<3>(), "3 debe ser primo");
-static_assert(NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct<65521>(), "65521 debe ser primo");
-static_assert(!NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct<0>(), "0 no debe ser primo");
-static_assert(!NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct<1>(), "1 no debe ser primo");
-static_assert(!NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct<4>(), "4 no debe ser primo");
-static_assert(!NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct<65535>(), "65535 no debe ser primo");
-static_assert(!NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct<65536>(), "65536 no debe ser primo");
+static_assert(NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct(2), "2 debe ser primo");
+static_assert(NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct(3), "3 debe ser primo");
+static_assert(NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct(65521), "65521 debe ser primo");
+static_assert(!NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct(0), "0 no debe ser primo");
+static_assert(!NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct(1), "1 no debe ser primo");
+static_assert(!NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct(4), "4 no debe ser primo");
+static_assert(!NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct(65535), "65535 no debe ser primo");
+static_assert(!NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct(65536), "65536 no debe ser primo");
 
 TEST_CASE("LUT_of_primes: is_prime_lt_65537", "[LUT_of_primes]")
 {
-    using NumRepr::AuxFunc::LUT::is_prime_lt_65537;
+    using NumRepr::AuxFunc::LUT::is_prime_in_uint16;
 
     SECTION("Primos conocidos (runtime)")
     {
-        REQUIRE(is_prime_lt_65537(2));
-        REQUIRE(is_prime_lt_65537(3));
-        REQUIRE(is_prime_lt_65537(65521));
+        REQUIRE(is_prime_in_uint16(2));
+        REQUIRE(is_prime_in_uint16(3));
+        REQUIRE(is_prime_in_uint16(65521));
     }
 
     SECTION("No primos conocidos (runtime)")
     {
-        REQUIRE_FALSE(is_prime_lt_65537(0));
-        REQUIRE_FALSE(is_prime_lt_65537(1));
-        REQUIRE_FALSE(is_prime_lt_65537(4));
-        REQUIRE_FALSE(is_prime_lt_65537(65535));
-        REQUIRE_FALSE(is_prime_lt_65537(65536));
+        REQUIRE_FALSE(is_prime_in_uint16(0));
+        REQUIRE_FALSE(is_prime_in_uint16(1));
+        REQUIRE_FALSE(is_prime_in_uint16(4));
+        REQUIRE_FALSE(is_prime_in_uint16(65535));
+        // Note: 65536 overflows uint16_t, so we can't test it with is_prime_in_uint16
     }
 }
 
@@ -95,89 +95,88 @@ TEST_CASE("Lookup Tables", "[lookup_tables]")
         REQUIRE_FALSE(NumRepr::AuxFunc::LUT::max_exponent_for_base(std::numeric_limits<std::uint64_t>::max()) == 2);
     }
 
-    SECTION("get_nth_prime")
+    SECTION("primes_lt_65537 array access")
     {
-        // Test with valid positions
-        REQUIRE(NumRepr::AuxFunc::LUT::get_nth_prime(1) == 2);
-        REQUIRE(NumRepr::AuxFunc::LUT::get_nth_prime(10) == 29);
-        REQUIRE(NumRepr::AuxFunc::LUT::get_nth_prime(1024) == 8161);
-
-        // Test with invalid positions
-        REQUIRE(NumRepr::AuxFunc::LUT::get_nth_prime(0) == -1);
-        REQUIRE(NumRepr::AuxFunc::LUT::get_nth_prime(1025) == std::numeric_limits<std::int64_t>::min());
+        // Test with valid array indices (note: 1-based vs 0-based indexing)
+        REQUIRE(NumRepr::AuxFunc::LUT::primes_lt_65537[0] == 2);    // 1st prime
+        REQUIRE(NumRepr::AuxFunc::LUT::primes_lt_65537[9] == 29);   // 10th prime
+        REQUIRE(NumRepr::AuxFunc::LUT::primes_lt_65537[1023] == 8161); // 1024th prime
+        
+        // Test actual array size (contains all primes less than 65537)
+        REQUIRE(NumRepr::AuxFunc::LUT::primes_lt_65537.size() == 6542);
     }
 
-    SECTION("is_prime_rt")
+    SECTION("isPrime (runtime)")
     {
-        // Test with primes in the list
-        REQUIRE(NumRepr::AuxFunc::LUT::is_prime_rt(2));
-        REQUIRE(NumRepr::AuxFunc::LUT::is_prime_rt(7));
-        REQUIRE(NumRepr::AuxFunc::LUT::is_prime_rt(8161));
+        // Test with primes
+        REQUIRE(NumRepr::AuxFunc::LUT::isPrime(2));
+        REQUIRE(NumRepr::AuxFunc::LUT::isPrime(7));
+        REQUIRE(NumRepr::AuxFunc::LUT::isPrime(8161));
 
         // Test with composites
-        REQUIRE_FALSE(NumRepr::AuxFunc::LUT::is_prime_rt(4));
-        REQUIRE_FALSE(NumRepr::AuxFunc::LUT::is_prime_rt(10));
-        REQUIRE_FALSE(NumRepr::AuxFunc::LUT::is_prime_rt(100));
+        REQUIRE_FALSE(NumRepr::AuxFunc::LUT::isPrime(4));
+        REQUIRE_FALSE(NumRepr::AuxFunc::LUT::isPrime(10));
+        REQUIRE_FALSE(NumRepr::AuxFunc::LUT::isPrime(100));
 
-        // Test with a prime not in the list
-        REQUIRE_FALSE(NumRepr::AuxFunc::LUT::is_prime_rt(8171)); // Next prime after 8161
+        // Test with a prime not in the list (large primes test with Miller-Rabin)
+        REQUIRE(NumRepr::AuxFunc::LUT::isPrime(8171)); // Next prime after 8161
     }
 
-    SECTION("is_prime_ct")
+    SECTION("is_prime_lt_65537_ct (compile-time)")
     {
-        // Test with primes in the list
-        REQUIRE(NumRepr::AuxFunc::LUT::is_prime_ct<2>());
-        REQUIRE(NumRepr::AuxFunc::LUT::is_prime_ct<7>());
-        REQUIRE(NumRepr::AuxFunc::LUT::is_prime_ct<8161>());
+        // Test with primes using constexpr function calls
+        REQUIRE(NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct(2));
+        REQUIRE(NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct(7));
+        REQUIRE(NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct(8161));
 
-        // Test with composites
-        REQUIRE_FALSE(NumRepr::AuxFunc::LUT::is_prime_ct<4>());
-        REQUIRE_FALSE(NumRepr::AuxFunc::LUT::is_prime_ct<10>());
-        REQUIRE_FALSE(NumRepr::AuxFunc::LUT::is_prime_ct<100>());
+        // Test with composites 
+        REQUIRE_FALSE(NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct(4));
+        REQUIRE_FALSE(NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct(10));
+        REQUIRE_FALSE(NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct(100));
 
-        // Test with a prime not in the list
-        REQUIRE_FALSE(NumRepr::AuxFunc::LUT::is_prime_ct<8171>()); // Next prime after 8161
+        // Test with a composite not in small list
+        REQUIRE_FALSE(NumRepr::AuxFunc::LUT::is_prime_lt_65537_ct(8170)); // Composite near 8161
     }
 }
 
 TEST_CASE("Benchmarks para LUT", "[lut][benchmark]")
 {
 
-    // Esto mide el tiempo de ejecución de la función get_nth_prime(1024)
-    BENCHMARK("get_nth_prime (elemento 1024)")
+    // Esto mide el tiempo de acceso directo al array de primos
+    BENCHMARK("primes_lt_65537 access (elemento 1023)")
     {
-        // Esta función se llamará muchas veces para obtener una medida estable
-        return NumRepr::AuxFunc::LUT::get_nth_prime(1024);
+        // Array access es 0-indexed, así que 1023 es el 1024vo primo
+        return NumRepr::AuxFunc::LUT::primes_lt_65537[1023];
     };
 
-    BENCHMARK("get_nth_prime (elemento 1)")
+    BENCHMARK("primes_lt_65537 access (elemento 0)")
     {
-        return NumRepr::AuxFunc::LUT::get_nth_prime(1);
+        return NumRepr::AuxFunc::LUT::primes_lt_65537[0];  // 1st prime
     };
 
-    BENCHMARK("get_nth_prime (elemento 2)")
+    BENCHMARK("primes_lt_65537 access (elemento 1)")
     {
-        return NumRepr::AuxFunc::LUT::get_nth_prime(2);
+        return NumRepr::AuxFunc::LUT::primes_lt_65537[1];  // 2nd prime
     };
 
-    BENCHMARK("get_nth_prime (elemento 3)")
+    BENCHMARK("primes_lt_65537 access (elemento 2)")
     {
-        return NumRepr::AuxFunc::LUT::get_nth_prime(3);
+        return NumRepr::AuxFunc::LUT::primes_lt_65537[2];  // 3rd prime
     };
 
-    BENCHMARK("get_nth_prime (elemento 256)")
+    BENCHMARK("primes_lt_65537 access (elemento 255)")
     {
-        return NumRepr::AuxFunc::LUT::get_nth_prime(256);
+        return NumRepr::AuxFunc::LUT::primes_lt_65537[255]; // 256th prime
     };
 
-    BENCHMARK("get_nth_prime (elemento 37)")
+    BENCHMARK("primes_lt_65537 access (elemento 36)")
     {
-        return NumRepr::AuxFunc::LUT::get_nth_prime(37);
+        return NumRepr::AuxFunc::LUT::primes_lt_65537[36];  // 37th prime
     };
 
-    BENCHMARK("get_nth_prime (elemento 42)")
+    BENCHMARK("primes_lt_65537 access (elemento 41)")
     {
-        return NumRepr::AuxFunc::LUT::get_nth_prime(42);
+        return NumRepr::AuxFunc::LUT::primes_lt_65537[41];  // 42nd prime
     };
 
     BENCHMARK("max_exponent_for_base (runtime) 1024")

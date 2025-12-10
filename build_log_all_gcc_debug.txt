@@ -1,0 +1,389 @@
+==========================================
+ CONSTRUYENDO: all con gcc debug
+==========================================
+--- Compilando todos los tests ---
+--- Compilando: test_01_math_tables ---
+ninja: Entering directory `D:/GDrive/NumericRepresentations_gamma/builddir-debug'
+[1/2] Compiling C++ object tests/test_01_math_tables.exe.p/test_01_math_tables.cpp.obj
+In file included from ../include/core/internal/math/../append/integers.hpp:10,
+                 from ../include/core/internal/math/Int_ExpLog.hpp:9,
+                 from ../tests/test_01_math_tables.cpp:4:
+../include/core/internal/math/../append/int128_ops.hpp:77:32: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   77 |     using uint128_t = unsigned __int128;
+      |                                ^~~~~~~~
+../include/core/internal/math/../append/int128_ops.hpp:78:23: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   78 |     using sint128_t = __int128;
+      |                       ^~~~~~~~
+../include/core/internal/math/../append/int128_ops.hpp: In function 'constexpr T NumRepr::mulmod(T, T, T) [with T = long long unsigned int]':
+../include/core/internal/math/../append/int128_ops.hpp:446:35: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+  446 |             (static_cast<unsigned __int128>(a) * b) % m
+      |                                   ^~~~~~~~
+../include/core/internal/math/Int_ExpLog.hpp: In function 'constexpr bool NumRepr::AuxFunc::pow_leq_limit(NumRepr::uint64_t, NumRepr::uint32_t, NumRepr::uint64_t)':
+../include/core/internal/math/Int_ExpLog.hpp:243:49: warning: comparison of unsigned expression in '>= 0' is always true [-Wtype-limits]
+  243 |   if (b == 0) return (exp == 0 ? 1 <= limit : 0 <= limit);
+      |                                               ~~^~~~~~~~
+../tests/test_01_math_tables.cpp: In function 'void CATCH2_INTERNAL_TEST_11()':
+../tests/test_01_math_tables.cpp:148:19: warning: comparison is always true due to limited range of data type [-Wtype-limits]
+  148 |             if (p < 65536) {
+      |                 ~~^~~~~~~
+[2/2] Linking target tests/test_01_math_tables.exe
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: C:\msys64\ucrt64\bin/ninja.EXE -C D:/GDrive/NumericRepresentations_gamma/builddir-debug tests/test_01_math_tables.exe
+✅ test_01_math_tables: OK
+--- Compilando: test_02_append ---
+ninja: Entering directory `D:/GDrive/NumericRepresentations_gamma/builddir-debug'
+ninja: no work to do.
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: C:\msys64\ucrt64\bin/ninja.EXE -C D:/GDrive/NumericRepresentations_gamma/builddir-debug tests/test_02_append.exe
+✅ test_02_append: OK
+--- Compilando: test_03_core_internal ---
+ninja: Entering directory `D:/GDrive/NumericRepresentations_gamma/builddir-debug'
+[1/2] Compiling C++ object tests/test_03_core_internal.exe.p/test_03_core_internal.cpp.obj
+In file included from ../include/core/internal/basic_types.hpp:7,
+                 from ../tests/test_03_core_internal.cpp:3:
+../include/core/internal/append/int128_ops.hpp:77:32: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   77 |     using uint128_t = unsigned __int128;
+      |                                ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp:78:23: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   78 |     using sint128_t = __int128;
+      |                       ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp: In function 'constexpr T NumRepr::mulmod(T, T, T) [with T = long long unsigned int]':
+../include/core/internal/append/int128_ops.hpp:446:35: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+  446 |             (static_cast<unsigned __int128>(a) * b) % m
+      |                                   ^~~~~~~~
+In file included from ../include/core/internal/AuxFunc.hpp:10,
+                 from ../tests/test_03_core_internal.cpp:4:
+../include/core/internal/math/Int_ExpLog.hpp: In function 'constexpr bool NumRepr::AuxFunc::pow_leq_limit(NumRepr::uint64_t, NumRepr::uint32_t, NumRepr::uint64_t)':
+../include/core/internal/math/Int_ExpLog.hpp:243:49: warning: comparison of unsigned expression in '>= 0' is always true [-Wtype-limits]
+  243 |   if (b == 0) return (exp == 0 ? 1 <= limit : 0 <= limit);
+      |                                               ~~^~~~~~~~
+In file included from ../include/core/internal/AuxFunc.hpp:11:
+../include/core/internal/math/IntRoot.hpp: At global scope:
+../include/core/internal/math/IntRoot.hpp:25:31: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   25 | struct make_unsigned_extended<__int128> {
+      |                               ^~~~~~~~
+[2/2] Linking target tests/test_03_core_internal.exe
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: C:\msys64\ucrt64\bin/ninja.EXE -C D:/GDrive/NumericRepresentations_gamma/builddir-debug tests/test_03_core_internal.exe
+✅ test_03_core_internal: OK
+--- Compilando: test_04_dig_t ---
+ninja: Entering directory `D:/GDrive/NumericRepresentations_gamma/builddir-debug'
+[1/2] Compiling C++ object tests/test_04_dig_t.exe.p/test_04_dig_t.cpp.obj
+In file included from ../include/core/internal/basic_types.hpp:7,
+                 from ../include/core/dig_t.hpp:17,
+                 from ../tests/test_04_dig_t.cpp:5:
+../include/core/internal/append/int128_ops.hpp:77:32: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   77 |     using uint128_t = unsigned __int128;
+      |                                ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp:78:23: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   78 |     using sint128_t = __int128;
+      |                       ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp: In function 'constexpr T NumRepr::mulmod(T, T, T) [with T = long long unsigned int]':
+../include/core/internal/append/int128_ops.hpp:446:35: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+  446 |             (static_cast<unsigned __int128>(a) * b) % m
+      |                                   ^~~~~~~~
+[2/2] Linking target tests/test_04_dig_t.exe
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: C:\msys64\ucrt64\bin/ninja.EXE -C D:/GDrive/NumericRepresentations_gamma/builddir-debug tests/test_04_dig_t.exe
+✅ test_04_dig_t: OK
+--- Compilando: test_05_dig_t_constructors ---
+ninja: Entering directory `D:/GDrive/NumericRepresentations_gamma/builddir-debug'
+[1/2] Compiling C++ object tests/test_05_dig_t_constructors.exe.p/test_05_dig_t_constructors.cpp.obj
+In file included from ../include/core/internal/basic_types.hpp:7,
+                 from ../include/core/dig_t.hpp:17,
+                 from ../tests/test_05_dig_t_constructors.cpp:19:
+../include/core/internal/append/int128_ops.hpp:77:32: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   77 |     using uint128_t = unsigned __int128;
+      |                                ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp:78:23: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   78 |     using sint128_t = __int128;
+      |                       ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp: In function 'constexpr T NumRepr::mulmod(T, T, T) [with T = long long unsigned int]':
+../include/core/internal/append/int128_ops.hpp:446:35: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+  446 |             (static_cast<unsigned __int128>(a) * b) % m
+      |                                   ^~~~~~~~
+[2/2] Linking target tests/test_05_dig_t_constructors.exe
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: C:\msys64\ucrt64\bin/ninja.EXE -C D:/GDrive/NumericRepresentations_gamma/builddir-debug tests/test_05_dig_t_constructors.exe
+✅ test_05_dig_t_constructors: OK
+--- Compilando: test_06_dig_t_assignations ---
+ninja: Entering directory `D:/GDrive/NumericRepresentations_gamma/builddir-debug'
+[1/2] Compiling C++ object tests/test_06_dig_t_assignations.exe.p/test_06_dig_t_assignations.cpp.obj
+In file included from ../include/core/internal/basic_types.hpp:7,
+                 from ../include/core/dig_t.hpp:17,
+                 from ../tests/test_06_dig_t_assignations.cpp:21:
+../include/core/internal/append/int128_ops.hpp:77:32: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   77 |     using uint128_t = unsigned __int128;
+      |                                ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp:78:23: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   78 |     using sint128_t = __int128;
+      |                       ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp: In function 'constexpr T NumRepr::mulmod(T, T, T) [with T = long long unsigned int]':
+../include/core/internal/append/int128_ops.hpp:446:35: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+  446 |             (static_cast<unsigned __int128>(a) * b) % m
+      |                                   ^~~~~~~~
+[2/2] Linking target tests/test_06_dig_t_assignations.exe
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: C:\msys64\ucrt64\bin/ninja.EXE -C D:/GDrive/NumericRepresentations_gamma/builddir-debug tests/test_06_dig_t_assignations.exe
+✅ test_06_dig_t_assignations: OK
+--- Compilando: test_07_dig_t_conversions ---
+ninja: Entering directory `D:/GDrive/NumericRepresentations_gamma/builddir-debug'
+[1/2] Compiling C++ object tests/test_07_dig_t_conversions.exe.p/test_07_dig_t_conversions.cpp.obj
+In file included from ../include/core/internal/basic_types.hpp:7,
+                 from ../include/core/dig_t.hpp:17,
+                 from ../tests/test_07_dig_t_conversions.cpp:20:
+../include/core/internal/append/int128_ops.hpp:77:32: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   77 |     using uint128_t = unsigned __int128;
+      |                                ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp:78:23: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   78 |     using sint128_t = __int128;
+      |                       ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp: In function 'constexpr T NumRepr::mulmod(T, T, T) [with T = long long unsigned int]':
+../include/core/internal/append/int128_ops.hpp:446:35: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+  446 |             (static_cast<unsigned __int128>(a) * b) % m
+      |                                   ^~~~~~~~
+[2/2] Linking target tests/test_07_dig_t_conversions.exe
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: C:\msys64\ucrt64\bin/ninja.EXE -C D:/GDrive/NumericRepresentations_gamma/builddir-debug tests/test_07_dig_t_conversions.exe
+✅ test_07_dig_t_conversions: OK
+--- Compilando: test_08_dig_t_operadores ---
+ninja: Entering directory `D:/GDrive/NumericRepresentations_gamma/builddir-debug'
+[1/2] Compiling C++ object tests/test_08_dig_t_operadores.exe.p/test_08_dig_t_operadores.cpp.obj
+In file included from ../include/core/internal/basic_types.hpp:7,
+                 from ../include/core/dig_t.hpp:17,
+                 from ../tests/test_08_dig_t_operadores.cpp:5:
+../include/core/internal/append/int128_ops.hpp:77:32: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   77 |     using uint128_t = unsigned __int128;
+      |                                ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp:78:23: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   78 |     using sint128_t = __int128;
+      |                       ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp: In function 'constexpr T NumRepr::mulmod(T, T, T) [with T = long long unsigned int]':
+../include/core/internal/append/int128_ops.hpp:446:35: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+  446 |             (static_cast<unsigned __int128>(a) * b) % m
+      |                                   ^~~~~~~~
+[2/2] Linking target tests/test_08_dig_t_operadores.exe
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: C:\msys64\ucrt64\bin/ninja.EXE -C D:/GDrive/NumericRepresentations_gamma/builddir-debug tests/test_08_dig_t_operadores.exe
+✅ test_08_dig_t_operadores: OK
+--- Compilando: test_09_dig_t_algebra ---
+ninja: Entering directory `D:/GDrive/NumericRepresentations_gamma/builddir-debug'
+[1/2] Compiling C++ object tests/test_09_dig_t_algebra.exe.p/test_09_dig_t_algebra.cpp.obj
+In file included from ../include/core/internal/basic_types.hpp:7,
+                 from ../include/core/dig_t.hpp:17,
+                 from ../tests/test_09_dig_t_algebra.cpp:18:
+../include/core/internal/append/int128_ops.hpp:77:32: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   77 |     using uint128_t = unsigned __int128;
+      |                                ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp:78:23: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   78 |     using sint128_t = __int128;
+      |                       ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp: In function 'constexpr T NumRepr::mulmod(T, T, T) [with T = long long unsigned int]':
+../include/core/internal/append/int128_ops.hpp:446:35: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+  446 |             (static_cast<unsigned __int128>(a) * b) % m
+      |                                   ^~~~~~~~
+[2/2] Linking target tests/test_09_dig_t_algebra.exe
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: C:\msys64\ucrt64\bin/ninja.EXE -C D:/GDrive/NumericRepresentations_gamma/builddir-debug tests/test_09_dig_t_algebra.exe
+✅ test_09_dig_t_algebra: OK
+--- Compilando: test_10_dig_t_io ---
+ninja: Entering directory `D:/GDrive/NumericRepresentations_gamma/builddir-debug'
+[1/2] Compiling C++ object tests/test_10_dig_t_io.exe.p/test_10_dig_t_io.cpp.obj
+In file included from ../include/core/internal/basic_types.hpp:7,
+                 from ../include/core/dig_t.hpp:17,
+                 from ../tests/test_10_dig_t_io.cpp:21:
+../include/core/internal/append/int128_ops.hpp:77:32: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   77 |     using uint128_t = unsigned __int128;
+      |                                ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp:78:23: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   78 |     using sint128_t = __int128;
+      |                       ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp: In function 'constexpr T NumRepr::mulmod(T, T, T) [with T = long long unsigned int]':
+../include/core/internal/append/int128_ops.hpp:446:35: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+  446 |             (static_cast<unsigned __int128>(a) * b) % m
+      |                                   ^~~~~~~~
+[2/2] Linking target tests/test_10_dig_t_io.exe
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: C:\msys64\ucrt64\bin/ninja.EXE -C D:/GDrive/NumericRepresentations_gamma/builddir-debug tests/test_10_dig_t_io.exe
+✅ test_10_dig_t_io: OK
+--- Compilando: test_11_basic_types ---
+ninja: Entering directory `D:/GDrive/NumericRepresentations_gamma/builddir-debug'
+[1/2] Compiling C++ object tests/test_11_basic_types.exe.p/test_11_basic_types.cpp.obj
+In file included from ../include/core/internal/basic_types.hpp:7,
+                 from ../tests/test_11_basic_types.cpp:29:
+../include/core/internal/append/int128_ops.hpp:77:32: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   77 |     using uint128_t = unsigned __int128;
+      |                                ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp:78:23: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   78 |     using sint128_t = __int128;
+      |                       ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp: In function 'constexpr T NumRepr::mulmod(T, T, T) [with T = long long unsigned int]':
+../include/core/internal/append/int128_ops.hpp:446:35: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+  446 |             (static_cast<unsigned __int128>(a) * b) % m
+      |                                   ^~~~~~~~
+[2/2] Linking target tests/test_11_basic_types.exe
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: C:\msys64\ucrt64\bin/ninja.EXE -C D:/GDrive/NumericRepresentations_gamma/builddir-debug tests/test_11_basic_types.exe
+✅ test_11_basic_types: OK
+--- Compilando: test_12_Int_ExpLog ---
+ninja: Entering directory `D:/GDrive/NumericRepresentations_gamma/builddir-debug'
+[1/2] Compiling C++ object tests/test_12_Int_ExpLog.exe.p/test_12_Int_ExpLog.cpp.obj
+In file included from ../include/core/internal/math/../append/integers.hpp:10,
+                 from ../include/core/internal/math/Int_ExpLog.hpp:9,
+                 from ../tests/test_12_Int_ExpLog.cpp:23:
+../include/core/internal/math/../append/int128_ops.hpp:77:32: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   77 |     using uint128_t = unsigned __int128;
+      |                                ^~~~~~~~
+../include/core/internal/math/../append/int128_ops.hpp:78:23: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   78 |     using sint128_t = __int128;
+      |                       ^~~~~~~~
+../include/core/internal/math/../append/int128_ops.hpp: In function 'constexpr T NumRepr::mulmod(T, T, T) [with T = long long unsigned int]':
+../include/core/internal/math/../append/int128_ops.hpp:446:35: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+  446 |             (static_cast<unsigned __int128>(a) * b) % m
+      |                                   ^~~~~~~~
+../include/core/internal/math/Int_ExpLog.hpp: In function 'constexpr bool NumRepr::AuxFunc::pow_leq_limit(NumRepr::uint64_t, NumRepr::uint32_t, NumRepr::uint64_t)':
+../include/core/internal/math/Int_ExpLog.hpp:243:49: warning: comparison of unsigned expression in '>= 0' is always true [-Wtype-limits]
+  243 |   if (b == 0) return (exp == 0 ? 1 <= limit : 0 <= limit);
+      |                                               ~~^~~~~~~~
+[2/2] Linking target tests/test_12_Int_ExpLog.exe
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: C:\msys64\ucrt64\bin/ninja.EXE -C D:/GDrive/NumericRepresentations_gamma/builddir-debug tests/test_12_Int_ExpLog.exe
+✅ test_12_Int_ExpLog: OK
+--- Compilando: test_13_IntRoot ---
+ninja: Entering directory `D:/GDrive/NumericRepresentations_gamma/builddir-debug'
+[1/2] Compiling C++ object tests/test_13_IntRoot.exe.p/test_13_IntRoot.cpp.obj
+In file included from ../include/core/internal/math/../append/integers.hpp:10,
+                 from ../include/core/internal/math/IntRoot.hpp:4,
+                 from ../tests/test_13_IntRoot.cpp:1:
+../include/core/internal/math/../append/int128_ops.hpp:77:32: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   77 |     using uint128_t = unsigned __int128;
+      |                                ^~~~~~~~
+../include/core/internal/math/../append/int128_ops.hpp:78:23: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   78 |     using sint128_t = __int128;
+      |                       ^~~~~~~~
+../include/core/internal/math/../append/int128_ops.hpp: In function 'constexpr T NumRepr::mulmod(T, T, T) [with T = long long unsigned int]':
+../include/core/internal/math/../append/int128_ops.hpp:446:35: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+  446 |             (static_cast<unsigned __int128>(a) * b) % m
+      |                                   ^~~~~~~~
+../include/core/internal/math/IntRoot.hpp: At global scope:
+../include/core/internal/math/IntRoot.hpp:25:31: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   25 | struct make_unsigned_extended<__int128> {
+      |                               ^~~~~~~~
+[2/2] Linking target tests/test_13_IntRoot.exe
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: C:\msys64\ucrt64\bin/ninja.EXE -C D:/GDrive/NumericRepresentations_gamma/builddir-debug tests/test_13_IntRoot.exe
+✅ test_13_IntRoot: OK
+--- Compilando: test_14_primes ---
+ninja: Entering directory `D:/GDrive/NumericRepresentations_gamma/builddir-debug'
+[1/2] Compiling C++ object tests/test_14_primes.exe.p/test_14_primes.cpp.obj
+In file included from ../include/core/internal/math/primes.hpp:7,
+                 from ../tests/test_14_primes.cpp:1:
+../include/core/internal/append/int128_ops.hpp:77:32: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   77 |     using uint128_t = unsigned __int128;
+      |                                ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp:78:23: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   78 |     using sint128_t = __int128;
+      |                       ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp: In function 'constexpr T NumRepr::mulmod(T, T, T) [with T = long long unsigned int]':
+../include/core/internal/append/int128_ops.hpp:446:35: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+  446 |             (static_cast<unsigned __int128>(a) * b) % m
+      |                                   ^~~~~~~~
+[2/2] Linking target tests/test_14_primes.exe
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: C:\msys64\ucrt64\bin/ninja.EXE -C D:/GDrive/NumericRepresentations_gamma/builddir-debug tests/test_14_primes.exe
+✅ test_14_primes: OK
+--- Compilando: test_15_conversions ---
+ninja: Entering directory `D:/GDrive/NumericRepresentations_gamma/builddir-debug'
+[1/2] Compiling C++ object tests/test_15_conversions.exe.p/test_15_conversions.cpp.obj
+In file included from ../include/core/internal/append/integers.hpp:10,
+                 from ../include/core/internal/conversions.hpp:5,
+                 from ../tests/test_15_conversions.cpp:1:
+../include/core/internal/append/int128_ops.hpp:77:32: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   77 |     using uint128_t = unsigned __int128;
+      |                                ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp:78:23: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   78 |     using sint128_t = __int128;
+      |                       ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp: In function 'constexpr T NumRepr::mulmod(T, T, T) [with T = long long unsigned int]':
+../include/core/internal/append/int128_ops.hpp:446:35: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+  446 |             (static_cast<unsigned __int128>(a) * b) % m
+      |                                   ^~~~~~~~
+In file included from ../include/core/internal/conversions.hpp:6:
+../include/core/internal/math/Int_ExpLog.hpp: In function 'constexpr bool NumRepr::AuxFunc::pow_leq_limit(NumRepr::uint64_t, NumRepr::uint32_t, NumRepr::uint64_t)':
+../include/core/internal/math/Int_ExpLog.hpp:243:49: warning: comparison of unsigned expression in '>= 0' is always true [-Wtype-limits]
+  243 |   if (b == 0) return (exp == 0 ? 1 <= limit : 0 <= limit);
+      |                                               ~~^~~~~~~~
+In file included from ../include/core/internal/conversions.hpp:7:
+../include/core/internal/math/IntRoot.hpp: At global scope:
+../include/core/internal/math/IntRoot.hpp:25:31: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   25 | struct make_unsigned_extended<__int128> {
+      |                               ^~~~~~~~
+[2/2] Linking target tests/test_15_conversions.exe
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: C:\msys64\ucrt64\bin/ninja.EXE -C D:/GDrive/NumericRepresentations_gamma/builddir-debug tests/test_15_conversions.exe
+✅ test_15_conversions: OK
+--- Compilando: test_LUT_of_primes ---
+ninja: Entering directory `D:/GDrive/NumericRepresentations_gamma/builddir-debug'
+[1/2] Compiling C++ object tests/test_LUT_of_primes.exe.p/test_LUT_of_primes.cpp.obj
+In file included from ../include/core/internal/math/primes.hpp:7,
+                 from ../tests/test_LUT_of_primes.cpp:2:
+../include/core/internal/append/int128_ops.hpp:77:32: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   77 |     using uint128_t = unsigned __int128;
+      |                                ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp:78:23: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   78 |     using sint128_t = __int128;
+      |                       ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp: In function 'constexpr T NumRepr::mulmod(T, T, T) [with T = long long unsigned int]':
+../include/core/internal/append/int128_ops.hpp:446:35: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+  446 |             (static_cast<unsigned __int128>(a) * b) % m
+      |                                   ^~~~~~~~
+[2/2] Linking target tests/test_LUT_of_primes.exe
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: C:\msys64\ucrt64\bin/ninja.EXE -C D:/GDrive/NumericRepresentations_gamma/builddir-debug tests/test_LUT_of_primes.exe
+✅ test_LUT_of_primes: OK
+--- Compilando: test_primes_compiletime_catch2 ---
+ninja: Entering directory `D:/GDrive/NumericRepresentations_gamma/builddir-debug'
+[1/2] Compiling C++ object tests/test_primes_compiletime_catch2.exe.p/test_primes_compiletime_catch2.cpp.obj
+In file included from ../include/core/internal/math/primes_ct.hpp:12,
+                 from ../tests/test_primes_compiletime_catch2.cpp:2:
+../include/core/internal/append/int128_ops.hpp:77:32: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   77 |     using uint128_t = unsigned __int128;
+      |                                ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp:78:23: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   78 |     using sint128_t = __int128;
+      |                       ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp: In function 'constexpr T NumRepr::mulmod(T, T, T) [with T = long long unsigned int]':
+../include/core/internal/append/int128_ops.hpp:446:35: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+  446 |             (static_cast<unsigned __int128>(a) * b) % m
+      |                                   ^~~~~~~~
+[2/2] Linking target tests/test_primes_compiletime_catch2.exe
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: C:\msys64\ucrt64\bin/ninja.EXE -C D:/GDrive/NumericRepresentations_gamma/builddir-debug tests/test_primes_compiletime_catch2.exe
+✅ test_primes_compiletime_catch2: OK
+--- Compilando: basic_compilation_test ---
+ninja: Entering directory `D:/GDrive/NumericRepresentations_gamma/builddir-debug'
+[1/2] Compiling C++ object tests/basic_compilation_test.exe.p/basic_compilation_test.cpp.obj
+In file included from ../include/core/internal/basic_types.hpp:7,
+                 from ../include/core/dig_t.hpp:17,
+                 from ../tests/basic_compilation_test.cpp:2:
+../include/core/internal/append/int128_ops.hpp:77:32: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   77 |     using uint128_t = unsigned __int128;
+      |                                ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp:78:23: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+   78 |     using sint128_t = __int128;
+      |                       ^~~~~~~~
+../include/core/internal/append/int128_ops.hpp: In function 'constexpr T NumRepr::mulmod(T, T, T) [with T = long long unsigned int]':
+../include/core/internal/append/int128_ops.hpp:446:35: warning: ISO C++ does not support '__int128' for 'type name' [-Wpedantic]
+  446 |             (static_cast<unsigned __int128>(a) * b) % m
+      |                                   ^~~~~~~~
+[2/2] Linking target tests/basic_compilation_test.exe
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: C:\msys64\ucrt64\bin/ninja.EXE -C D:/GDrive/NumericRepresentations_gamma/builddir-debug tests/basic_compilation_test.exe
+✅ basic_compilation_test: OK
+
+==========================================
+ RESUMEN DE COMPILACIÓN
+==========================================
+Tests exitosos: 18/18
+🎉 Todos los tests compilaron exitosamente
+--- Construcción completada para all (gcc debug) ---

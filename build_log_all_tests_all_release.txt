@@ -1,0 +1,28 @@
+==========================================
+ CONSTRUYENDO: all_tests con all release
+==========================================
+Construyendo con TODOS los compiladores (release):
+=========================================
+./build_tests.bash: línea 112: local: sólo se puede usar dentro de una función
+./build_tests.bash: línea 113: local: sólo se puede usar dentro de una función
+>>> Construyendo con gcc release <<<
+./build_tests.bash: línea 97: compile_all_tests: orden no encontrada
+❌ gcc: FAILED
+
+>>> Construyendo con clang release <<<
+Para Clang, usar CMake:
+  cmake --preset clang-release
+  cmake --build --preset clang-release
+✅ clang: OK
+
+>>> Construyendo con msvc release <<<
+Para MSVC, usar los scripts .bat específicos:
+  test_02_append_msvc.bat
+  test_LUT_of_primes_msvc.bat
+  O usar los archivos .bat individuales por test
+✅ msvc: OK
+
+=========================================
+Compiladores exitosos: 2/3
+Compiladores con errores:
+  - gcc

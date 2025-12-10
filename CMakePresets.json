@@ -39,8 +39,10 @@
         "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_C_COMPILER": "C:/msys64/clang64/bin/clang.exe",
         "CMAKE_CXX_COMPILER": "C:/msys64/clang64/bin/clang++.exe",
-        "CMAKE_PREFIX_PATH": "${sourceDir}/libs_install/clang/debug/Catch2",
-        "CMAKE_CXX_STANDARD": "23"
+        "CMAKE_PREFIX_PATH": "${sourceDir}/libs_install/clang/debug/Catch2;C:/msys64/clang64",
+        "CMAKE_CXX_STANDARD": "23",
+        "CMAKE_CXX_FLAGS": "-stdlib=libc++ -I/c/msys64/clang64/include/c++/v1 -I/c/msys64/clang64/include",
+        "CMAKE_EXE_LINKER_FLAGS": "-L/c/msys64/clang64/lib -lc++ -lc++abi"
       }
     },
     {
@@ -53,34 +55,40 @@
         "CMAKE_BUILD_TYPE": "Release",
         "CMAKE_C_COMPILER": "C:/msys64/clang64/bin/clang.exe",
         "CMAKE_CXX_COMPILER": "C:/msys64/clang64/bin/clang++.exe",
-        "CMAKE_PREFIX_PATH": "${sourceDir}/libs_install/clang/release/Catch2",
-        "CMAKE_CXX_STANDARD": "23"
+        "CMAKE_PREFIX_PATH": "${sourceDir}/libs_install/clang/release/Catch2;C:/msys64/clang64",
+        "CMAKE_CXX_STANDARD": "23",
+        "CMAKE_CXX_FLAGS": "-I${sourceDir}/tests/external",
+        "CMAKE_EXE_LINKER_FLAGS": "-static-libgcc -static-libstdc++"
       }
     },
     {
       "name": "msvc-debug",
-      "displayName": "MSVC Debug (Ninja)",
-      "description": "Build with MSVC using Ninja in Debug mode",
-      "generator": "Ninja",
+      "displayName": "MSVC Debug (Visual Studio)",
+      "description": "Build with MSVC using Visual Studio generator in Debug mode",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
       "binaryDir": "${sourceDir}/build/build_targets/msvc/debug",
       "toolchainFile": "${sourceDir}/msvc_toolchain.cmake",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_PREFIX_PATH": "${sourceDir}/libs_install/msvc/Catch2",
-        "CMAKE_CXX_STANDARD": "23"
+        "CMAKE_CXX_STANDARD": "20",
+        "CMAKE_CXX_FLAGS": "/constexpr:depth8192 /constexpr:steps50000000 /bigobj"
       }
     },
     {
       "name": "msvc-release",
-      "displayName": "MSVC Release (Ninja)",
-      "description": "Build with MSVC using Ninja in Release mode",
-      "generator": "Ninja",
+      "displayName": "MSVC Release (Visual Studio)",
+      "description": "Build with MSVC using Visual Studio generator in Release mode",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
       "binaryDir": "${sourceDir}/build/build_targets/msvc/release",
-      "toolchainFile": "${sourceDir}/msvc_toolchain.cmake",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "CMAKE_PREFIX_PATH": "${sourceDir}/libs_install/msvc/Catch2",
-        "CMAKE_CXX_STANDARD": "23"
+        "CMAKE_CXX_STANDARD": "23",
+        "CMAKE_CXX_FLAGS": "/std:c++latest /constexpr:depth8192 /constexpr:steps50000000 /bigobj",
+        "CMAKE_C_COMPILER": "cl.exe",
+        "CMAKE_CXX_COMPILER": "cl.exe"
       }
     }
   ],

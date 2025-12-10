@@ -24,7 +24,7 @@ namespace LUT {
      */
     template <uint64_t base>
     consteval size_t max_exponent_for_base_ct() noexcept {
-        return NumRepr::AuxFunc::LUT::Safety::max_exponent_for_base_ct<base>();
+        return NumRepr::AuxFunc::ct::max_exponent_for_base<base>();
     }
 
     /**
@@ -33,7 +33,7 @@ namespace LUT {
      * NumRepr::AuxFunc::Safety::max_exponent_for_base directamente.
      */
     constexpr size_t max_exponent_for_base(uint64_t base) noexcept {
-        return NumRepr::AuxFunc::LUT::Safety::max_exponent_for_base(base);
+        return NumRepr::AuxFunc::Safety::max_exponent_for_base(base);
     }
 
 } // namespace LUT

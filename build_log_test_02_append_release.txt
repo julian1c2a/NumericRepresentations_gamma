@@ -1,0 +1,9 @@
+==========================================
+ CONSTRUYENDO CON MESON: test_02_append (release)
+==========================================
+--- Compilando: test_02_append ---
+ninja: Entering directory `D:/GDrive/NumericRepresentations_gamma/builddir'
+ninja: no work to do.
+INFO: autodetecting backend as ninja
+INFO: calculating backend command to run: C:\msys64\ucrt64\bin/ninja.EXE -C D:/GDrive/NumericRepresentations_gamma/builddir tests/test_02_append.exe
+--- Construcción completada para test_02_append (release) ---

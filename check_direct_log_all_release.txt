@@ -1,0 +1,197 @@
+Ejecutando tests directos con TODOS los compiladores (release):
+=============================================
+>>> Ejecutando tests directos con gcc release <<<
+Ejecutando desde: ./builddir/tests
+>>> Ejecutando test_01_math_tables...
+
+=============================================================
+ EJECUTANDO SUITE: test_01_math_tables
+=============================================================
+Randomness seeded to: 1052776657
+===============================================================================
+All tests passed (6673 assertions in 5 test cases)
+
+
+>>> Ejecutando test_02_append...
+
+=============================================================
+ EJECUTANDO SUITE: test_02_append
+=============================================================
+Randomness seeded to: 1297966546
+===============================================================================
+All tests passed (28 assertions in 3 test cases)
+
+
+>>> Ejecutando test_03_core_internal...
+
+=============================================================
+ EJECUTANDO SUITE: test_03_core_internal
+=============================================================
+Randomness seeded to: 4291797302
+===============================================================================
+All tests passed (52 assertions in 7 test cases)
+
+
+>>> Ejecutando test_04_dig_t...
+
+=============================================================
+ EJECUTANDO SUITE: test_04_dig_t
+=============================================================
+Randomness seeded to: 91440228
+===============================================================================
+All tests passed (62 assertions in 6 test cases)
+
+
+>>> Ejecutando test_05_dig_t_constructors...
+
+=============================================================
+ EJECUTANDO SUITE: test_05_dig_t_constructors
+=============================================================
+Randomness seeded to: 3011664878
+===============================================================================
+All tests passed (29 assertions in 1 test case)
+
+
+>>> Ejecutando test_06_dig_t_assignations...
+
+=============================================================
+ EJECUTANDO SUITE: test_06_dig_t_assignations
+=============================================================
+Randomness seeded to: 3989762546
+===============================================================================
+All tests passed (41 assertions in 1 test case)
+
+
+>>> Ejecutando test_07_dig_t_conversions...
+
+=============================================================
+ EJECUTANDO SUITE: test_07_dig_t_conversions
+=============================================================
+Randomness seeded to: 2605434842
+===============================================================================
+All tests passed (30 assertions in 3 test cases)
+
+
+>>> Ejecutando test_08_dig_t_operadores...
+
+=============================================================
+ EJECUTANDO SUITE: test_08_dig_t_operadores
+=============================================================
+Randomness seeded to: 3246327281
+===============================================================================
+All tests passed (53 assertions in 5 test cases)
+
+
+>>> Ejecutando test_09_dig_t_algebra...
+
+=============================================================
+ EJECUTANDO SUITE: test_09_dig_t_algebra
+=============================================================
+Randomness seeded to: 3149930814
+===============================================================================
+All tests passed (65 assertions in 4 test cases)
+
+
+>>> Ejecutando test_10_dig_t_io...
+
+=============================================================
+ EJECUTANDO SUITE: test_10_dig_t_io
+=============================================================
+Randomness seeded to: 3973335941
+===============================================================================
+All tests passed (37 assertions in 5 test cases)
+
+
+>>> Ejecutando test_11_basic_types...
+
+=============================================================
+ EJECUTANDO SUITE: test_11_basic_types
+=============================================================
+Randomness seeded to: 2975290780
+===============================================================================
+All tests passed (37 assertions in 5 test cases)
+
+
+>>> Ejecutando test_12_Int_ExpLog...
+
+=============================================================
+ EJECUTANDO SUITE: test_12_Int_ExpLog
+=============================================================
+Randomness seeded to: 1509513104
+===============================================================================
+All tests passed (42 assertions in 4 test cases)
+
+
+>>> Ejecutando test_13_IntRoot...
+
+=============================================================
+ EJECUTANDO SUITE: test_13_IntRoot
+=============================================================
+Randomness seeded to: 3852042516
+===============================================================================
+All tests passed (72 assertions in 5 test cases)
+
+
+>>> Ejecutando test_14_primes...
+
+=============================================================
+ EJECUTANDO SUITE: test_14_primes
+=============================================================
+Randomness seeded to: 2958048533
+===============================================================================
+All tests passed (50 assertions in 3 test cases)
+
+
+>>> Ejecutando test_15_conversions...
+
+=============================================================
+ EJECUTANDO SUITE: test_15_conversions
+=============================================================
+Randomness seeded to: 128416252
+===============================================================================
+All tests passed (18 assertions in 3 test cases)
+
+
+>>> Ejecutando test_LUT_of_primes...
+
+=============================================================
+ EJECUTANDO SUITE: test_LUT_of_primes
+=============================================================
+Randomness seeded to: 2208503412
+===============================================================================
+All tests passed (1075 assertions in 6 test cases)
+
+
+>>> Ejecutando test_primes_compiletime_catch2...
+
+=============================================================
+ EJECUTANDO SUITE: test_primes_compiletime_catch2
+=============================================================
+Randomness seeded to: 3831668129
+===============================================================================
+All tests passed (8 assertions in 1 test case)
+
+
+>>> Ejecutando basic_compilation_test...
+Testing basic compilation...
+Basic test passed: d[2]B10 + d[3]B10 = d[5]B10
+
+✅ gcc: OK
+
+>>> Ejecutando tests directos con clang release <<<
+Error: Directorio Clang './build-clang/build-release' no existe.
+Compila primero con: cmake --preset clang-release && cmake --build --preset clang-release
+❌ clang: FAILED
+
+>>> Ejecutando tests directos con msvc release <<<
+Los tests de MSVC están compilados por separado con batch scripts
+Para MSVC, usar los scripts .bat específicos:
+  test_02_append_msvc.bat
+  test_LUT_of_primes_msvc.bat
+  etc.
+✅ msvc: OK
+
+=============================================
+Compiladores exitosos: 2/3
+Compiladores con errores:
+  - clang

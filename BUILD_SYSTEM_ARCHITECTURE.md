@@ -1,53 +1,53 @@
-# Sistema de Construcción Tri-Compilador
+# Sistema de Construcción Tri-Compilador + Scripts Unificados
 
-Este documento describe el sistema completo de construcción tri-compilador del proyecto NumericRepresentations con soporte para **GCC 15.2.0**, **MSVC 19.50.35719** y **Clang 21.1.7**.
+Este documento describe el sistema completo de construcción tri-compilador del proyecto NumericRepresentations con soporte para **GCC 15.2.0**, **MSVC 19.50.35719** y **Clang 21.1.7**, incluyendo **scripts unificados** y **soporte para benchmarks**.
 
-## 🚀 Comandos de Uso Rápido
+## 🚀 Comandos de Uso Rápido (Scripts Unificados - RECOMENDADO)
 
-### **GCC (Recomendado)**
+### **Compilación Unificada**
 ```bash
-# Configuración y compilación
-meson setup builddir --buildtype=release
-meson compile -C builddir
-meson test -C builddir test_04_dig_t
+# Compilar test específico con compilador específico
+./build_tests.bash test_lookup_tables gcc release
+./build_tests.bash test_04_dig_t clang debug  
+./build_tests.bash test_10_dig_t_io msvc release
 
-# Test completo
-meson test -C builddir --verbose
+# Compilar todos los tests
+./build_tests.bash all gcc release
+./build_tests.bash all msvc debug
 ```
 
-### **MSVC**
+### **Testing Unificado + Benchmarks**
 ```bash
-# Configuración (requiere Visual Studio Command Prompt)
-call "C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
-meson setup builddir-msvc-real --buildtype=release
-meson compile -C builddir-msvc-real
-meson test -C builddir-msvc-real test_04_dig_t
+# Ejecutar con benchmarks
+./check_tests.bash test_lookup_tables gcc bench    # Solo benchmarks (12)
+./check_tests.bash test_04_dig_t clang nobench     # Sin benchmarks (~2,000 aserciones)
+
+# Testing completo
+./check_tests.bash all gcc nobench                 # Todos los tests sin benchmarks
+./check_tests.bash all clang bench                 # Todos los benchmarks disponibles
 ```
 
-### **Clang**
-```bash
-# Configuración con variables de entorno
-$env:CC = "C:\msys64\mingw64\bin\clang.exe"
-$env:CXX = "C:\msys64\mingw64\bin\clang++.exe"
-meson setup builddir-clang --buildtype=release
-meson compile -C builddir-clang
-meson test -C builddir-clang test_04_dig_t
+## 🎯 Arquitectura de Scripts Unificados
 
-# Limpiar variables después del uso
-$env:CC = $null; $env:CXX = $null
-```
+### **build_tests.bash** - Compilación Inteligente
+- **Parámetros**: `[test_name] [compiler] [mode] [print]`
+- **Compiladores**: `gcc`, `clang`, `msvc`, `all`
+- **Modos**: `debug`, `release`
+- **Build Systems**: GCC (Meson), Clang (CMake), MSVC (Direct)
 
-## 🔧 Sistema de Build Principal (Meson)
+### **check_tests.bash** - Testing + Benchmarks  
+- **Parámetros**: `[test_name] [compiler] [benchmark] [print]`
+- **Benchmark Control**: `bench` (solo benchmarks), `nobench` (aserciones normales)
+- **Catch2 Filters**: `[benchmark]` vs `~[benchmark]`
+- **Output**: Conteo de aserciones y benchmarks ejecutados
+
+## 🔧 Sistema de Build Subyacente
 
 ### Archivos Core
-- **`meson.build`** - Configuración principal (248 líneas)
-  - **Soporte tri-compilador completo** (GCC/Clang/MSVC)
-  - Detección automática de compilador con flags específicos
-  - **Catch2 dual approach**: Bibliotecas (GCC) vs Header-only (MSVC/Clang)
-  - Configuración de 17+ test executables
-  - **Optimizaciones C++23**: constexpr limits específicos por compilador
-
-### Configuración Específica por Compilador
+- **`meson.build`** - Configuración GCC (248 líneas)
+- **`CMakeLists.txt`** - Configuración Clang/MSVC
+- **`CMakePresets.json`** - Presets para tri-compilación
+- **Scripts batch** - Compilación directa MSVC
 
 #### **GCC Configuration**
 ```meson

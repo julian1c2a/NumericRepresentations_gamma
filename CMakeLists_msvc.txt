@@ -1,0 +1,19 @@
+cmake_minimum_required(VERSION 3.15)
+project(NumericRepresentations LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Directorios de include
+include_directories(include)
+include_directories(tests/external)
+
+# Tests individuales
+add_executable(test_04_dig_t tests/test_04_dig_t.cpp)
+add_executable(test_02_append tests/test_02_append.cpp tests/external/catch_amalgamated.cpp)
+
+# Flags específicos MSVC
+if(MSVC)
+    target_compile_options(test_04_dig_t PRIVATE /std:c++latest /constexpr:depth8192 /constexpr:steps50000000 /bigobj)
+    target_compile_options(test_02_append PRIVATE /std:c++latest /constexpr:depth8192 /constexpr:steps50000000 /bigobj)
+endif()
