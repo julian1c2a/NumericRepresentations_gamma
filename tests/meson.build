@@ -145,8 +145,8 @@ foreach test_info : test_targets
   # Prepare sources list
   test_sources = [test_source]
   
-  # For MSVC, add Catch2 implementation file
-  if cpp.get_id() == 'msvc'
+  # For MSVC and Clang, add Catch2 implementation file (header-only approach)
+  if cpp.get_id() == 'msvc' or cpp.get_id() == 'clang'
     test_sources += ['catch2_implementation.cpp']
   endif
   

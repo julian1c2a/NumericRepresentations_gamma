@@ -5,7 +5,7 @@ project(
   license: 'MIT',
   meson_version: '>=0.63.0',
   default_options: [
-    'cpp_std=c++latest',
+    'cpp_std=c++23',  # Changed from c++latest for better Clang compatibility
     'buildtype=debugoptimized',
     'warning_level=3',
     'werror=false',
@@ -36,6 +36,11 @@ else
   is_msvc = compiler_sim == 'msvc'
   is_gcc = compiler_sim == 'gcc'
   is_clang = compiler_sim == 'clang'
+endif
+
+# Adjust C++ standard for MSVC (requires c++latest)
+if is_msvc
+  add_project_arguments('/std:c++latest', language: 'cpp')
 endif
 
 # Common include directories
@@ -98,6 +103,7 @@ elif is_clang
     '-fconstexpr-depth=' + constexpr_depth.to_string(),
     '-fconstexpr-steps=' + constexpr_ops.to_string(),  # Clang uses -fconstexpr-steps
     '-Wno-c++98-compat',  # Clang-specific warning
+    '-stdlib=libstdc++',  # Force libstdc++ in MSYS2 environment
   ]
   
   # Clang optimization by build type
@@ -120,15 +126,20 @@ add_project_arguments(compile_args, language: 'cpp')
 # Catch2 dependency detection with manual method first (most reliable)
 catch2_dep = dependency('', required: false)
 
-# For MSVC, use header-only approach directly (most reliable)
+# For MSVC and Clang, use header-only approach directly (most reliable)
 if cpp.get_id() == 'msvc'
   catch2_dep = declare_dependency(
     include_directories: include_directories('external/Catch2/extras', is_system: true)
   )
   message('Catch2 configured as header-only for MSVC in external/Catch2/extras')
+elif cpp.get_id() == 'clang'
+  catch2_dep = declare_dependency(
+    include_directories: include_directories('external/Catch2/extras', is_system: true)
+  )
+  message('Catch2 configured as header-only for Clang in external/Catch2/extras')
 endif
 
-# Method 1: Manual library search (PRIORITIZED for GCC/Clang)
+# Method 1: Manual library search (PRIORITIZED for GCC only)
 if not catch2_dep.found()
   catch2_lib = cpp.find_library('Catch2', required: false)
   catch2_main_lib = cpp.find_library('Catch2Main', required: false)
