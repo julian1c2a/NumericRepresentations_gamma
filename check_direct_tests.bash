@@ -115,10 +115,10 @@ run_direct_tests_with_compiler() {
             # Tests de GCC están en Meson
             case "$mode" in
                 "debug")
-                    BASE_PATH="./builddir-debug/tests"
+                    BASE_PATH="./build/build_targets/gcc/debug/tests"
                     ;;
                 "release")
-                    BASE_PATH="./builddir/tests"
+                    BASE_PATH="./build/build_targets/gcc/release/tests"
                     ;;
                 *)
                     echo "Error: Modo no válido '$mode'. Usar 'debug' o 'release'"
@@ -195,10 +195,10 @@ case "$COMPILER" in
     "gcc"|*)
         case "$MODE" in
             "debug")
-                BASE_PATH="./builddir-debug/tests"
+                BASE_PATH="./build/build_targets/gcc/debug/tests"
                 ;;
             "release")
-                BASE_PATH="./builddir/tests"
+                BASE_PATH="./build/build_targets/gcc/release/tests"
                 ;;
             *)
                 echo "Error: Modo no válido '$MODE'. Usar 'debug' o 'release'"

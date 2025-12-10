@@ -212,10 +212,10 @@ run_tests_with_compiler() {
             # Tests de GCC están en Meson
             case "$mode" in
                 "debug")
-                    local builddir="builddir-debug"
+                    local builddir="./build/build_targets/gcc/debug"
                     ;;
                 "release")
-                    local builddir="builddir"
+                    local builddir="./build/build_targets/gcc/release"
                     ;;
                 *)
                     echo "Error: Modo no válido '$mode'. Usar 'debug' o 'release'"

@@ -49,11 +49,15 @@
 ./check_tests.bash all gcc bench                     # Todos los benchmarks
 ```
 
-### **Build Directories Actuales**
-- `./build/build_targets/gcc/{debug,release}/` - GCC builds (Meson)
-- `./build/build_targets/clang/{debug,release}/` - Clang builds (CMake)  
-- `./build/build_targets/msvc/{debug,release}/` - MSVC builds (Direct)
-- `builddir/` - Legacy GCC Meson (mantenido por compatibilidad)
+### **Build Directories Unificados**
+```
+./build/build_targets/
+├── gcc/{debug,release}/      # GCC builds (Meson → Unified)
+├── clang/{debug,release}/    # Clang builds (CMake) 
+└── msvc/{debug,release}/     # MSVC builds (Direct)
+```
+
+**Migración completada**: GCC ahora usa estructura unificada en lugar de `builddir/`
 
 ### **Benchmark Support**
 ```bash

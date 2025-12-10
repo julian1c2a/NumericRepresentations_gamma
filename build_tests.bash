@@ -91,14 +91,14 @@ build_with_compiler() {
             echo "  cmake --build --preset clang-$mode"
             ;;
         "gcc")
-            # Solo GCC usa Meson en este script
+            # GCC usa Meson con estructura unificada
             case "$mode" in
                 "debug")
-                    local builddir="builddir-debug"
+                    local builddir="./build/build_targets/gcc/debug"
                     local buildtype="debug"
                     ;;
                 "release")
-                    local builddir="builddir"
+                    local builddir="./build/build_targets/gcc/release"
                     local buildtype="release"
                     ;;
                 *)

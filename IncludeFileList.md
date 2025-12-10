@@ -84,19 +84,19 @@ ctest --preset msvc-release -R test_10_dig_t_io
 //NumRepr/check_direct_log_[compiler]_[mode].txt # Logs de ejecución directa
 ```
 
-### **Estructura de Directorios de Build**
+### **Estructura de Directorios de Build - UNIFICADA**
 
 ```
 //NumRepr/build/build_targets/
 ├── gcc/
-│   ├── debug/[executables]       # GCC Debug builds
-│   └── release/[executables]     # GCC Release builds
+│   ├── debug/[executables]       # GCC Debug builds (Meson)
+│   └── release/[executables]     # GCC Release builds (Meson)
 ├── clang/
-│   ├── debug/[executables]       # Clang Debug builds  
-│   └── release/[executables]     # Clang Release builds
+│   ├── debug/[executables]       # Clang Debug builds (CMake)
+│   └── release/[executables]     # Clang Release builds (CMake)
 └── msvc/
-    ├── debug/[executables]       # MSVC Debug builds
-    └── release/[executables]     # MSVC Release builds
+    ├── debug/[executables]       # MSVC Debug builds (Direct)
+    └── release/[executables]     # MSVC Release builds (Direct)
 ```
 
 ---

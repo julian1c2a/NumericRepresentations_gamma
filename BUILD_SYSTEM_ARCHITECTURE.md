@@ -33,13 +33,13 @@ Este documento describe el sistema completo de construcción tri-compilador del 
 - **Parámetros**: `[test_name] [compiler] [mode] [print]`
 - **Compiladores**: `gcc`, `clang`, `msvc`, `all`
 - **Modos**: `debug`, `release`
-- **Build Systems**: GCC (Meson), Clang (CMake), MSVC (Direct)
+- **Estructura unificada**: Todos usan `./build/build_targets/{compiler}/{mode}/`
 
 ### **check_tests.bash** - Testing + Benchmarks  
 - **Parámetros**: `[test_name] [compiler] [benchmark] [print]`
 - **Benchmark Control**: `bench` (solo benchmarks), `nobench` (aserciones normales)
 - **Catch2 Filters**: `[benchmark]` vs `~[benchmark]`
-- **Output**: Conteo de aserciones y benchmarks ejecutados
+- **Estructura unificada**: Detección automática de paths por compilador
 
 ## 🔧 Sistema de Build Subyacente
 
