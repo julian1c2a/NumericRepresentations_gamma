@@ -15,7 +15,7 @@ endif
 # =============================================================================
 
 basic_test_exe = executable(
-  'build_tests/basic_compilation_test',
+  'basic_compilation_test',
   'basic_compilation_test.cpp',
   include_directories: inc_dirs,
   cpp_args: compile_args,
@@ -152,7 +152,7 @@ foreach test_info : test_targets
   
   # Create executable
   test_exe = executable(
-    'build_tests/' + test_name,
+    test_name,
     test_sources,
     dependencies: test_deps,
     include_directories: test_include_dirs,
