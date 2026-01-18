@@ -5,7 +5,7 @@ project(
   license: 'MIT',
   meson_version: '>=0.63.0',
   default_options: [
-    'cpp_std=c++23',  # Changed from c++latest for better Clang compatibility
+    'cpp_std=c++latest',  # Changed from c++latest for better Clang compatibility
     'buildtype=debugoptimized',
     'warning_level=3',
     'werror=false',
