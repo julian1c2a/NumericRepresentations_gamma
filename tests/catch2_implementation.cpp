@@ -1,7 +1,6 @@
 // catch2_implementation.cpp
 // Implementation file for Catch2 amalgamated header (MSVC/Clang)
+// This file provides the main() function for the Catch2 test runner.
 
-#if defined(_MSC_VER) || defined(__clang__)
 #define CATCH_CONFIG_MAIN
-#include "../external/Catch2/extras/catch_amalgamated.cpp"
-#endif
+#include "catch_amalgamated.hpp"

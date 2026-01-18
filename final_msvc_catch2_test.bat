@@ -8,7 +8,7 @@ meson compile -C builddir-msvc-real test_04_dig_t
 if %ERRORLEVEL% == 0 (
     echo.
     echo ✅ COMPILACIÓN EXITOSA! Ejecutando test...
-    .\builddir-msvc-real\tests\test_04_dig_t.exe
+    .\builddir-msvc-real\build_tests\test_04_dig_t.exe
 ) else (
     echo.
     echo ❌ Error en compilación
